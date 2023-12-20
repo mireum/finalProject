@@ -1,21 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
 import './App.css';
 import { Routes } from 'react-router-dom';
-
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    box-sizing:  border-box;
-  }
-
-  * {
-    box-sizing: inherit;
-  }
-
-  .cursor-pointer {
-    cursor: pointer;
-  }
-`;
+import { GlobalStyle } from './css/global';
 
 function App() {
   return (
