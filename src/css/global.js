@@ -17,4 +17,37 @@ export const GlobalStyle = createGlobalStyle`
   .cursor-pointer {
     cursor: pointer;
   }
+  
+  .mg {
+    margin: 10px;
+  }
+
+  .mt {
+    margin-top: 40px;
+  }
+
+  .mb {
+    margin-bottom: 40px;
+  }
+
+  .ml {
+    margin-left: 40px;
+  }
+
+  .mr {
+    margin-right: 40px;
+  }
+
+  .btn {
+    display: block;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    /* box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.25); */
+    background: #6087fc;
+  }
 `;
