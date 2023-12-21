@@ -3,19 +3,23 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import styled from 'styled-components';
 
+export const ShopContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
 export const StyledSlide = styled(Slider)`
-  .slick-list {
+  /* position: relative; */
+  & div {
     position: relative;
+  }
+    
+  .slick-list {
     width: 1200px;
     height: 400px;
     margin: 0 auto;
     background-color: #cccccc;
     /* overflow: hidden; */
-  }
-  .slick-list:hover {
-    .slick-prev {
-      opacity: 1;
-    }
   }
   
   .slick-prev, .slick-next {
@@ -23,18 +27,21 @@ export const StyledSlide = styled(Slider)`
     z-index: 1;
   }
   .slick-prev {
-    left: 470px;
+    left: 30px;
   }
   .slick-next {
-    right: 490px
+    right: 48px;
+
   }
 
-  .slick-prev:before, .slick-next:before{ 
+  .slick-prev:before, .slick-next:before{
+    /* position: relative; */
     font-family: 'slick';
     font-size: 40px;
     line-height: 1;
     opacity: .75;
-    color: #c9bbbb;
+    /* color: #c9bbbb; */
+    color: #000;
     -webkit-font-smoothing: antialiased;
   }  
 `;
