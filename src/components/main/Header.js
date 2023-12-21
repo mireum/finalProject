@@ -21,36 +21,42 @@ function Header(props) {
     setIsHover(prevHover => ({...prevHover, shopTap: true, communityTap: false}))
   }
 
+  const hadletest = () => {
+    setIsHover(prevHover => ({...prevHover, shopTap: false, communityTap: false}))
+  }
+
   return (
     <>
-      <HeaderContainer>
-        <div className='headerInner'>
-          <div className='mainMenu'>
-            <a><img src='' alt='logo' /></a>
-            <a 
-              onMouseOver={handleCommunityTapOver}
-            >
-              커뮤니티
-            </a> 
-            <a 
-              onMouseOver={handleShopTapOver} 
-              onClick={() => navigate('/shop')}
-            >
-              쇼핑
-            </a>
-          </div>
-          <div className='sumMenu'>
-            <a>로그인</a>
-            <a>회원가입</a>
+      <HeaderContainer onMouseLeave={hadletest}>
+        <div className='headerWarpper'>
+          <div className='headerInner'>
+            <div className='mainMenu'>
+              <a><img src='' alt='logo' /></a>
+              <a 
+                onMouseOver={handleCommunityTapOver}
+                onClick={() => navigate('/')}
+              >
+                커뮤니티
+              </a> 
+              <a 
+                onMouseOver={handleShopTapOver} 
+                onClick={() => navigate('/shop')}
+              >
+                쇼핑
+              </a>
+            </div>
+            <div className='sumMenu'>
+              <a onClick={() => navigate('/')}>로그인</a>
+              <a onClick={() => navigate('/')}>회원가입</a>
+            </div>
           </div>
         </div>
-      </HeaderContainer>
       {communityTap 
         ? 
         <NavContainer>
           <div className='navInner'>
-            <a>커뮤니티홈</a>
-            <a>육아톡톡</a>
+            <a onClick={() => navigate('/')}>커뮤니티홈</a>
+            <a onClick={() => navigate('/')}>육아톡톡</a>
           </div>
         </NavContainer>
         : null
@@ -59,15 +65,16 @@ function Header(props) {
         ? 
         <NavContainer>
           <div className='navInner'>
-            <a>쇼핑홈</a>
-            <a>사료</a>
-            <a>간식/영양제</a>
-            <a>배변/위생</a>
-            <a>산책/놀이</a>
+            <a onClick={() => navigate('/')}>쇼핑홈</a>
+            <a onClick={() => navigate('/')}>사료</a>
+            <a onClick={() => navigate('/')}>간식/영양제</a>
+            <a onClick={() => navigate('/')}>배변/위생</a>
+            <a onClick={() => navigate('/')}>산책/놀이</a>
           </div>
         </NavContainer>
         : null
       }
+      </HeaderContainer>
     </>
   );
 }

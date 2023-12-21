@@ -23,7 +23,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .mt {
-    margin-top: 40px;
+    margin-top: 60px;
   }
 
   .mb {

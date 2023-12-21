@@ -1,17 +1,20 @@
 import React from 'react';
 import { FooterContainer } from '../../css/main';
 import { FaFacebookSquare, FaInstagramSquare, FaTwitterSquare, FaYoutubeSquare } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 function Footer(props) {
+  const navigate = useNavigate();
+
   return (
     <>
       <FooterContainer>
         <div className='footerInner'>
           <div className='corpCS'>
-            <a>회사소개</a>
-            <a>개인정보 처리방침</a>
-            <a>서비스 이용약관</a>
-            <a>고객문의</a>
+            <a onClick={() => navigate('/')}>회사소개</a>
+            <a onClick={() => navigate('/')}>개인정보 처리방침</a>
+            <a onClick={() => navigate('/')}>서비스 이용약관</a>
+            <a onClick={() => navigate('/')}>고객문의</a>
           </div>
           <div className='corpInfo'>
             <p>(주)강아지<span className='divisionLine' />대표이사: 강아지</p>
