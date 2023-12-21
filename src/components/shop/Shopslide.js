@@ -1,12 +1,86 @@
 import React from 'react';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css"
+import styled from 'styled-components';
+import img1 from "../../image/12.png";
 
+const StyledSlide = styled(Slider)`
+  .slick-list {
+    position: relative;
+    width: 1200px;
+    height: 400px;
+    margin: 0 auto;
+    background-color: #cccccc;
+    /* overflow: hidden; */
+  }
+  
+  .slick-prev, .slick-next {
+    position: absolute;
+    z-index: 1;
+  }
+  .slick-prev {
+    left: 500px;
+  }
+  .slick-next {
+    right: 510px
+  }
 
+  .slick-prev:before, .slick-next:before{ 
+    font-family: 'slick';
+    font-size: 40px;
+    line-height: 1;
+    opacity: .75;
+    color: #f0e6e6;
+    -webkit-font-smoothing: antialiased;
+  }  
+`;
 
 function Shopslide(props) {
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    pauseOnHover : true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  //   responsive: [ // 반응형 웹 구현 옵션
+	// 	{  
+	// 		breakpoint: 960, //화면 사이즈 960px일 때
+	// 		settings: {
+	// 			//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+	// 			slidesToShow:3 
+	// 		} 
+	// 	},
+	// 	{ 
+	// 		breakpoint: 768, //화면 사이즈 768px일 때
+	// 		settings: {	
+	// 			//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+	// 			slidesToShow:2 
+	// 		} 
+	// 	}
+	// ]
+  };
+
   return (
-    <div>
-      
-    </div>
+    <StyledSlide {...settings}>
+      <div>
+        <img src={img1} />
+      </div>
+      <div>
+        
+      </div>
+      <div>
+        
+      </div>
+      <div>
+        
+      </div>
+
+    </StyledSlide>
   );
 }
 
