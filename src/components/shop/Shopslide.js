@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyledSlide } from "../../css/Shop";
+import { StyledSlide, ShopContainer } from "../../css/Shop";
 import img1 from "../../image/1.png";
+import ShopCategory from './ShopCategory';
 
 
 
@@ -34,21 +35,24 @@ function Shopslide(props) {
   };
 
   return (
-    <StyledSlide {...settings}>
-      <div>
-        <img src={img1} />
-      </div>
-      <div>
-        
-      </div>
-      <div>
-        
-      </div>
-      <div>
-        
-      </div>
+    <ShopContainer>
+      <StyledSlide {...settings}>
+        <div>
+          <img src={img1} />
+        </div>
+        <div>
+          
+        </div>
+        <div>
+          
+        </div>
+        <div>
+          
+        </div>
 
-    </StyledSlide>
+      </StyledSlide>
+      <ShopCategory />
+    </ShopContainer>
   );
 }
 
