@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import img1 from '../image/img1.png';
+import { Col } from "react-bootstrap";
 
 
 export const ShopContainer = styled.section`
@@ -13,9 +14,9 @@ export const ShopContainer = styled.section`
     #itemlist {
       display: flex;
       justify-content: space-between;
-      /* flex-wrap: wrap; */
+      flex-wrap: wrap;
     }
-    #itemlist .list + .list {
+    /* #itemlist .list + .list {
       margin-left: 10px;
     }
     #itemlist .list .itemlink {
@@ -25,11 +26,11 @@ export const ShopContainer = styled.section`
     #itemlist .list img.itemImage {
       width: 250px;
       height: 250px;
-      /* background-image: url(${img1});
+      border-radius: 10px;
+      background-image: url(${img1});
       background-repeat: no-repeat;
       background-size: 250px 250px;
       background-position: 50% 50%;
-      border-radius: 10px; */
     }
 
     #itemlist li p {
@@ -46,6 +47,5 @@ export const ShopContainer = styled.section`
       font-size: 18px;
       font-weight: bold;
       color: #3d3d3d;
-    }
+    } */
 `;
-
