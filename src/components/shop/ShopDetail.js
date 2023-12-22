@@ -1,5 +1,10 @@
 import React from 'react';
-import {ShopContainer} from "../../css/Shop.js";
+import styled from 'styled-components';
+
+const ShopContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
 
 function ShopDetail(props) {
   return (

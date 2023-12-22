@@ -1,6 +1,59 @@
 import React from 'react';
-import { StyledCategory } from '../../css/Shop';
 import axios from 'axios';
+
+// 카테고리 이미지 import
+import myPet from "../../image/mypet.png";
+import all from "../../image/all.png";
+import feed from "../../image/feed.png";
+import accessory from "../../image/accessory.png";
+import snack from "../../image/snack.png";
+import beauty from "../../image/beauty.png";
+import styled from 'styled-components';
+
+const StyledCategory = styled.ul`
+  display: flex;
+  justify-content: space-evenly;
+  padding: 100px 0;
+  margin: 0 60px ;
+  li + li {
+    margin-left: 10px;
+  };
+   img.cate-st {
+    background-color: #f7f7f7;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60px 60px;
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    border: 1px solid #000;
+  }
+
+  li img.cate-1  {
+    background-image: url(${myPet});
+  }
+  li img.cate-2 {
+    background-image: url(${all});
+  }
+  li img.cate-3 {
+    background-image: url(${feed});
+  }
+  li img.cate-4 {
+    background-image: url(${snack});
+  }
+  li img.cate-5 {
+    background-image: url(${accessory});
+  }
+  li img.cate-6 {
+    background-image: url(${beauty});
+  }
+  li p {
+    text-align: center;
+    padding: 5px 0;
+    font-weight: bold;
+    color: #555;
+  }
+`;
 
 function ShopCategory(props) {
   // 카테고리 별 페이지 요청 할 axios
