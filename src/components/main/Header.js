@@ -28,7 +28,6 @@ const HeaderContainer = styled.header`
     align-items: center;
     justify-content: space-between;
 
-
     .mainMenu {
 
       a:first-child {
@@ -141,7 +140,9 @@ function Header(props) {
         <NavContainer>
           <div className='navInner'>
             <a onClick={() => navigate('/')}>커뮤니티홈</a>
-            <a onClick={() => navigate('/')}>육아톡톡</a>
+            <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
+            <a onClick={() => navigate('/community/dailyDog')}>데일리독</a>
+            <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
           </div>
         </NavContainer>
         : null
