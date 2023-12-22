@@ -68,9 +68,9 @@ export const StyledCategory = styled.ul`
     background-color: #f7f7f7;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 70px 70px;
-    width: 100px;
-    height: 100px;
+    background-size: 60px 60px;
+    width: 90px;
+    height: 90px;
     /* display: inline-block;
     content: ""; */
     /* border-radius: 30px; */
