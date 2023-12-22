@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   productList: [],
-  selectedProduct: null,
+  selectedCategory: '',
 };
 
 const productSlice = createSlice({
@@ -12,7 +12,7 @@ const productSlice = createSlice({
     getProducts: (state, action) => {
       state.productList = action.payload;
     },
-    getSelectedProduct: (state, action) => {
+    getSelectedCategory: (state, action) => {
       state.selectedProduct = action.payload;
     },
     clearSelectedProduct: (state) => {
@@ -26,12 +26,12 @@ const productSlice = createSlice({
 
 export const {
   getProducts,
-  getSelectedProduct,
+  getSelectedCategory,
   clearSelectedProduct,
   addMoreProducts
 } = productSlice.actions;
 
 export const selectProductList = state => state.product.productList;
-export const selectSelectedProduct = state => state.product.selectedProduct;
+export const selectSelectedCategory = state => state.product.selectedCategory;
 
 export default productSlice.reducer;
