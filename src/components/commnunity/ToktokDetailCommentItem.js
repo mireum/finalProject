@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToktokDetailCommentItemWrapper } from '../../css/Community';
+import { ToktokDetailCommentItemWrapper } from '../../css/community';
 
 function ToktokDetailCommentItem(props) {
   return (
