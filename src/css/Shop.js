@@ -64,14 +64,15 @@ export const StyledCategory = styled.ul`
   li + li {
     margin-left: 10px;
   };
-  li img.cate-st {
+   img.cate-st {
     background-color: #f7f7f7;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 60px 60px;
     width: 90px;
     height: 90px;
-    /* border: 0px solid #fff; */
+    border-radius: 20px;
+    border: 1px solid #000;
   }
 
   li img.cate-1  {
