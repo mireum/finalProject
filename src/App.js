@@ -5,6 +5,7 @@ import Main from './pages/Main';
 import Shop from './pages/Shop';
 import Community from './pages/Community';
 import Toktok from './components/commnunity/Toktok';
+import ShopDetail from './components/shop/ShopDetail';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path='/' element={<Community />} />
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop' element={<Shop/>}/>
+          <Route path='/detail' element={<ShopDetail/>}/>
         </Route>
       </Routes>
     </>

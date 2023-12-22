@@ -1,4 +1,5 @@
 import React from 'react';
+import {ShopContainer} from "../../css/Shop.js";
 
 function ShopDetail(props) {
   return (
