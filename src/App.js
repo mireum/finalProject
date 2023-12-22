@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import { GlobalStyle } from './css/global';
 import Main from './pages/Main';
 import Community from './pages/Community';
-import Toktok from './components/commnunity/Toktok';
-import ToktokDetail from './components/commnunity/ToktokDetail';
-import CommunityInsert from './components/commnunity/CommunityInsert';
+import Toktok from './components/community/toktok/Toktok';
+import ToktokDetail from './components/community/toktok/ToktokDetail';
+import CommunityInsert from './components/community/communityGlobal/CommunityInsert';
 
 function App() {
   return (

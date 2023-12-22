@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CommunityInsertWrapper } from '../../css/community';
+import { CommunityInsertWrapper } from '../../../css/community';
 
 function CommunityInsert(props) {
   const [insertTitle, setInsertTitle] = useState();

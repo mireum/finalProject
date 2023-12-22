@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { ToktokDetailWrapper } from '../../css/community';
+import { ToktokDetailWrapper } from '../../../css/community';
 import ToktokDetailCommentItem from './ToktokDetailCommentItem';
 
 function ToktokDetail(props) {

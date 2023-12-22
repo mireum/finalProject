@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToktokItemWrapper } from '../../css/community';
+import { ToktokItemWrapper } from '../../../css/community';
 import { useNavigate } from 'react-router-dom';
 
 
