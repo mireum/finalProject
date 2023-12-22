@@ -44,27 +44,29 @@ function ItemList(props) {
     }
   ];
 
-  // const [ itemList, setItemList ] = useState([]);
+  const [ pet, setPet ] = useState(false);
 
   return (
     <ShopContainer>
-      <h2>멍멍이를 위한 상품!</h2>
+      {pet && <h2>멍멍이를 위한 상품!</h2>}
       <Container>
         <Row id='itemlist' className='justify-content-md-center'>
           {array.map((item, index) => {
             return (
-              <Col md={2} key={index} className='list'>
-                <img src={item.imgurl} className='itemImage' />
-                <p>{item.brand}</p>
-                <span>{item.title}</span>
-                <p className='price'>{item.price}</p>
-              </Col>
+              <div>
+                <Col md={4} key={index} className='list'>
+                  <img src={item.imgurl} className='itemImage' />
+                  <p>{item.brand}</p>
+                  <span>{item.title}</span>
+                  <p className='price'>{item.price}원</p>
+                </Col>
+              </div>
             )
           })}
         </Row>
 
-        <button>더보기</button>
       </Container>
+        <button className='moreBtn'>더보기</button>
     </ShopContainer>
   );
 }
