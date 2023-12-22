@@ -1,7 +1,29 @@
 import React from 'react';
-import { ToktokWrapper } from '../../../css/community';
 import ToktokItem from './ToktokItem';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const ToktokWrapper = styled.div`
+  width: 1208px;
+  height: 1000px;
+  background-color: #ccc;
+  h1 {
+    font-size: 44px;
+    font-weight: bold;
+    color: #000;
+    padding: 10px 20px;
+  }
+  .between {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+  .test {
+    font-size: 33px;
+    color: red;
+    background-color: beige;
+  }
+`;
 
 function Toktok(props) {
   const navigate = useNavigate();

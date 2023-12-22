@@ -1,7 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { ToktokDetailWrapper } from '../../../css/community';
 import ToktokDetailCommentItem from './ToktokDetailCommentItem';
+import styled from 'styled-components';
+
+const ToktokDetailWrapper = styled.div`
+  background-color: #ccc;
+  .a {
+    background-color: #505050;
+    height: 200px;
+  }
+`;
 
 function ToktokDetail(props) {
 

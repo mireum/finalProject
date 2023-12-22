@@ -1,6 +1,91 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { HeaderContainer, NavContainer } from '../../css/main';
+import styled from "styled-components";
+
+const HeaderContainer = styled.header`
+  position: sticky;
+  background: #fff;
+  top: 0;
+  z-index: 9;
+  
+  a {
+    cursor: pointer;
+    margin: 0 8px;
+    padding: 10px 6px;
+    font-size: 17px;
+    font-weight: bold;
+  }
+
+  .headerWarpper {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .headerInner {
+    max-width: 1200px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    .mainMenu {
+
+      a:first-child {
+      margin: 0px;
+      margin-right: 8px;
+      }
+    }
+
+    .sumMenu {
+
+      a {
+        font-size: 14px;
+        color: #222;
+        opacity: 0.6;
+      }
+
+      a:last-child {
+      margin: 0px;
+      margin-left: 8px;
+      }
+    }
+  }
+`;
+
+const NavContainer = styled.nav`
+  border-bottom: 1px solid #ccc;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #fff;
+
+  a {
+    cursor: pointer;
+    margin: 0 8px;
+    padding: 10px 6px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .navInner {
+    max-width: 1200px;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+
+    a:first-child {
+    margin: 0px;
+    margin-right: 8px;
+    }
+
+    a:last-child {
+    margin: 0px;
+    margin-left: 8px;
+    }
+  }
+`;
 
 function Header(props) {
   const navigate = useNavigate();

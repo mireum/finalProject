@@ -1,7 +1,25 @@
 import React from 'react';
 import CommunitySlide from '../components/community/communityHome/CommunitySlide';
-import { CommunityHomeContainer } from '../css/community';
 import { FaChevronRight } from "react-icons/fa";
+import styled from 'styled-components';
+
+const CommunityHomeContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  .communityHomeContent {
+    margin-top: 60px;
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-size: 16px;
+      }
+    }
+  }
+`;
 
 function Community(props) {
 

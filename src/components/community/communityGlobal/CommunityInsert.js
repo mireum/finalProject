@@ -1,5 +1,22 @@
 import React, { useState } from 'react';
-import { CommunityInsertWrapper } from '../../../css/community';
+import styled from 'styled-components';
+
+const CommunityInsertWrapper = styled.div`
+  background-color: #ccc;
+  .a {
+    background-color: #f0f0f0;
+    height: 30px;
+  }
+  .b {
+    display: flex;
+    flex-flow: column;
+    input, textarea {
+      padding: 10px 0 ;
+      margin: 10px 0;
+      background-color: aliceblue;
+    }
+  }
+`;
 
 function CommunityInsert(props) {
   const [insertTitle, setInsertTitle] = useState();

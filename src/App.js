@@ -1,11 +1,28 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import { GlobalStyle } from './css/global';
 import Main from './pages/Main';
 import Community from './pages/Community';
 import Toktok from './components/community/toktok/Toktok';
 import ToktokDetail from './components/community/toktok/ToktokDetail';
 import CommunityInsert from './components/community/communityGlobal/CommunityInsert';
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+
+  body {
+    box-sizing: border-box;
+  }
+
+  * {
+    box-sizing: inherit;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+`;
 
 function App() {
   return (

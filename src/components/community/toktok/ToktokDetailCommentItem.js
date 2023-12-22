@@ -1,5 +1,13 @@
 import React from 'react';
-import { ToktokDetailCommentItemWrapper } from '../../../css/community';
+import styled from 'styled-components';
+
+const ToktokDetailCommentItemWrapper = styled.div`
+  background-color: #ccc;
+  .a {
+    background-color: #f0f0f0;
+    height: 30px;
+  }
+`;
 
 function ToktokDetailCommentItem(props) {
   return (
