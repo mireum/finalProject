@@ -1,5 +1,7 @@
 칼라(위가 강조색)
-#83A2FF
+#68a6fe
 #B4BDFF
-#FFE3BB
-#FFD28F
+#ececec
+#CDF5FD
+
+
