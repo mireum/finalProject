@@ -26,7 +26,7 @@ const StyledCategory = styled.ul`
     width: 90px;
     height: 90px;
     border-radius: 20px;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
   }
 
   li img.cate-1  {
