@@ -39,7 +39,7 @@ function CommunitySlide(props) {
           <div>
           </div>
         </StyledSlide>
-        <div className='imgContainer'>
+        {/* <div className='imgContainer'>
           <div className='fx'>
             <div className='imgContent'>
 
@@ -56,7 +56,7 @@ function CommunitySlide(props) {
               
             </div>
           </div>
-        </div>
+        </div> */}
       </CommunitySlideContainer>
 
     </>

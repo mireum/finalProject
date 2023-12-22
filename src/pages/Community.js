@@ -7,7 +7,7 @@ function Community(props) {
 
   return (
     <>
-      <CommunitySlide />
+      {/* <CommunitySlide /> */}
       <CommunityHomeContainer>
         <div className='communityHomeContent'>
           <h2>
@@ -26,6 +26,9 @@ function Community(props) {
             꿀팁 대방출 
             <button><FaChevronRight /></button>
           </h2>
+        </div>
+        <div>
+          <img src='./images/app.jpg' alt='app'></img>
         </div>
       </CommunityHomeContainer>
 
