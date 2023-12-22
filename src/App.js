@@ -31,7 +31,6 @@ function App() {
       <Routes>
         <Route path='/' element={<Main />} >
           <Route path='/' element={<Community />} />
-          {/* 쇼핑 컴포넌트 넣어주세요! */}
           <Route path='/shop' element={<ItemList />} />
         </Route>
       </Routes>
