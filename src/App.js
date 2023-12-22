@@ -1,8 +1,11 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import Main from './pages/Main';
+import Shop from './pages/Shop';
 import Community from './pages/Community';
 import ItemList from './components/ItemList';
+import Toktok from './components/commnunity/Toktok';
+import ShopDetail from './components/shop/ShopDetail';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
@@ -11,8 +14,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     box-sizing:  border-box;
-    /* max-width: 1200px;
-    margin: 0 auto; */
+    margin: 0 auto;
   }
 
   * {
@@ -31,7 +33,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Main />} >
           <Route path='/' element={<Community />} />
-          <Route path='/shop' element={<ItemList />} />
+          <Route path='/community/Toktok' element={<Toktok />} />
+          <Route path='/shop' element={<Shop/>}/>
+          <Route path='/detail' element={<ShopDetail/>}/>
         </Route>
       </Routes>
     </>
