@@ -71,9 +71,7 @@ export const StyledCategory = styled.ul`
     background-size: 60px 60px;
     width: 90px;
     height: 90px;
-    /* display: inline-block;
-    content: ""; */
-    /* border-radius: 30px; */
+    /* border: 0px solid #fff; */
   }
 
   li img.cate-1  {
