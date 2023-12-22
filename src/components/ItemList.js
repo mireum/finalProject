@@ -1,8 +1,63 @@
 import React, { useState } from 'react';
-import { ShopContainer } from '../css/Shop';
-import { Link } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
-import img1 from "../image/img1.png";
+import styled from 'styled-components';
+
+const ItemContainer = styled.section`
+  max-width: 1200px;  // 병합하고 지워볼 것
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h2 {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 10px 0 20px;
+  }
+  #itemlist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* align-items: center; */
+  }
+  #itemlist > div {
+    width: 250px;
+    height: 320px;
+    margin: 0 25px;
+  }
+  #itemlist > div .list .itemImage {
+    width: 225px;
+    height: 225px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  #itemlist > div p {
+    color: #ababab;
+    padding: 3px 0;
+  }
+  #itemlist > div span {
+    font-size: 18px;
+  }
+  #itemlist > div p.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #3d3d3d;
+    padding-top: 8px;
+  } 
+  button {
+    display: block;
+    width: 20rem;
+    height: 2.5rem;
+    background-color: #68a6fe;
+    border: none;
+    border-radius: 0.7rem;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    margin: 20px 0;
+    padding: 5px 0;
+  }
+
+`;
 
 function ItemList(props) {
   const array = [
@@ -46,14 +101,18 @@ function ItemList(props) {
 
   const [ pet, setPet ] = useState(false);
 
+  const handleMore = async () => {
+    // await axios.post
+  };
+
   return (
-    <ShopContainer>
+    <ItemContainer>
       {pet && <h2>멍멍이를 위한 상품!</h2>}
       <Container>
         <Row id='itemlist' className='justify-content-md-center'>
           {array.map((item, index) => {
             return (
-              <div>
+              <div className='cursor-pointer'>
                 <Col md={4} key={index} className='list'>
                   <img src={item.imgurl} className='itemImage' />
                   <p>{item.brand}</p>
@@ -66,8 +125,8 @@ function ItemList(props) {
         </Row>
 
       </Container>
-        <button className='moreBtn'>더보기</button>
-    </ShopContainer>
+      <button className='moreBtn cursor-pointer' onClick={handleMore}>더보기</button>
+    </ItemContainer>
   );
 }
 
