@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import styled from 'styled-components';
-import { addMoreProducts, getProducts, selectProductList } from '../slice/productSlice';
+import { addMoreProducts, getProducts, selectProductList, selectSelectedCategory } from '../../slice/productSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ItemContainer = styled.section`
-  max-width: 1200px;  // 병합하고 지워볼 것
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -21,7 +20,6 @@ const ItemContainer = styled.section`
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    /* align-items: center; */
   }
   #itemlist > div {
     width: 250px;
@@ -60,7 +58,6 @@ const ItemContainer = styled.section`
     margin: 20px 0;
     padding: 5px 0;
   }
-
 `;
 
 const array = [
@@ -103,31 +100,30 @@ const array = [
 ];
 
 function ItemList(props) {
-  // const productList = useSelector(selectProductList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [ pet, setPet ] = useState(false);
-  const [ lastItemId, setLastItemId ] = useState('');
-
+  
+  // const productList = useSelector(selectProductList);
+  // const selectedCategory = useSelector(selectSelectedCategory);
+  
   const handleMore = async () => {
-    // const result = await axios.post('http://라우터주소?nextId=lastItemId');
+    const result = await axios.post(
+      'http://라우터주소?tag={selectedCategory}&nextId={productList[productList.length - 1]._id}', {}, {withCredentials: true});
     // dispatch(addMoreProducts(result));
   };
 
   // useEffect(() => {
-  //   axios.get('https://라우터주소/')
-  //     .then((response) => {
-  //       setLastItemId(response.data[response.data.length]._id);
-  //       dispatch(getProducts(response.data));
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
+  //   if (!productList) return
+  //   try {
+  //     const result =  axios.get('https://라우터주소/')
+  //     dispatch(getProducts(result.data));
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
   // }, []);
 
   return (
     <ItemContainer>
-      {pet && <h2>멍멍이를 위한 상품!</h2>}
       <Container>
         <Row id='itemlist' className='justify-content-md-center'>
           {/* {productList.map((item) => {})}; */}

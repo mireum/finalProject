@@ -9,6 +9,8 @@ import accessory from "../../image/accessory.png";
 import snack from "../../image/snack.png";
 import beauty from "../../image/beauty.png";
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { getProducts, getSelectedCategory, selectProductList } from '../../slice/productSlice';
 
 const StyledCategory = styled.ul`
   display: flex;
@@ -56,35 +58,55 @@ const StyledCategory = styled.ul`
 `;
 
 function ShopCategory(props) {
+  const dispatch = useDispatch();
+
   // 카테고리 별 페이지 요청 할 axios
-  const handleChange = async () => {
-    await axios.get();
+  const axiosAll = async () => {
+    // const result = await axios.get();
+    // dispatch(getProducts(result.data));
+    // dispatch(getSelectedCategory(''));
+  };
+  const axiosFeed = async () => {
+    // const result = await axios.get();
+    // dispatch(getProducts(result.data));
+    // dispatch(getSelectedCategory('feed'));
+  };
+  const axiosSnack = async () => {
+    // const result = await axios.get();
+    // dispatch(getProducts(result.data));
+    // dispatch(getSelectedCategory('snack'));
+  };
+  const axiosBeauty = async () => {
+    // const result = await axios.get();
+    // dispatch(getProducts(result.data));
+    // dispatch(getSelectedCategory('beauty'));
+  };
+  const axiosAccessory = async () => {
+    // const result = await axios.get();
+    // dispatch(getProducts(result.data));
+    // dispatch(getSelectedCategory('accessory'));
   };
   
 
   return (
     <StyledCategory>
-      <li onClick={() => {}}>
-        <img className='cate-1 cate-st cursor-pointer'/>
-        <p>맞춤상품</p>
-      </li>
-      <li onClick={() => {}}>
+      <li onClick={axiosAll}>
         <img className='cate-2 cate-st cursor-pointer'/>
         <p>전체상품</p>
       </li>
-      <li onClick={() => {}}>
+      <li onClick={axiosFeed}>
         <img className='cate-3 cate-st cursor-pointer'/>
         <p>사료</p>
       </li>
-      <li onClick={() => {}}>
+      <li onClick={axiosSnack}>
         <img className='cate-4 cate-st cursor-pointer'/>
         <p>간식/영양제</p>
       </li>
-      <li onClick={() => {}}>
+      <li onClick={axiosBeauty}>
         <img className='cate-5 cate-st cursor-pointer'/>
         <p>산책/놀이</p>
       </li>
-      <li onClick={() => {}}>
+      <li onClick={axiosAccessory}>
         <img className='cate-6 cate-st cursor-pointer'/>
         <p>배변/위생</p>
       </li>
