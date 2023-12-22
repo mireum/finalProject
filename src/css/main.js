@@ -2,14 +2,21 @@ import styled from "styled-components";
 
 // Header Area
 export const HeaderContainer = styled.header`
-  border-bottom: 1px solid #ccc;
-
+  position: sticky;
+  background: #fff;
+  top: 0;
+  z-index: 9;
+  
   a {
     cursor: pointer;
     margin: 0 8px;
     padding: 10px 6px;
     font-size: 17px;
     font-weight: bold;
+  }
+
+  .headerWarpper {
+    border-bottom: 1px solid #ccc;
   }
 
   .headerInner {
@@ -19,6 +26,7 @@ export const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
   
     .mainMenu {
 
@@ -47,6 +55,10 @@ export const HeaderContainer = styled.header`
 // Nav Area
 export const NavContainer = styled.nav`
   border-bottom: 1px solid #ccc;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #fff;
 
   a {
     cursor: pointer;
