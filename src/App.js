@@ -35,7 +35,8 @@ function App() {
           <Route path='/' element={<Community />} />
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop' element={<Shop/>}/>
-          <Route path='/detail' element={<ShopDetail/>}/>
+          {/* 나중에 ? 지우기 */}
+          <Route path='/detail/:productId?' element={<ShopDetail/>}/>
         </Route>
       </Routes>
     </>

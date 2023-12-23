@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import feed from "../../image/feed.jpg";
+import { useParams } from 'react-router-dom';
+import { Nav } from 'react-bootstrap';
+import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../slice/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -27,17 +32,17 @@ const ShopContainer = styled.div`
     /* font-size: 30px; */
   }
   .detail .detail-text p {
-    font-size: 20px;
+    font-size: 16px;
     color: #cdcdcd;
     margin-bottom: 10px;
   }
   .detail .detail-text h3 {
-    font-size: 30px;
+    font-size: 24px;
     color: #333;
     margin-bottom: 20px;
   }
   .detail .detail-text h4 {
-    font-size: 30px;
+    font-size: 24px;
     color: #666;
     margin-bottom: 30px;
   }
@@ -89,9 +94,49 @@ const ShopContainer = styled.div`
   }
 `;
 
+const TabContainer = styled.div`
+
+
+`;
 
 
 function ShopDetail(props) {
+  // const { productId } = useParams(); // app.js에서 지은
+  const dispatch = useDispatch();
+  const [ productCount, setProductCount ] = useState(1);
+  const [showTab, setShowTab] = useState('detail'); // 탭 상태
+  // const product = useSelector(selectSelectedProduct);
+
+  const handleMinus = () => {
+    if (productCount != 1) setProductCount(productCount-1);
+  };
+
+  const handlePlus = () => {
+    setProductCount(productCount+1);
+  };
+
+  // useEffect(() => {
+  //   // 서버에 특정 상품의 데이터 요청
+  //   const fetchProductById = async () => {
+  //     try {
+  //       const response = await axios.get(`라우터주소${productId}`);
+  //       dispatch(getSelectedProduct(response.data))
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchProductById();
+
+  //   return () => {
+  //     dispatch(clearSelectedProduct());
+  //   };
+  // }, []);
+
+
+  // if (!product) {
+  //   return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
+  // } 
+
   return (
     <ShopContainer>
       <div className='detail'>
@@ -101,9 +146,13 @@ function ShopDetail(props) {
         <div className='detail-text'>
           <p>프로도기</p>
           <h3>퍼펙션 패드 소형 베이비파우더향 30매</h3>
-          <h4>18000</h4>
+          <h4>{18000 * productCount}원</h4>
           <span className='text1'>수량</span>
-          <span className='text2'>1</span><br />
+          <span className='text2'>
+            <button type='button' onClick={handleMinus}>-</button>
+            {productCount}
+            <button type='button' onClick={handlePlus}>+</button>
+            </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
           {/* <select>
@@ -122,6 +171,32 @@ function ShopDetail(props) {
           </div>
         </div>
       </div>
+      
+      <TabContainer>
+      <Nav variant="tabs" defaultActiveKey="link-0" className='my-3'>
+        <Nav.Item>
+          <Nav.Link eventKey="link-0" onClick={() => setShowTab('detail')}>상세정보</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-1" onClick={() => setShowTab('review')}>리뷰</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-2" onClick={() => setShowTab('qa')}>Q&amp;A</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-3" onClick={() => setShowTab('exchange')}>반품/교환정보</Nav.Link>
+        </Nav.Item>
+      </Nav>
+      {
+        {
+          'detail': <div>탭 내용1</div>,
+          'review': <div>탭 내용2</div>,
+          'qa': <div>탭 내용3</div>,
+          'exchange': <div>탭 내용4</div>
+        }[showTab]
+        // 대괄호 표기법으로 써야 변수로 인식함.
+      }
+      </TabContainer>
       
     </ShopContainer>
   );
