@@ -6,19 +6,40 @@ import Col from 'react-bootstrap/Col';
 import { Button } from 'react-bootstrap';
 import FleamarketItem from './FleamarketItem';
 import testImage from '../../../images/app.jpg'
+import { useNavigate } from 'react-router-dom';
 
 
 const FleamarketContainer = styled.div`
   max-width: 1200px;
+  min-height: 800px;
   margin: 0 auto;
   margin-top: 60px;
+
+  h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .info {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+  }
 `;
 
 const FleamarketItemContainer = styled(Container)`
-  max-width: 1200px;
+  margin-top: 20px;
+`;
+
+const StyledRow = styled(Row)`
+  display: flex;
+  justify-content: space-between;
 `;
 
 function Fleamarket(props) {
+  const navigate = useNavigate();
 
   const test = [
     {
@@ -51,10 +72,14 @@ function Fleamarket(props) {
   return (
     <FleamarketContainer>
       <h1>중고거래</h1>
+      <div className='info'>
+        <p>사랑스러운 내 반려견의 하루를 소개해요!</p>
+        <button onClick={() => navigate('/community/dailyDog/write')}>소개하기</button>
+      </div>
       <FleamarketItemContainer>
-        <Row>
+        <StyledRow>
           {test.map((item, index) => <FleamarketItem key={index} item={item}/>)}
-        </Row>
+        </StyledRow>
       </FleamarketItemContainer>
     </FleamarketContainer>
 

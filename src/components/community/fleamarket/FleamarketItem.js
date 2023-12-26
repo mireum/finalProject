@@ -6,11 +6,21 @@ import { useNavigate } from 'react-router';
 
 const StyledCol = styled(Col)`
   cursor: pointer;
-  border: 1px solid black;
+  text-align: center;
+  /* margin: 20px; */
+  padding: 0;
+  
 `; 
 
 const ItemImage = styled.img`
   width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 10px 10px 0 0;
+  transition: transform 0.5s;
+
+  &:hover {
+    transform: scale(1.03);
+  }
 `;
 
 function FleamarketItem(props) {
@@ -19,7 +29,7 @@ function FleamarketItem(props) {
   const navigate = useNavigate();
 
   return (
-    <StyledCol md={2} onClick={() => navigate(`/community/fleamarket/${id}`)}>
+    <StyledCol md={3} onClick={() => navigate(`/community/fleamarket/${id}`)}>
       <ItemImage src={testImage} />
       <h2>수정</h2>
       <h2>삭제</h2>
