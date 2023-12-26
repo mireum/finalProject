@@ -1,4 +1,3 @@
-import React from 'react';
 import ToktokItem from './ToktokItem';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -67,6 +66,9 @@ function Toktok(props) {
           />
         })}
       </div>
+
+
+
     </ToktokWrapper>
   );
 }
