@@ -8,6 +8,7 @@ import Toktok from './components/commnunity/Toktok';
 import ShopDetail from './components/shop/ShopDetail';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import Question from './components/shop/Question';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -36,7 +37,9 @@ function App() {
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop' element={<Shop/>}/>
           {/* 나중에 ? 지우기 */}
-          <Route path='/detail/:productId?' element={<ShopDetail/>}/>
+          <Route path='/shop/detail/:productId?' element={<ShopDetail/>}/>
+          {/* <Route path='/shop/detail/:productId?/quest' element={<Question />} /> */}
+          <Route path='/shop/detail/quest' element={<Question />} />
         </Route>
       </Routes>
     </>

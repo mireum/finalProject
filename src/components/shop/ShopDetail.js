@@ -6,6 +6,9 @@ import { Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../slice/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import DetailDetail from './DetailDetail';
+import DetailQnA from './DetailQnA';
+import DetailExchange from './DetailExchange';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -65,9 +68,7 @@ const ShopContainer = styled.div`
     margin-left: 40px;
     font-weight: bold; 
   }
-  /* .detail select{
-    display: block;
-  } */
+
   .detail .detail-btn {
     margin-top: 50px;
     
@@ -80,6 +81,9 @@ const ShopContainer = styled.div`
     border-radius: 15px;
     padding: 7px 0px;
     border: 2px solid #cdcdcd;
+  }
+  .detail .detail-btn button:hover {
+    background-color: #5396f5;
   }
   .detail .detail-btn button + button {
     margin-left: 5%;
@@ -95,10 +99,37 @@ const ShopContainer = styled.div`
 `;
 
 const TabContainer = styled.div`
-
+  width: 100%;
 
 `;
 
+const NavBox = styled(Nav)`
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+`;
+
+const ItemBox = styled(Nav.Item)`
+  width: 21%;
+  height: 50px;
+  text-align: center;
+  padding: 14px 0;
+  font-size: 20px;
+  border: 1px solid #000;
+
+  .active {
+    color: #68a6fe;
+    border-bottom: 1px solid black;
+  }
+  :hover {
+    color: #68a6fe;
+  }
+`;
+
+const LinkBox = styled(Nav.Link)`
+  text-decoration: none;
+  color: #000;
+`;
 
 function ShopDetail(props) {
   // const { productId } = useParams(); // app.js에서 지은
@@ -115,6 +146,7 @@ function ShopDetail(props) {
     setProductCount(productCount+1);
   };
 
+ 
   // useEffect(() => {
   //   // 서버에 특정 상품의 데이터 요청
   //   const fetchProductById = async () => {
@@ -155,12 +187,6 @@ function ShopDetail(props) {
             </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
-          {/* <select>
-            <option>옵션 선택</option>
-            <option>베이비파우더향 30매</option>
-            <option>베이비파우더향 50매</option>
-            <option>베이비파우더향 100매</option>
-          </select> */}
           <div className='detail-btn'>
             <button 
               type='submit' 
@@ -173,28 +199,29 @@ function ShopDetail(props) {
       </div>
       
       <TabContainer>
-      <Nav variant="tabs" defaultActiveKey="link-0" className='my-3'>
-        <Nav.Item>
-          <Nav.Link eventKey="link-0" onClick={() => setShowTab('detail')}>상세정보</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-1" onClick={() => setShowTab('review')}>리뷰</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-2" onClick={() => setShowTab('qa')}>Q&amp;A</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-3" onClick={() => setShowTab('exchange')}>반품/교환정보</Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <NavBox variant="tabs" defaultActiveKey="link-0" className='my-3'>
+        <ItemBox>
+          <LinkBox eventKey="link-0" onClick={() => setShowTab('detail')}>상세정보</LinkBox>
+        </ItemBox>
+        <ItemBox>
+          <LinkBox eventKey="link-1" onClick={() => setShowTab('review')}>상품리뷰</LinkBox>
+        </ItemBox>
+        <ItemBox>
+          <LinkBox eventKey="link-2" onClick={() => setShowTab('qa')}>Q&amp;A</LinkBox>
+        </ItemBox>
+        <ItemBox>
+          <LinkBox eventKey="link-3" onClick={() => setShowTab('exchange')}>반품/교환정보</LinkBox>
+        </ItemBox>
+      </NavBox>
       {
         {
-          'detail': <div>탭 내용1</div>,
+          // props로 item정보 넘겨줌
+          'detail': <div><DetailDetail /></div>,
           'review': <div>탭 내용2</div>,
-          'qa': <div>탭 내용3</div>,
-          'exchange': <div>탭 내용4</div>
+          // qa엔 productId줌
+          'qa': <div><DetailQnA /></div>,
+          'exchange': <div><DetailExchange /></div>
         }[showTab]
-        // 대괄호 표기법으로 써야 변수로 인식함.
       }
       </TabContainer>
       
