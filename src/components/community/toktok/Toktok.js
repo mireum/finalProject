@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const ToktokWrapper = styled.div`
   width: 1208px;
   height: 1000px;
-  background-color: #ccc;
+  background-color: #fff;
   h1 {
     font-size: 44px;
     font-weight: bold;
@@ -29,22 +29,45 @@ function Toktok(props) {
 
   const test = [
     {
-      a: '1111',
-      b: '2222',
-      postId: '123123'
+      title: '1111',
+      content: '2222',
+      author: '준우강아지',
+      img: '사진들어감',
+      like: 0,
+      view: 0,
+      comment: 0, // 나중에 댓글 컬렉션에서 따로 보내줌
     }, {
-      a: '3333',
-      b: '4444',
-      postId: '123123aa'
+      title: '3333',
+      content: '4444',
+      author: '지민강아지',
+      img: '사진들어감',
+      like: 0,
+      view: 0,
+      comment: 0,
     }, {
-      a: '5555',
-      b: '6666'
+      title: '5555',
+      content: '6666',
+      author: '지우강아지',
+      img: '사진들어감',
+      like: 0,
+      view: 0,
+      comment: 0,
     }, {
-      a: '5555',
-      b: '6666'
+      title: '5555',
+      content: '6666',
+      author: '하은강아지',
+      img: '사진들어감',
+      like: 0,
+      view: 0,
+      comment: 0,
     }, {
-      a: '5555',
-      b: '6666'
+      title: '5555',
+      content: '6666',
+      author: '민수강아지',
+      img: '사진들어감',
+      like: 0,
+      view: 0,
+      comment: 0,
     },
   ];
 
@@ -60,9 +83,13 @@ function Toktok(props) {
       <div>
         {test.map((testMap) => { // 게시글들 맵
           return <ToktokItem
-            a={testMap.a}
-            b={testMap.b}
-            postId={testMap.postId}
+            title={testMap.title}
+            content={testMap.content}
+            author={testMap.author}
+            img={testMap.img}
+            like={testMap.like}
+            view={testMap.view}
+            comment={testMap.comment}
           />
         })}
       </div>
