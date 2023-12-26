@@ -1,7 +1,6 @@
 import ToktokItem from './ToktokItem';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import KakaoMap from '../../KakaoMap';
 
 const ToktokWrapper = styled.div`
   width: 1208px;
@@ -67,7 +66,6 @@ function Toktok(props) {
           />
         })}
       </div>
-      <KakaoMap />
 
 
 
