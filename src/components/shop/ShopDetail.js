@@ -100,7 +100,6 @@ const ShopContainer = styled.div`
 
 const TabContainer = styled.div`
   width: 100%;
-
 `;
 
 const NavBox = styled(Nav)`
@@ -108,7 +107,10 @@ const NavBox = styled(Nav)`
   justify-content: center;
   margin-top: 30px;
 `;
-
+const LinkBox = styled(Nav.Link)`
+  text-decoration: none;
+  color: #000;
+`;
 const ItemBox = styled(Nav.Item)`
   width: 21%;
   height: 50px;
@@ -117,19 +119,19 @@ const ItemBox = styled(Nav.Item)`
   font-size: 20px;
   border: 1px solid #000;
 
+  :hover {
+    color: #68a6fe;
+  }
   .active {
     color: #68a6fe;
     border-bottom: 1px solid black;
   }
-  :hover {
-    color: #68a6fe;
-  }
 `;
 
-const LinkBox = styled(Nav.Link)`
-  text-decoration: none;
-  color: #000;
-`;
+// const LinkBox = styled(Nav.Link)`
+//   text-decoration: none;
+//   color: #000;
+// `;
 
 function ShopDetail(props) {
   // const { productId } = useParams(); // app.js에서 지은
