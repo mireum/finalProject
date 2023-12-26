@@ -6,13 +6,14 @@ import { Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../slice/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import DetailReview from './DetailReview';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   .detail {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
   }
   .detail .detail-img .img{
@@ -190,7 +191,7 @@ function ShopDetail(props) {
       {
         {
           'detail': <div>탭 내용1</div>,
-          'review': <div>탭 내용2</div>,
+          'review': <div><DetailReview /></div>,
           'qa': <div>탭 내용3</div>,
           'exchange': <div>탭 내용4</div>
         }[showTab]
