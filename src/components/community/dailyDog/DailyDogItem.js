@@ -6,8 +6,11 @@ import styled from 'styled-components';
 
 const StyledCol = styled(Col)`
   cursor: pointer;
-  margin: 40px;
-  padding: 0;
+  margin-top: 20px;
+
+  &:hover img {
+    transform: scale(1.03);
+  }
 
   h2 {
     padding-top: 10px;
@@ -22,10 +25,6 @@ const ItemImage = styled.img`
   border: 1px solid #ccc;
   border-radius: 10px 10px 0 0;
   transition: transform 0.5s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
 `;
 
 function DailyDogItem(props) {
@@ -35,7 +34,7 @@ function DailyDogItem(props) {
 
   return (
     <>
-      <StyledCol md={3} onClick={() => navigate(`/community/dailyDog/${id}`)}>
+      <StyledCol md={4} onClick={() => navigate(`/community/dailyDog/${id}`)}>
         <ItemImage src={testImage} />
         <h2>{title}</h2>
       </StyledCol>

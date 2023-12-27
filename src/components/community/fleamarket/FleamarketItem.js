@@ -5,9 +5,10 @@ import testImage from '../../../images/app.jpg'
 import { useNavigate } from 'react-router';
 
 const StyledCol = styled(Col)`
+  width: 22%;
   cursor: pointer;
   text-align: center;
-  /* margin: 20px; */
+  margin: 30px 5px;
   padding: 0;
   
 `; 

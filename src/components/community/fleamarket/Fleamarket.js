@@ -13,7 +13,7 @@ const FleamarketContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 70px;
 
   h1 {
     font-size: 28px;
@@ -73,8 +73,8 @@ function Fleamarket(props) {
     <FleamarketContainer>
       <h1>중고거래</h1>
       <div className='info'>
-        <p>사랑스러운 내 반려견의 하루를 소개해요!</p>
-        <button onClick={() => navigate('/community/dailyDog/write')}>소개하기</button>
+        <p>반려견의 물품을 거래해요!</p>
+        <button onClick={() => navigate('/community/dailyDog/write')}>판매하기</button>
       </div>
       <FleamarketItemContainer>
         <StyledRow>

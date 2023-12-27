@@ -8,9 +8,9 @@ import { selectDailyDogList } from '../../../features/dailyDogSlice';
 
 const DailyDogContainer = styled.div`
   max-width: 1200px;
-  min-height: 800px;
+  min-height: 1400px;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 70px;
 
   h1 {
     font-size: 28px;
@@ -28,11 +28,6 @@ const DailyDogContainer = styled.div`
 
 const DailyDogItemContainer = styled(Container)`
   margin-top: 20px;
-`;
-
-const StyledRow = styled(Row)`
-  display: flex;
-  justify-content: space-between;
 `;
 
 function DailyDog(props) {
@@ -66,13 +61,13 @@ function DailyDog(props) {
     <DailyDogContainer>
       <h1>데일리독</h1>
       <div className='info'>
-        <p>사랑스러운 내 반려견의 하루를 소개해요!</p>
-        <button onClick={() => navigate('/community/dailyDog/write')}>판매하기</button>
+        <p>사랑스러운 내 반려견의 일상을 소개해요!</p>
+        <button onClick={() => navigate('/community/dailyDog/write')}>소개하기</button>
       </div>
       <DailyDogItemContainer>
-        <StyledRow>
+        <Row>
           {test.map((item, index) => <DailyDogItem key={index} item={item}/>)}
-        </StyledRow>
+        </Row>
       </DailyDogItemContainer>
     </DailyDogContainer>
   );
