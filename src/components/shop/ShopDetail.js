@@ -10,6 +10,8 @@ import DetailReview from './DetailReview';
 import DetailDetail from './DetailDetail';
 import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
+import { addItemToCart } from '../../slice/cartSlice';
+import ShopModal from './ShopModal';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -83,9 +85,6 @@ const ShopContainer = styled.div`
     padding: 7px 0px;
     border: 2px solid #cdcdcd;
   }
-  .detail .detail-btn button:hover {
-    background-color: #5396f5;
-  }
   .detail .detail-btn button + button {
     margin-left: 5%;
   }
@@ -96,6 +95,9 @@ const ShopContainer = styled.div`
     color: #fff;
     background-color: #68a6fe;
     /* border: none; */
+  }
+  .detail .detail-btn .buy:hover {
+    background-color: #5396f5;
   }
 `;
 
@@ -108,10 +110,7 @@ const NavBox = styled(Nav)`
   justify-content: center;
   margin-top: 30px;
 `;
-const LinkBox = styled(Nav.Link)`
-  text-decoration: none;
-  color: #000;
-`;
+
 const ItemBox = styled(Nav.Item)`
   width: 21%;
   height: 50px;
@@ -129,16 +128,17 @@ const ItemBox = styled(Nav.Item)`
   }
 `;
 
-// const LinkBox = styled(Nav.Link)`
-//   text-decoration: none;
-//   color: #000;
-// `;
+const LinkBox = styled(Nav.Link)`
+  text-decoration: none;
+  color: #000;
+`;
 
 function ShopDetail(props) {
   // const { productId } = useParams(); // app.js에서 지은
   const dispatch = useDispatch();
   const [ productCount, setProductCount ] = useState(1);
-  const [showTab, setShowTab] = useState('detail'); // 탭 상태
+  const [showTab, setShowTab] = useState('detail');
+  const [showModal, setShowModal] = useState(false);
   // const product = useSelector(selectSelectedProduct);
 
   const handleMinus = () => {
@@ -148,6 +148,11 @@ function ShopDetail(props) {
   const handlePlus = () => {
     setProductCount(productCount+1);
   };
+
+  const handleCart = () => {
+    // dispatch(addItemToCart({ ...product, count: productCount }));
+    setShowModal(true);
+  }
 
  
   // useEffect(() => {
@@ -194,7 +199,7 @@ function ShopDetail(props) {
             <button 
               type='submit' 
               className='cart cursor-pointer'
-              onClick={() => {}}
+              onClick={handleCart}
             >장바구니</button>
             <button type='submit' className='buy cursor-pointer'>구매하기</button>
           </div>
@@ -218,13 +223,9 @@ function ShopDetail(props) {
       </NavBox>
       {
         {
-          'detail': <div>탭 내용1</div>,
-          'review': <div><DetailReview /></div>,
-          'qa': <div>탭 내용3</div>,
-          'exchange': <div>탭 내용4</div>
           // props로 item정보 넘겨줌
           'detail': <div><DetailDetail /></div>,
-          'review': <div>탭 내용2</div>,
+          'review': <div><DetailReview /></div>,
           // qa엔 productId줌
           'qa': <div><DetailQnA /></div>,
           'exchange': <div><DetailExchange /></div>
@@ -232,6 +233,7 @@ function ShopDetail(props) {
       }
       </TabContainer>
       
+      {showModal && <ShopModal />}
     </ShopContainer>
   );
 }

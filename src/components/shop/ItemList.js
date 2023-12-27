@@ -131,7 +131,7 @@ function ItemList(props) {
             return (
               <div key={index} className='cursor-pointer'>
                 <Col md={4} className='list' onClick={() => {
-                  navigate(`/detail/${item._id}`)
+                  navigate(`/shop/detail/${item._id}`)
                 }}>
                   <img src={item.imgurl} className='itemImage' />
                   <p>{item.brand}</p>

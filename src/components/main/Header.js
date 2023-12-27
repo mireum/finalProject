@@ -8,6 +8,8 @@ function Header(props) {
     <>
       <a className='cursor-pointer'>커뮤니티</a> 
       <a className='cursor-pointer' onClick={() => navigate('/shop')}>쇼핑</a>
+      <a className='cursor-pointer' onClick={() => navigate('/cart')}>장바구니</a>
+
       <hr></hr>
     </>
   );
