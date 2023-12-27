@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { dateFormat } from '../../util';
 
 const ReviewContainer = styled.div`
+
   h3.review-title {
     font-size: 30px;
     font-weight: bold;
@@ -15,7 +16,14 @@ const ReviewContainer = styled.div`
   p.title-sub {
     margin: 10px 0px 20px;
   }
+  .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 10px;
+  }
   .review-wrap {
+    width: 50%;
     display: flex;
     flex-direction: column;
   }
@@ -29,20 +37,23 @@ const ReviewContainer = styled.div`
     margin-top: 10px;
   }
   
-  .review-wrap button  {
-    width: 60%;
-    margin: 20px auto;
-    font-size: 20px;
+  button.review-btn  {
+    /* width: 30%; */
+    /* margin: 20px auto; */
+    height: 50px;
+    font-size: 18px;
     font-weight: bold;
     color: #fff;
     background-color: #68a6fe;
     border: none;
-    padding: 10px 0px;
+    /* padding: 10px 0px; */
     border-radius: 10px;
     /* margin: 20px; */
   }
   .review-wrap button:active {
     background-color: #4290fc;
+  }
+  hr {
   }
   .list {
     display: flex;
@@ -233,6 +244,7 @@ function DetailReview(props) {
       console.error(err);
     }
     setReview('');
+    setModalOpen(false);
   };
 
   const openModal = () => {
@@ -246,27 +258,28 @@ function DetailReview(props) {
     setModalOpen(false);
   };
 
-  // const handleChange = (e) => {
-  //   document.getElementById('img-text').addEventListener('change', async (e) => {
-  //     const imgText = e.target.image.files[0];
+  // const handleChange = () => {
+  //   const imgText = document.getElementById('file_upload');
+  //   imgText.addEventListener('change', async (e) => {
+  //   let fileName = imgText.files[0].name;
+  //   let label = document.getElementById('file_upload');
+  //   label.textContent = fileName;
   //   });
-  //   imgText = 
   // };
   
   return (
     <>
       <ReviewContainer>
-        <div className='review-wrap'>
-          <h3>리뷰 작성하기📝</h3>
-          <p>제품 구매에 도움이 될 수 있게 후기를 작성해보세요!</p>
-          
-          <button type='button' className='cursor-pointer' onClick={openModal} >리뷰 작성</button>
-          
+        <div className='wrap'>
+          <div className='review-wrap'>
+            <h3 className='review-title'>제품 리뷰📦</h3>
+            <p className='title-sub'>다양한 리뷰를 확인해보세요!</p>       
+          </div>
+          <button type='button' className='cursor-pointer review-btn' onClick={openModal} >리뷰 작성</button>
         </div>
-
+        
         <hr />
-        <h3 className='review-title'>제품 리뷰📦</h3>
-        <p className='title-sub'>다양한 리뷰를 확인해보세요!</p>
+        
         { review1.length > 0 && (
           review1 && review1.map((item, index) => {
             return (
@@ -298,7 +311,7 @@ function DetailReview(props) {
               />
               <div className='filebox'>
                 <input name='image' class="upload-name" value="첨부파일" id='img-text' spellcheck="false"></input>
-                <label type='file' htmlFor="file_upload" className='cursor-pointer btn-img'>이미지 업로드</label>
+                <label type='file' htmlFor="file_upload" className='cursor-pointer btn-img' >이미지 업로드</label>
                 <input type='file' name="image" id='file_upload' multiple/>
               </div>
               
