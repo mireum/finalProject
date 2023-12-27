@@ -12,6 +12,7 @@ import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
 import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
+import Cart from './Cart';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -146,7 +147,8 @@ function ShopDetail(props) {
   const [ productCount, setProductCount ] = useState(1);
   const [showTab, setShowTab] = useState('detail');
   const [showModal, setShowModal] = useState(false);
-  // const product = useSelector(selectSelectedProduct);
+
+  const product = useSelector(selectSelectedProduct);
 
   const handleMinus = () => {
     if (productCount != 1) setProductCount(productCount-1);
@@ -157,8 +159,15 @@ function ShopDetail(props) {
   };
 
   const handleCart = () => {
-    // dispatch(addItemToCart({ ...product, count: productCount }));
+    dispatch(addItemToCart({ ...product, count: productCount }));
     setShowModal(true);
+  }
+
+  const openModal = () => {
+    setShowModal(true)
+  }
+  const closeModal = () => {
+    setShowModal(false)
   }
 
  
@@ -206,7 +215,7 @@ function ShopDetail(props) {
             <button 
               type='submit' 
               className='cart cursor-pointer'
-              onClick={handleCart}
+              onClick={() => {handleCart()}}
             >장바구니</button>
             <button type='submit' className='buy cursor-pointer'>구매하기</button>
           </div>
@@ -240,7 +249,10 @@ function ShopDetail(props) {
       }
       </TabContainer>
       
-      {showModal && <ShopModal />}
+      {showModal && <ShopModal  show={showModal} open={openModal} close={closeModal}/>}
+      {/* {showModal && <Cart />} */}
+      {/* {showModal && <ShopModal serShowModal={setShowModal}/>} */}
+      {}
     </ShopContainer>
   );
 }

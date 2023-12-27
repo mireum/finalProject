@@ -88,6 +88,7 @@ const Modal = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
     textarea {
       width: 100%;
       height: 55%;
@@ -116,7 +117,6 @@ const Modal = styled.div`
       position: absolute;
       width: 50%;
       margin: 0 auto;
-      z-index: 999;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%); 
@@ -131,6 +131,13 @@ const Modal = styled.div`
       border-radius: 15px;
       box-sizing: border-box;
     }
+    .modal-wrap div {
+      margin-bottom: 10px;
+      display: flex;
+    }
+    .modal-wrap input {
+      width: 70%;
+    }
     .modal-wrap form h3 {
       font-size: 25px;
       font-weight: bold;
@@ -141,7 +148,7 @@ const Modal = styled.div`
       /* text-align: center; */
       margin-bottom: 10px;
     }
-    .modal-wrap strong {
+    .modal-wrap p {
       /* text-align: center; */
       font-weight: bold;
       color: #555;
@@ -292,8 +299,18 @@ function DetailReview(props) {
           <div className='modal-wrap'>
             <form>
               <h3>리뷰 작성📝</h3>
-              <p><strong>브랜드명:</strong> 프로도기</p>
-              <p><strong>상품명:</strong> 퍼펙션 패드 소형 베이비파우더향 30매</p>
+              <div>
+                <label name='brand'>브랜드명:</label>
+                <input type='text' name='brand' disabled />
+                {/* {result.data.브랜드명} */}
+              </div>
+              <div>
+                <label>상품명:</label>
+                <input type='text' name='brand' disabled />
+                {/* 퍼펙션 패드 소형 베이비파우더향 30매 */}
+                {/* {result.data.상품명} */}
+              </div>
+              
               <textarea 
                 spellcheck="false" 
                 placeholder='리뷰를 작성해주세요 :)'
