@@ -10,7 +10,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState ,
   reducers: {
-    increaseCount: (state, action) => { // 여기서 find는 id가 같은 객체를 반환한다
+    increaseCount: (state, action) => {
       const targetItem = state.cartList.find((cart) => cart.id === action.payload);
       targetItem.count += 1;
     },
