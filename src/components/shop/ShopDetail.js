@@ -6,6 +6,7 @@ import { Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../slice/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import DetailReview from './DetailReview';
 import DetailDetail from './DetailDetail';
 import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
@@ -15,7 +16,7 @@ const ShopContainer = styled.div`
   margin: 0 auto;
   .detail {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
   }
   .detail .detail-img .img{
@@ -217,6 +218,10 @@ function ShopDetail(props) {
       </NavBox>
       {
         {
+          'detail': <div>탭 내용1</div>,
+          'review': <div><DetailReview /></div>,
+          'qa': <div>탭 내용3</div>,
+          'exchange': <div>탭 내용4</div>
           // props로 item정보 넘겨줌
           'detail': <div><DetailDetail /></div>,
           'review': <div>탭 내용2</div>,
