@@ -18,6 +18,13 @@ const DailyDogContainer = styled.div`
     margin-bottom: 20px;
   }
 
+  button {
+    padding: 6px 8px;
+    border: none;
+    background: #68a6fe;
+    color: #fff;
+  }
+
   .info {
     display: flex;
     justify-content: space-between;
@@ -31,42 +38,19 @@ const DailyDogItemContainer = styled(Container)`
 `;
 
 function DailyDog(props) {
-
   const navigate = useNavigate();
-
-  const test = [
-    {
-      id: 1,
-      title: '첫번째 사진',
-    },
-    {
-      id: 2,
-      title: '두번째 사진',
-    },
-    {
-      id: 3,
-      title: '세번째 사진',
-    },
-    {
-      id: 4,
-      title: '네번째 사진',
-    }
-  ]
-
-  const abc = useSelector(selectDailyDogList);
-  test.push(...abc);
-  console.log(test);
+  const testList = useSelector(selectDailyDogList);
 
   return (
     <DailyDogContainer>
       <h1>데일리독</h1>
       <div className='info'>
-        <p>사랑스러운 내 반려견의 일상을 소개해요!</p>
-        <button onClick={() => navigate('/community/dailyDog/write')}>소개하기</button>
+        <p>사랑스러운 내 반려견의 일상을 공유해요!</p>
+        <button onClick={() => navigate('/community/dailyDog/write')}>공유하기</button>
       </div>
       <DailyDogItemContainer>
         <Row>
-          {test.map((item, index) => <DailyDogItem key={index} item={item}/>)}
+          {testList.map((item, index) => <DailyDogItem key={index} item={item}/>)}
         </Row>
       </DailyDogItemContainer>
     </DailyDogContainer>

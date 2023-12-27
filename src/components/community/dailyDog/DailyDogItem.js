@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const StyledCol = styled(Col)`
   cursor: pointer;
-  margin-top: 20px;
+  margin: 20px 0;
 
   &:hover img {
     transform: scale(1.03);

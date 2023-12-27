@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const DailyDogDetailContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 70px;
   height: 1200px;
   text-align: center;
   
@@ -28,13 +28,13 @@ const DailyDogDetailContainer = styled.div`
 
 function DailyDogDetail(props) {
   const { id } = useParams();
-  const abc = useSelector(selectDailyDogList);
-  const cbb = abc.filter(item => item.id == id)
+  const testList = useSelector(selectDailyDogList);
+  const filterList = testList.filter(item => item.id == id)
 
   return (
     <DailyDogDetailContainer>
-      <h1>{cbb[0].title}</h1>
-      {Parser(cbb[0].content)}
+      <h1>{filterList[0].title}</h1>
+      {Parser(filterList[0].content)}
     </DailyDogDetailContainer>
   );
 }

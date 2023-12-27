@@ -5,12 +5,13 @@ import testImage from '../../../images/app.jpg'
 import { useNavigate } from 'react-router';
 
 const StyledCol = styled(Col)`
-  width: 22%;
   cursor: pointer;
   text-align: center;
-  margin: 30px 5px;
-  padding: 0;
-  
+  margin: 20px 0;
+
+  &:hover img {
+    transform: scale(1.03);
+  }
 `; 
 
 const ItemImage = styled.img`
@@ -18,10 +19,6 @@ const ItemImage = styled.img`
   border: 1px solid #ccc;
   border-radius: 10px 10px 0 0;
   transition: transform 0.5s;
-
-  &:hover {
-    transform: scale(1.03);
-  }
 `;
 
 function FleamarketItem(props) {
