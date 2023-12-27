@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import feed from "../../image/feed.jpg";
 import { useParams } from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
-import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../slice/productSlice';
+import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../features/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import DetailReview from './DetailReview';
 import DetailDetail from './DetailDetail';
 import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
-import { addItemToCart } from '../../slice/cartSlice';
+import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
 
 const ShopContainer = styled.div`

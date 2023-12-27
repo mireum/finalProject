@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import styled from 'styled-components';
-import { addMoreProducts, getProducts, selectProductList, selectSelectedCategory } from '../../slice/productSlice';
+import { addMoreProducts, getProducts, selectProductList, selectSelectedCategory } from '../../features/productSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,11 +20,15 @@ const ItemContainer = styled.section`
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+    align-items: flex-start;
   }
   #itemlist > div {
     width: 250px;
     height: 320px;
     margin: 0 25px;
+  }
+  #itemlist > div .list {
+    width: 100%;
   }
   #itemlist > div .list .itemImage {
     width: 225px;

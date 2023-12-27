@@ -4,8 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import Main from './pages/Main';
 import Shop from './pages/Shop';
 import Community from './pages/Community';
-import ItemList from './components/shop/ItemList';
-import Toktok from './components/commnunity/Toktok';
 import ShopDetail from './components/shop/ShopDetail';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';

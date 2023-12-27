@@ -10,7 +10,7 @@ import snack from "../../image/snack.png";
 import beauty from "../../image/beauty.png";
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { getProducts, getSelectedCategory, selectProductList } from '../../slice/productSlice';
+import { getProducts, getSelectedCategory, selectProductList } from '../../features/productSlice';
 
 const StyledCategory = styled.ul`
   display: flex;
