@@ -10,18 +10,22 @@ const QnABox = styled.div`
   .btnBox {
     display: flex;
     justify-content: space-between;
-    margin: 30px 10px;
+    margin: 30px 0;
     h1 {
-      font-size: 24px;
+      font-size: 30px;
       font-weight: bold;
+      color: #68a6fe;
     }
     button {
-      width: 100px;
-      height: 2rem;
+      /* width: 100px; */
+      height: 50px;
       border: none;
       background-color: #68a6fe;
       border-radius: 5px;
       color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 10px;
     }
     button:hover {
       background-color: #5396f5;
@@ -77,7 +81,7 @@ function DetailQnA(props) {
   return (
     <QnABox>
       <div className='btnBox'>
-        <h1>상품문의</h1>
+        <h1>상품 문의📞</h1>
         {/* <button onClick={() => {navigate(`/shop/detail/${productId}/quest`)}}>문의하기</button> */}
         <button className='cursor-pointer' onClick={() => {navigate(`/shop/detail/quest`)}}>문의하기</button>
       </div>

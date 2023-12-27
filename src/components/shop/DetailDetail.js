@@ -7,8 +7,9 @@ const DetailBox = styled.div`
 
   h1 {
     margin: 30px 0;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
+    color: #68a6fe;
   }
 `;
 
@@ -16,7 +17,7 @@ function DetailDetail(props) {
 
   return (
     <DetailBox>
-      <h1>상세정보</h1>
+      <h1>상세정보🔍</h1>
       <div>제목</div>    
       <div>상세설명</div>
       <div>추천 수</div>

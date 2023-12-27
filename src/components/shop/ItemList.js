@@ -25,7 +25,7 @@ const ItemContainer = styled.section`
   #itemlist > div {
     width: 250px;
     height: 320px;
-    margin: 0 25px;
+    margin: 10px 25px;
   }
   #itemlist > div .list {
     width: 100%;
@@ -106,7 +106,6 @@ const array = [
 function ItemList(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
   // const productList = useSelector(selectProductList);
   // const selectedCategory = useSelector(selectSelectedCategory);
   
@@ -129,7 +128,7 @@ function ItemList(props) {
   return (
     <ItemContainer>
       <Container>
-        <Row id='itemlist' className='justify-content-md-center'>
+        <Row id='itemlist'>
           {/* {productList.map((item) => {})}; */}
           {array.map((item, index) => {
             return (

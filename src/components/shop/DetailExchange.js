@@ -7,8 +7,9 @@ const ExchanBox = styled.div`
 
   h1 {
     margin: 30px 0;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
+    color: #68a6fe;
     span {
       color: #bbb;
       font-size: 14px;
@@ -23,7 +24,7 @@ const ExchanBox = styled.div`
 function DetailExchange(props) {
   return (
     <ExchanBox>
-      <h1>반품/교환 안내 <span>교환/반품에 관한 일반적인 사항은 판매자가 제시사항보다 관계법령이 우선합니다.</span></h1>
+      <h1>반품/교환 안내📢 <span>교환/반품에 관한 일반적인 사항은 판매자가 제시사항보다 관계법령이 우선합니다.</span></h1>
 
       <div>반품/교환 사유에 따른 요청 가능 기간</div>
       <div>반품/교환 시 먼저 판매자와 연락하여 합의 후 반품접수를 해주셔야 하며, 반품접수 없이 임의로 보낼 경우 환불이 불가할 수 있으니 유의하시기 바랍니다</div>

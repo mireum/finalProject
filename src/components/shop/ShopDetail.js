@@ -18,7 +18,7 @@ const ShopContainer = styled.div`
   margin: 0 auto;
   .detail {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
   }
   .detail .detail-img .img{
@@ -90,11 +90,17 @@ const ShopContainer = styled.div`
   }
   .detail .detail-btn .cart {
     color: #333;
+    border: 2px solid #68a6fe;
   }
+  .detail .detail-btn .cart:hover {
+    background-color: #e6dfdf;
+  }
+
   .detail .detail-btn .buy {
     color: #fff;
     background-color: #68a6fe;
-    /* border: none; */
+    border: 2px solid #68a6fe;
+    
   }
   .detail .detail-btn .buy:hover {
     background-color: #5396f5;
@@ -102,22 +108,23 @@ const ShopContainer = styled.div`
 `;
 
 const TabContainer = styled.div`
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
 `;
 
 const NavBox = styled(Nav)`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-top: 30px;
 `;
 
 const ItemBox = styled(Nav.Item)`
-  width: 21%;
+  width: 25%;
   height: 50px;
   text-align: center;
   padding: 14px 0;
   font-size: 20px;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
 
   :hover {
     color: #68a6fe;

@@ -5,21 +5,22 @@ import { MdDelete } from "react-icons/md";
 import { dateFormat } from '../../util';
 
 const ReviewContainer = styled.div`
+  margin: 0 auto;
+  width: 83%;
 
-  h3.review-title {
+  .review-wrap h3 {
     font-size: 30px;
     font-weight: bold;
     color: #68a6fe;
-    margin-top: 30px;
-    margin-bottom: 10px;
+    margin-top: 20px;
   }
   p.title-sub {
-    margin: 10px 0px 20px;
+    margin: 10px 0px;
   }
   .wrap {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     padding-bottom: 10px;
   }
   .review-wrap {
@@ -27,28 +28,18 @@ const ReviewContainer = styled.div`
     display: flex;
     flex-direction: column;
   }
-  .review-wrap h3 {
-    font-size: 30px;
-    font-weight: bold;
-    color: #68a6fe;
-    margin-top: 30px;
-  }
   .review-wrap p {
     margin-top: 10px;
   }
   
   button.review-btn  {
-    /* width: 30%; */
-    /* margin: 20px auto; */
     height: 50px;
     font-size: 18px;
     font-weight: bold;
     color: #fff;
     background-color: #68a6fe;
     border: none;
-    /* padding: 10px 0px; */
     border-radius: 10px;
-    /* margin: 20px; */
   }
   .review-wrap button:active {
     background-color: #4290fc;
@@ -272,7 +263,7 @@ function DetailReview(props) {
       <ReviewContainer>
         <div className='wrap'>
           <div className='review-wrap'>
-            <h3 className='review-title'>제품 리뷰📦</h3>
+            <h3 className='review-title'>상품 리뷰📦</h3>
             <p className='title-sub'>다양한 리뷰를 확인해보세요!</p>       
           </div>
           <button type='button' className='cursor-pointer review-btn' onClick={openModal} >리뷰 작성</button>
