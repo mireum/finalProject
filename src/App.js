@@ -1,4 +1,5 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import { Route, Routes } from 'react-router-dom';
 import Main from './pages/Main';
 import Community from './pages/Community';
@@ -7,7 +8,13 @@ import ToktokDetail from './components/community/toktok/ToktokDetail';
 import CommunityInsert from './components/community/communityGlobal/CommunityInsert';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import Fleamarket from './components/community/fleamarket/Fleamarket';
+import FleamarketDetail from './components/community/fleamarket/FleamarketDetail';
+import DailyDog from './components/community/dailyDog/DailyDog';
+import DailyDogWrite from './components/community/dailyDog/DailyDogWrite';
+import DailyDogDetail from './components/community/dailyDog/DailyDogDetail';
 import KakaoMap from './components/KakaoMap';
+
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -33,6 +40,12 @@ function App() {
         <Route path='/' element={<Main />} >
           <Route path='/' element={<Community />} />
           <Route path='/community/Toktok' element={<Toktok />} />   {/* toktok 메인화면 */}
+          <Route path='/community/Toktok/:postId' element={<ToktokDetail />} />   {/* todtod 디테일 */}
+          <Route path='/community/fleamarket' element={<Fleamarket />} />
+          <Route path='/community/fleamarket/:id' element={<FleamarketDetail />} />
+          <Route path='/community/dailyDog' element={<DailyDog />} />
+          <Route path='/community/dailyDog/:id' element={<DailyDogDetail />} />
+          <Route path='/community/dailyDog/write' element={<DailyDogWrite />} />
           <Route path='/community/Toktok/:author' element={<ToktokDetail />} />   {/* todtod 디테일 */}
           <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
           <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}

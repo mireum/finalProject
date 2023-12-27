@@ -14,6 +14,10 @@ const HeaderContainer = styled.header`
     padding: 10px 6px;
     font-size: 17px;
     font-weight: bold;
+
+    /* &:nth-child(1n+2):hover {
+      color: orange;
+    } */
   }
 
   .headerWarpper {
@@ -27,7 +31,6 @@ const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
 
     .mainMenu {
 
@@ -59,6 +62,8 @@ const NavContainer = styled.nav`
   left: 0;
   right: 0;
   background: #fff;
+  /* opacity: 0;
+  transition: opacity 0.5s ease-in-out; */
 
   a {
     cursor: pointer;
@@ -99,20 +104,28 @@ function Header(props) {
   const { communityTap, shopTap, test } = isHover;
 
   const handleCommunityTapOver = () => {
-    setIsHover(prevHover => ({...prevHover, communityTap: true, shopTap: false}))
-  }
+    setIsHover(prevHover => ({...prevHover, communityTap: true, shopTap: false}));
+  };
 
   const handleShopTapOver = () => {
-    setIsHover(prevHover => ({...prevHover, shopTap: true, communityTap: false}))
-  }
+    setIsHover(prevHover => ({...prevHover, shopTap: true, communityTap: false}));
+  };
 
-  const hadletest = () => {
-    setIsHover(prevHover => ({...prevHover, shopTap: false, communityTap: false}))
-  }
+  const hadleTapMouseLeave = () => {
+    setIsHover(prevHover => ({...prevHover, shopTap: false, communityTap: false}));
+  };
+
+  // if (communityTap || shopTap) {
+  //   const navElement = document.querySelector('nav');
+  //   if (navElement) {
+  //     navElement.style.opacity = 1;
+  //   }
+  // }
+
 
   return (
     <>
-      <HeaderContainer onMouseLeave={hadletest}>
+      <HeaderContainer onMouseLeave={hadleTapMouseLeave}>
         <div className='headerWarpper'>
           <div className='headerInner'>
             <div className='mainMenu'>
@@ -141,7 +154,9 @@ function Header(props) {
         <NavContainer>
           <div className='navInner'>
             <a onClick={() => navigate('/')}>커뮤니티홈</a>
-            <a onClick={() => navigate('/')}>육아톡톡</a>
+            <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
+            <a onClick={() => navigate('/community/dailyDog')}>데일리독</a>
+            <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
           </div>
         </NavContainer>
         : null
