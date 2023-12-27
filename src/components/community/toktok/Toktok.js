@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ToktokWrapper = styled.div`
+  margin: 0 auto;
   width: 1208px;
   height: 1000px;
   background-color: #fff;
