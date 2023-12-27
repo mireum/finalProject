@@ -13,6 +13,8 @@ import FleamarketDetail from './components/community/fleamarket/FleamarketDetail
 import DailyDog from './components/community/dailyDog/DailyDog';
 import DailyDogWrite from './components/community/dailyDog/DailyDogWrite';
 import DailyDogDetail from './components/community/dailyDog/DailyDogDetail';
+import KakaoMap from './components/KakaoMap';
+
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -44,6 +46,9 @@ function App() {
           <Route path='/community/dailyDog' element={<DailyDog />} />
           <Route path='/community/dailyDog/:id' element={<DailyDogDetail />} />
           <Route path='/community/dailyDog/write' element={<DailyDogWrite />} />
+          <Route path='/community/Toktok/:author' element={<ToktokDetail />} />   {/* todtod 디테일 */}
+          <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
+          <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}
           <Route path='/community/Insert/:insertPage' element={<CommunityInsert />} />    {/* 커뮤니티 글등록 페이지 */}
           {/* 쇼핑 컴포넌트 넣어주세요! */}
           {/* <Route path='/shop' element={< />} /> */}
