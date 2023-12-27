@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import feed from "../../image/feed.jpg";
 import { useParams } from 'react-router-dom';
@@ -12,6 +12,7 @@ import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
 import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
+import PayModal from './PayModal';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -140,12 +141,32 @@ const LinkBox = styled(Nav.Link)`
   color: #000;
 `;
 
+// const ModalContainer = styled.div`
+//   width: 100%;
+//   height: 100%;
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background: rgba(0, 0, 0, 0.5);
+
+//   .modalContent {
+//     background-color: #ffffff;
+//     width: 250px;
+//     height: 150px;
+//     padding: 15px;
+//   }
+// `;
+
 function ShopDetail(props) {
   // const { productId } = useParams(); // app.js에서 지은
   const dispatch = useDispatch();
   const [ productCount, setProductCount ] = useState(1);
   const [showTab, setShowTab] = useState('detail');
   const [showModal, setShowModal] = useState(false);
+  const [showBuyModal, setShowBuyModal] = useState(false);
   // const product = useSelector(selectSelectedProduct);
 
   const handleMinus = () => {
@@ -161,6 +182,9 @@ function ShopDetail(props) {
     setShowModal(true);
   }
 
+  const handleBuy = () => {
+    setShowBuyModal(true);
+  };
  
   // useEffect(() => {
   //   // 서버에 특정 상품의 데이터 요청
@@ -183,6 +207,7 @@ function ShopDetail(props) {
   // if (!product) {
   //   return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
   // } 
+  // const modalBackground = useRef();
 
   return (
     <ShopContainer>
@@ -208,10 +233,28 @@ function ShopDetail(props) {
               className='cart cursor-pointer'
               onClick={handleCart}
             >장바구니</button>
-            <button type='submit' className='buy cursor-pointer'>구매하기</button>
+            <button type='submit' className='buy cursor-pointer'
+              onClick={handleBuy}
+            >구매하기</button>
           </div>
+          {showBuyModal && <PayModal show={showBuyModal}/>}
+          {/* {showBuyModal && 
+            <ModalContainer className='modalContainer' ref={modalBackground} onClick={(e) => {
+              if (e.target === modalBackground.current) {
+                setShowBuyModal(false);
+              }
+            }}>
+              <div className='modalContent'>
+                <p>모달임요</p>
+                <button onClick={() => {setShowBuyModal(false)}}>닫기</button>
+              </div>
+
+            </ModalContainer>
+          } */}
+
         </div>
       </div>
+
       
       <TabContainer>
       <NavBox variant="tabs" defaultActiveKey="link-0" className='my-3'>
@@ -241,6 +284,7 @@ function ShopDetail(props) {
       </TabContainer>
       
       {showModal && <ShopModal />}
+
     </ShopContainer>
   );
 }
