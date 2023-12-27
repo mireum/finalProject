@@ -51,7 +51,7 @@ function ToktokItem(props) {
       </div>
       <div className='toktokColumn'>
         <span>작성자: {props.author}</span>
-        <img src='https://picsum.photos/100/100' />
+        <img src={props.img} />
       </div>
     </ToktokItemWrapper>
   );

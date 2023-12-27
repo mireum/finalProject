@@ -1,5 +1,8 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { addToktokList } from '../../../features/toktokSlice';
 
 const CommunityInsertWrapper = styled.div`
   background-color: #ccc;
@@ -19,6 +22,8 @@ const CommunityInsertWrapper = styled.div`
 `;
 
 function CommunityInsert(props) {
+  const dispatch = useDispatch()
+
   const [insertTitle, setInsertTitle] = useState();
   const [insertContent, setInsertContent] = useState();
   const [insertImg, setInsertImg] = useState();
@@ -29,10 +34,36 @@ function CommunityInsert(props) {
   const changeContent = (e) => {
     setInsertContent(e.target.value)
   }
-  const changeImg = (e) => {
+  const changeImg = async (e) => {
     setInsertImg(e.target.value)
   }
-  console.log(insertImg);
+  const testImgUp = async (e) => {
+    try {
+      const formData = new FormData(); // multipart/form-data 타입으로 보냄
+      formData.append('img', e.target.img.files[0]);
+
+      const result = await axios.post('/post/write', formData);
+      console.log(result.data);
+
+      if (!result.data.flag) {
+        return alert(result.data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+  const testList = {
+    insertTitle,
+    insertContent,
+    insertImg
+  }
+  const testListDis = () => {
+    dispatch(addToktokList(testList))
+  }
+
+
 
   return (
     <CommunityInsertWrapper>
@@ -53,13 +84,18 @@ function CommunityInsert(props) {
           onChange={changeContent}
           placeholder='내용 입력' />
 
-        <label htmlFor='imgPath' />
+        <label htmlFor='img' />
         <input
           type='file'
           accept='image/*'
-          id='imgPath'
+          id='img'
+          name='img'
           value={insertImg}
           onChange={changeImg} />
+
+        <button
+          onClick={testListDis}
+        >글등록</button>
       </div>
     </CommunityInsertWrapper>
   );

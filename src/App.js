@@ -44,10 +44,10 @@ function App() {
         <Route path='/' element={<Main />} >
           <Route path='/' element={<Community />} />
           <Route path='/community/Toktok' element={<Toktok />} />
-          <Route path='/shop' element={<Shop/>} />
-          <Route path='/cart' element={<Cart/>} />
+          <Route path='/shop' element={<Shop />} />
+          <Route path='/cart' element={<Cart />} />
           {/* 나중에 ? 지우기 */}
-          <Route path='/shop/detail/:productId?' element={<ShopDetail/>}/>
+          <Route path='/shop/detail/:productId?' element={<ShopDetail />} />
           {/* <Route path='/shop/detail/:productId?/quest' element={<Question />} /> */}
           <Route path='/shop/detail/quest' element={<Question />} />
           <Route path='/community/Toktok' element={<Toktok />} />   {/* toktok 메인화면 */}
