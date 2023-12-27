@@ -130,10 +130,6 @@ const ItemBox = styled(Nav.Item)`
   :hover {
     color: #68a6fe;
   }
-  .active {
-    color: #68a6fe;
-    border-bottom: 1px solid black;
-  }
 `;
 
 const LinkBox = styled(Nav.Link)`
@@ -141,24 +137,6 @@ const LinkBox = styled(Nav.Link)`
   color: #000;
 `;
 
-// const ModalContainer = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background: rgba(0, 0, 0, 0.5);
-
-//   .modalContent {
-//     background-color: #ffffff;
-//     width: 250px;
-//     height: 150px;
-//     padding: 15px;
-//   }
-// `;
 
 function ShopDetail(props) {
   // const { productId } = useParams(); // app.js에서 지은
@@ -238,20 +216,6 @@ function ShopDetail(props) {
             >구매하기</button>
           </div>
           {showBuyModal && <PayModal show={showBuyModal}/>}
-          {/* {showBuyModal && 
-            <ModalContainer className='modalContainer' ref={modalBackground} onClick={(e) => {
-              if (e.target === modalBackground.current) {
-                setShowBuyModal(false);
-              }
-            }}>
-              <div className='modalContent'>
-                <p>모달임요</p>
-                <button onClick={() => {setShowBuyModal(false)}}>닫기</button>
-              </div>
-
-            </ModalContainer>
-          } */}
-
         </div>
       </div>
 
