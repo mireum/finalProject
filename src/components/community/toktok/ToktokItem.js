@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -29,29 +29,46 @@ const ToktokItemWrapper = styled.div`
       padding: 0 7px;
     }
   }
+  .material-symbols-outlined {  // 구글 머터리얼 아이콘
+  background-color: #fff;
+  border: none;
+  }
+.googlered {
+  color: red;
+  font-weight: bold;
+  }
 `;
 
 function ToktokItem(props) {
   const navigate = useNavigate()
 
+  const [likeRed, setLikeRed] = useState(false);
+
+  const handleLikeRed = () => {
+    setLikeRed(!likeRed)
+  }
   return (
-    <ToktokItemWrapper
-      onClick={() => { navigate(`/community/Toktok/${props.author}`) }}
-    >
+    <ToktokItemWrapper>
       <div className='toktokColumn'>
-        <div>
+        <div onClick={() => { navigate(`/community/Toktok/${props._id}`) }}>
           <h5 className='title'>{props.title}</h5>
           <span className='content'>{props.content}</span>
         </div>
         <div className='likeCommentView'>
-          <span>좋아요: {props.like}</span>
-          <span>댓글수: {props.comment}</span>
-          <span>조회수: {props.view}</span>
+          <button
+            className={`${likeRed ? "material-symbols-outlined googlered" : "material-symbols-outlined"}`}
+            onClick={handleLikeRed}
+          > favorite</button>
+          <span>{props.like}</span>
+          <span className='material-symbols-outlined'>mode_comment</span>
+          <span>{props.comment}</span>
+          <span class="material-symbols-outlined">visibility</span>
+          <span>{props.view}</span>
         </div>
       </div>
       <div className='toktokColumn'>
         <span>작성자: {props.author}</span>
-        <img src='https://picsum.photos/100/100' />
+        <img src={props.img} />
       </div>
     </ToktokItemWrapper>
   );
