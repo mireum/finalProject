@@ -12,14 +12,21 @@ import { addListToDailyDog, selectDailyDogList } from '../../../features/dailyDo
 
 const DailyDogWriteContainer = styled.div`
   max-width: 1200px;
-  height: 800px;
-  margin: 0 auto;
-  margin-top: 70px;
+  min-height: 800px;
+  margin: 70px auto;
 
   h1 {
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;
+  }
+
+  .tip-box {
+    font-size: 13px;
+    line-height: 26px;
+    padding: 6px 0;
+    color: #68a6fe;
+    margin-bottom: 10px;
   }
 
   input {
@@ -34,13 +41,23 @@ const DailyDogWriteContainer = styled.div`
   }
 
   .btn-box {
+    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
 
     button {
       margin: 10px;
-      padding: 6px 10px;
+      padding: 6px 12px;
+      border: none;
+      background: #68a6fe;
+      color: #fff;
     }
+  }
+
+   .ProseMirror-widget {
+    background: #fff;
+    font-size: 16px;
+    cursor: text;
   }
 `;
 
@@ -52,12 +69,18 @@ function DailyDogWrite(props) {
   const [ values, setValues ] = useState({
     title: '',
     content: '',
+    src: '',
   });
 
-  const { title, content } = values;
+  const { title, content, src } = values;
 
   const editorRef = useRef();
 
+  // 이미지 파일명으로 가져오기
+  // const onUploadImage = async (blob, callback) => {
+  //   console.log(blob);
+  // }
+  
   const titleOnChange = (e) => {
    const title = e.target.value
    setValues(value => ({ ...value, title }));
@@ -65,16 +88,17 @@ function DailyDogWrite(props) {
 
   const contentOnChange = () => {
     const content = editorRef.current?.getInstance().getHTML();
-    setValues(value => ({ ...value, content }));
+    const word = content.substring(content.indexOf('src')+5, content.indexOf('contenteditable')-2);
+
+    setValues(value => ({ ...value, content, src: word }));
   };
-  
-  console.log(editorRef.current?.getInstance());
 
   const getSubmitValue = () => {
     const newDaily = {
       id: testList.length + 1,
       title,
-      content
+      content,
+      src,
     }
 
     if (title && content) {
@@ -86,10 +110,9 @@ function DailyDogWrite(props) {
     } else if (!content) {
       alert('내용을 입력해주세요.');
     }
-
   };
 
-  console.log(values);
+
 
   // 이미지 첨부를 위한 코드
   // https://kim-hasa.tistory.com/133
@@ -122,9 +145,14 @@ function DailyDogWrite(props) {
   return (
     <DailyDogWriteContainer>
       <h1>데일리독</h1>
+      <div className='tip-box'>
+        <p>* 첫번째로 삽입한 이미지가 대표 이미지가 되며 업로드 시 이미지의 크기는 460*300으로 고정 됩니다.</p>
+        <p>* 작성하신 글은 자동으로 가운데 정렬 됩니다.</p>
+      </div>
       <input type='text' value={title} onChange={titleOnChange} placeholder='제목을 입력해주세요' />
       <Editor
         ref={editorRef}
+        placeholder="내용을 입력해주세요."
         previewStyle="vertical"
         height="600px"
         initialEditType="wysiwyg"
@@ -133,6 +161,7 @@ function DailyDogWrite(props) {
         plugins={[colorSyntax]}
         hideModeSwitch={true}
         onChange={contentOnChange}
+        // hooks={{addImageBlobHook: onUploadImage}}
       />  
       <div className='btn-box'>
         <button onClick={() => navigate(-1)}>취소</button>

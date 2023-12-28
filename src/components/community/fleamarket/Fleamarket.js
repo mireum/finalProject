@@ -12,8 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const FleamarketContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
-  margin: 0 auto;
-  margin-top: 70px;
+  margin: 70px auto;
 
   h1 {
     font-size: 28px;
@@ -74,7 +73,7 @@ function Fleamarket(props) {
       <h1>중고거래</h1>
       <div className='info'>
         <p>반려견의 물품을 거래해요!</p>
-        <button onClick={() => navigate('/community/dailyDog/write')}>판매하기</button>
+        <button onClick={() => navigate('/community/fleamarket/write')}>판매하기</button>
       </div>
       <FleamarketItemContainer>
         <StyledRow>

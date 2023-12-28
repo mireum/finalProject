@@ -7,9 +7,8 @@ import styled from 'styled-components';
 
 const DailyDogDetailContainer = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
-  margin-top: 70px;
-  height: 1200px;
+  min-height: 800px;
+  margin: 70px auto;
   text-align: center;
   
 

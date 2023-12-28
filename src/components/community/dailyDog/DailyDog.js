@@ -8,9 +8,8 @@ import { selectDailyDogList } from '../../../features/dailyDogSlice';
 
 const DailyDogContainer = styled.div`
   max-width: 1200px;
-  min-height: 1400px;
-  margin: 0 auto;
-  margin-top: 70px;
+  min-height: 800px;
+  margin: 70px auto;
 
   h1 {
     font-size: 28px;

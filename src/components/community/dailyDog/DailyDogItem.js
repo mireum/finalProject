@@ -22,20 +22,24 @@ const StyledCol = styled(Col)`
 
 const ItemImage = styled.img`
   width: 100%;
+  height: 258px;
   border: 1px solid #ccc;
   border-radius: 10px 10px 0 0;
   transition: transform 0.5s;
 `;
 
 function DailyDogItem(props) {
-  const { item: { id, title} } = props;
+  const { item: { id, title, src } } = props;
 
   const navigate = useNavigate();
 
   return (
     <>
       <StyledCol md={4} onClick={() => navigate(`/community/dailyDog/${id}`)}>
-        <ItemImage src={testImage} />
+        {src 
+          ? <ItemImage src={src} />
+          : <ItemImage src={testImage} /> 
+        }
         <h2>{title}</h2>
       </StyledCol>
     

@@ -6,21 +6,25 @@ const initialState = {
       id: 4,
       title: '네번째',
       content: '테스트',
+      src: '',
     },
     {
       id: 3,
       title: '세번째',
       content: '테스트',
+      src: '',
     },
     {
       id: 2,
       title: '두번째',
       content: '테스트',
+      src: '',
     },
     {
       id: 1,
       title: '첫번째',
       content: '테스트',
+      src: '',
     }
   ],
   toktok: [
@@ -66,8 +70,8 @@ const initialState = {
       comment: 0,
     },
     {
-      title: '7777',
-      content: '6666',
+      title: '7777123123131321313123132313213',
+      content: '안녕하세요, 텍스트가 넘치게 작성중입니다. 텍스트가 빨리 넘쳤으면 좋겠어요 언제 넘칠까요? 왜 안넘치고 뭐죠? 계속 작성 되는데요?',
       author: '길동강아지',
       img: '사진들어감',
       like: 0,

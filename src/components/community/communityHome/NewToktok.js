@@ -7,11 +7,11 @@ import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router';
 
 const NewToktokContainer = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
 
   img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
 
   span {
@@ -20,7 +20,10 @@ const NewToktokContainer = styled.div`
 `;
 
 const StyledTable = styled(Table)`
+  /* react-bootstrap/Table 지정한 width값 고정 */
+  table-layout: fixed;
   text-align: center;
+
 
   tbody {
     cursor: pointer;
@@ -32,29 +35,33 @@ const StyledTable = styled(Table)`
 
   td {
     vertical-align: middle;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   thead tr {
     font-weight: bold;
   }
 
-  & th:first-child {
+  & th:first-child, td:first-child {
     width: 10%;
   }
 
-  & th:nth-child(2) {
-    width: 30%;
+  & th:nth-child(2), td:nth-child(2) {
+    width: 20%;
   }
-
+  
   & th:nth-child(3) {
-    width: 40%;
+    width: 50%;
   }
 
-  & th:nth-child(4  ) {
+  & th:nth-child(4), td:nth-child(4)  {
     width: 10%;
   }
 
-  & th:last-child {
+  & th:last-child, td:last-child {
     width: 10%;
   }
 `;
@@ -91,7 +98,7 @@ function NewToktok(props) {
           </tr>
         </thead>
         <tbody>
-          {testList.slice(Math.max(testList.length - 5, 0)).map((item, index) => 
+          {testList.slice(Math.max(testList.length - 5, 0)).reverse().map((item, index) => 
             (
               <>
                 <tr key={index} onClick={() => navigate(`/community/Toktok/${item.author}`)}>

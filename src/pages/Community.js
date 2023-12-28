@@ -4,10 +4,12 @@ import { FaChevronRight } from "react-icons/fa";
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import NewToktok from '../components/community/communityHome/NewToktok';
+import HoneyTip from '../components/community/communityHome/HoneyTip';
 
 const CommunityHomeContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  margin-bottom: 70px;
 
   .communityHomeContent {
     margin-top: 60px;
@@ -15,12 +17,16 @@ const CommunityHomeContainer = styled.div`
     h2 {
       font-size: 20px;
       font-weight: bold;
+      display : inline-flex;
+      align-items: center;
 
       button {
         cursor: pointer;
         border: none;
         background: none;
-
+        display : inline-flex;
+        align-items: center;
+        color: #68a6fe;
       }
     }
   }
@@ -36,24 +42,22 @@ function Community(props) {
         <div className='communityHomeContent'>
           <h2>
             땡땡이의 맞춤 이야기
-            <button><FaChevronRight /></button>
+            <button title='더보기'><FaChevronRight /></button>
           </h2>
         </div>
         <div className='communityHomeContent'>
           <h2>
             육아톡톡 최근 게시글
-            <button onClick={() => navigate('/community/Toktok')}><FaChevronRight /></button>
+            <button title='더보기' onClick={() => navigate('/community/Toktok')}><FaChevronRight /></button>
           </h2>
             <NewToktok />
         </div>
         <div className='communityHomeContent'>
           <h2>
             꿀팁 대방출
-            <button><FaChevronRight /></button>
+            <button title='더보기'><FaChevronRight /></button>
           </h2>
-        </div>
-        <div>
-          <img src='./images/app.jpg' alt='app'></img>
+          <HoneyTip />
         </div>
       </CommunityHomeContainer>
 
