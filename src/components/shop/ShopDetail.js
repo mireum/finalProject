@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import feed from "../../image/feed.jpg";
 import { useParams } from 'react-router-dom';
-import { Nav } from 'react-bootstrap';
+import { Button, Modal, Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../features/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -13,6 +13,7 @@ import DetailExchange from './DetailExchange';
 import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
 import PayModal from './PayModal';
+import Pay from './Pay';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -163,6 +164,10 @@ function ShopDetail(props) {
   const handleBuy = () => {
     setShowBuyModal(true);
   };
+
+  const handlePay = () => {
+
+  };
  
   // useEffect(() => {
   //   // 서버에 특정 상품의 데이터 요청
@@ -215,7 +220,26 @@ function ShopDetail(props) {
               onClick={handleBuy}
             >구매하기</button>
           </div>
-          {showBuyModal && <PayModal show={showBuyModal}/>}
+           
+          <Modal show={showBuyModal} onHide={() => setShowBuyModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>알림</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              상품명: 퍼펙션 패드<br />
+              수량: 1<br />
+              금액: 18000원<br /><br />
+              구매하시겠습니까?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowBuyModal(false)}>
+                취소
+              </Button>
+              <Button variant="primary" onClick={<Pay />}>
+                확인
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
 
