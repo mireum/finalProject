@@ -134,6 +134,7 @@ const Modal = styled.div`
     .modal-wrap div {
       margin-bottom: 10px;
       display: flex;
+      justify-content: space-between;
     }
     .modal-wrap input {
       width: 70%;
@@ -154,6 +155,22 @@ const Modal = styled.div`
       color: #555;
       font-size: 18px;
     }
+    .modal-wrap .brand,
+    .modal-wrap .item {
+      background-color: #68a6fe;
+      color: #fff;
+      padding: 5px 10px 0;
+      border-radius: 5px;
+    }
+    .modal-wrap .item {
+      width: 84px;
+      text-align: center;
+    }
+    .modal-wrap .input {
+      /* margin-left: 10px; */
+      width: 80%;
+      outline: none;
+    }
     .modal-wrap .filebox {
       display: flex;
       justify-content: space-between;
@@ -166,7 +183,7 @@ const Modal = styled.div`
       border-radius: 10px;
     }
     .modal-wrap input[type="file"] {
-      display: none;
+      /* display: none; */
     }
     .modal-wrap .btn-img {
       background-color: #68a6fe;
@@ -246,7 +263,7 @@ function DetailReview(props) {
   };
 
   const openModal = () => {
-    // if (!review1.id) {
+    // if (!result.data.user) {
     //   alert('로그인이 필요합니다!')
     // }
     setModalOpen(true);
@@ -256,14 +273,6 @@ function DetailReview(props) {
     setModalOpen(false);
   };
 
-  // const handleChange = () => {
-  //   const imgText = document.getElementById('file_upload');
-  //   imgText.addEventListener('change', async (e) => {
-  //   let fileName = imgText.files[0].name;
-  //   let label = document.getElementById('file_upload');
-  //   label.textContent = fileName;
-  //   });
-  // };
   
   return (
     <>
@@ -300,27 +309,26 @@ function DetailReview(props) {
             <form>
               <h3>리뷰 작성📝</h3>
               <div>
-                <label name='brand'>브랜드명:</label>
-                <input type='text' name='brand' disabled />
+                <label name='brand' className='brand'>브랜드명</label>
+                <input type='text' name='brand' className='input' readOnly />
                 {/* {result.data.브랜드명} */}
               </div>
               <div>
-                <label>상품명:</label>
-                <input type='text' name='brand' disabled />
-                {/* 퍼펙션 패드 소형 베이비파우더향 30매 */}
+                <label className='item'>상품명</label>
+                <input type='text' name='brand' className='input' readOnly />
                 {/* {result.data.상품명} */}
               </div>
               
               <textarea 
-                spellcheck="false" 
+                spellCheck="false" 
                 placeholder='리뷰를 작성해주세요 :)'
                 value={review}
                 onChange={(e) => {setReview(e.target.value)}}
               />
               <div className='filebox'>
-                <input name='image' class="upload-name" value="첨부파일" id='img-text' spellcheck="false"></input>
-                <label type='file' htmlFor="file_upload" className='cursor-pointer btn-img' >이미지 업로드</label>
-                <input type='file' name="image" id='file_upload' multiple/>
+                {/* <input name='image' className="upload-name" id='img-text' spellCheck="false" ></input>
+                <label type='file' htmlFor="file_upload" className='cursor-pointer btn-img' >이미지 업로드</label> */}
+                <input type='file' name="image" id='file_upload' multiple />
               </div>
               
               <div className='btn-wrap'>

@@ -36,6 +36,7 @@ const CartWrapper = styled.div`
     padding: 0px 5px;
     border-radius: 5px;
     margin: 0px 5px;
+    background-color: #dbdbdb;
   }
   tbody .delete-btn {
     border: 1px solid #666;
