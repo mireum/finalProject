@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import feed from "../../image/feed.jpg";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Modal, Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../features/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,8 +12,7 @@ import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
 import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
-import PayModal from './PayModal';
-import Pay from './Pay';
+import { pay } from './Pay';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -73,10 +72,14 @@ const ShopContainer = styled.div`
     margin-left: 40px;
     font-weight: bold; 
   }
-
+  .detail .detail-text .text2 .countBtn {
+    width: 30px;
+    border: 1px solid #111;
+    margin: 0 10px;
+    font-weight: bold;
+  }
   .detail .detail-btn {
     margin-top: 50px;
-    
   }
   .detail .detail-btn button {
     font-size: 20px;
@@ -146,6 +149,7 @@ function ShopDetail(props) {
   const [showTab, setShowTab] = useState('detail');
   const [showModal, setShowModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
+  const navigate = useNavigate();
   // const product = useSelector(selectSelectedProduct);
 
   const handleMinus = () => {
@@ -165,8 +169,17 @@ function ShopDetail(props) {
     setShowBuyModal(true);
   };
 
-  const handlePay = () => {
-
+  const handlePay = async() => {
+    const result = await pay();
+    console.log(result);
+    if (result.event == 'done' || result.event == 'issued') {
+      alert('결제가 완료되었습니다!');
+      navigate('/shop');
+    }
+    else if (result.event == 'cancel') {
+      alert('결제 취소');
+      window.location.reload();
+    }
   };
  
   // useEffect(() => {
@@ -204,10 +217,10 @@ function ShopDetail(props) {
           <h4>{18000 * productCount}원</h4>
           <span className='text1'>수량</span>
           <span className='text2'>
-            <button type='button' onClick={handleMinus}>-</button>
+            <button type='button' className='countBtn' onClick={handleMinus}>-</button>
             {productCount}
-            <button type='button' onClick={handlePlus}>+</button>
-            </span><br />
+            <button type='button' className='countBtn' onClick={handlePlus}>+</button>
+          </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
           <div className='detail-btn'>
@@ -235,7 +248,7 @@ function ShopDetail(props) {
               <Button variant="secondary" onClick={() => setShowBuyModal(false)}>
                 취소
               </Button>
-              <Button variant="primary" onClick={<Pay />}>
+              <Button variant="primary" onClick={handlePay}>
                 확인
               </Button>
             </Modal.Footer>
