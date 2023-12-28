@@ -12,6 +12,7 @@ import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
 import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
+import Cart from './Cart';
 import { pay } from './Pay';
 
 const ShopContainer = styled.div`
@@ -152,6 +153,7 @@ function ShopDetail(props) {
   const navigate = useNavigate();
   // const product = useSelector(selectSelectedProduct);
 
+
   const handleMinus = () => {
     if (productCount != 1) setProductCount(productCount-1);
   };
@@ -161,8 +163,16 @@ function ShopDetail(props) {
   };
 
   const handleCart = () => {
-    // dispatch(addItemToCart({ ...product, count: productCount }));
+    dispatch(addItemToCart({ ...product, count: productCount }));
     setShowModal(true);
+  }
+
+
+  const openModal = () => {
+    setShowModal(true)
+  }
+  const closeModal = () => {
+    setShowModal(false)
   }
 
   const handleBuy = () => {
@@ -237,7 +247,7 @@ function ShopDetail(props) {
             <button 
               type='submit' 
               className='cart cursor-pointer'
-              onClick={handleCart}
+              onClick={() => {handleCart()}}
             >장바구니</button>
             <button type='submit' className='buy cursor-pointer'
               onClick={handleBuy}
@@ -294,7 +304,9 @@ function ShopDetail(props) {
       }
       </TabContainer>
       
-      {showModal && <ShopModal />}
+      {showModal && <ShopModal  show={showModal} open={openModal} close={closeModal}/>}
+      {/* {showModal && <Cart />} */}
+      {/* {showModal && <ShopModal serShowModal={setShowModal}/>} */}
 
     </ShopContainer>
   );

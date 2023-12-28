@@ -27,7 +27,7 @@ const StyledCategory = styled.ul`
     background-size: 60px 60px;
     width: 90px;
     height: 90px;
-    border-radius: 20px;
+    border-radius: 50%;
     /* border: 1px solid #000; */
   }
 
