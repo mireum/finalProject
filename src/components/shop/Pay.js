@@ -1,12 +1,14 @@
 import React from 'react';
 import { Bootpay } from '@bootpay/client-js'
 
-export const pay = async () => {
+export const pay = async (product, productCount) => {
+  const { name, price } = product;
+
   try {
     const response = await Bootpay.requestPayment({
       "application_id": "658bd091d25985001e0cf94b",
-      "price": 1000,
-      "order_name": "테스트결제",
+      "price": Number(price * productCount),
+      "order_name": `${name} ${productCount}개`,
       "order_id": "TEST_ORDER_ID",
       "pg": "케이씨피",
       "method": ["가상계좌", "카드", "휴대폰", "카카오페이", "계좌이체", "네이버페이"],
@@ -22,7 +24,7 @@ export const pay = async () => {
           "id": "item_id",
           "name": "테스트아이템",
           "qty": 1,
-          "price": 1000
+          "price": Number(price * productCount)
         }
       ],
       "extra": {

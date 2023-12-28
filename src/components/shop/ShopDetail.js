@@ -170,15 +170,15 @@ function ShopDetail(props) {
   };
 
   const handlePay = async() => {
-    const result = await pay();
+    const result = await pay(product, productCount);
     console.log(result);
     if (result.event == 'done' || result.event == 'issued') {
       alert('결제가 완료되었습니다!');
       navigate('/shop');
     }
     else if (result.event == 'cancel') {
+      setShowBuyModal(false);
       alert('결제 취소');
-      window.location.reload();
     }
   };
  
@@ -205,6 +205,16 @@ function ShopDetail(props) {
   // } 
   // const modalBackground = useRef();
 
+  const product = {
+    name: '퍼펙션 패드 소형 베이비파우더향 30매',
+    price: 180,
+    rate: 3.6,
+    content: '맛있는 사료에요',
+    age: 5,
+    size: 'middle',
+  };
+  const { name, price } = product;
+
   return (
     <ShopContainer>
       <div className='detail'>
@@ -213,8 +223,8 @@ function ShopDetail(props) {
         </div>
         <div className='detail-text'>
           <p>프로도기</p>
-          <h3>퍼펙션 패드 소형 베이비파우더향 30매</h3>
-          <h4>{18000 * productCount}원</h4>
+          <h3>{name}</h3>
+          <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>
           <span className='text2'>
             <button type='button' className='countBtn' onClick={handleMinus}>-</button>
@@ -239,9 +249,9 @@ function ShopDetail(props) {
               <Modal.Title>알림</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              상품명: 퍼펙션 패드<br />
-              수량: 1<br />
-              금액: 18000원<br /><br />
+              상품명: {name}<br />
+              수량: {productCount}<br />
+              금액: {price * productCount}원<br /><br />
               구매하시겠습니까?
             </Modal.Body>
             <Modal.Footer>
@@ -275,7 +285,7 @@ function ShopDetail(props) {
       {
         {
           // props로 item정보 넘겨줌
-          'detail': <div><DetailDetail /></div>,
+          'detail': <div><DetailDetail product={product} /></div>,
           'review': <div><DetailReview /></div>,
           // qa엔 productId줌
           'qa': <div><DetailQnA /></div>,

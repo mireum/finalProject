@@ -11,18 +11,62 @@ const DetailBox = styled.div`
     font-weight: bold;
     color: #68a6fe;
   }
+  .tableBox {
+    margin: 30px 0;
+    width: 100%;
+    text-align: center;
+    line-height: 65px;
+
+    table {
+      width: 100%;
+    }
+    tr {
+      border: 1px solid #ccc;
+      margin: 20px;
+      th {
+        background-color: #f2f2f2;
+      }
+    }
+  }
 `;
 
 function DetailDetail(props) {
+  const { name, price, rate, content, age, size } = props.product;
 
   return (
     <DetailBox>
       <h1>상세정보🔍</h1>
-      <div>제목</div>    
-      <div>상세설명</div>
-      <div>추천 수</div>
-      <div>권장 나이:</div>
-      <div>권장 크기:</div>
+      <div className='tableBox'>
+        <table>
+          <colgroup>
+            <col width='10%'/>
+            <col width='40%'/>
+            <col width='10%'/>
+            <col width='40%'/>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>상품명</th>
+              <td>{name}</td>
+              <th>상세설명</th>
+              <td>{content}</td>
+            </tr>
+            <tr>
+              <th>평점</th>
+              <td>{rate}점</td>
+              <th>가격</th>
+              <td>{price}원</td>
+            </tr>
+            <tr>
+              <th>권장 나이</th>
+              <td>{age}살</td>
+              <th>권장 크기</th>
+              <td>{size}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </DetailBox>
   );
 }
