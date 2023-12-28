@@ -44,20 +44,19 @@ function App() {
         <Route path='/' element={<Main />} >
           <Route path='/' element={<Community />} />
           <Route path='/community/Toktok' element={<Toktok />} />
-          <Route path='/shop' element={<Shop/>} />
-          <Route path='/cart' element={<Cart/>} />
+          <Route path='/shop' element={<Shop />} />
+          <Route path='/cart' element={<Cart />} />
           {/* 나중에 ? 지우기 */}
-          <Route path='/shop/detail/:productId?' element={<ShopDetail/>}/>
+          <Route path='/shop/detail/:productId?' element={<ShopDetail />} />
           {/* <Route path='/shop/detail/:productId?/quest' element={<Question />} /> */}
           <Route path='/shop/detail/quest' element={<Question />} />
           <Route path='/community/Toktok' element={<Toktok />} />   {/* toktok 메인화면 */}
-          <Route path='/community/Toktok/:postId' element={<ToktokDetail />} />   {/* todtod 디테일 */}
+          <Route path='/community/Toktok/:_id' element={<ToktokDetail />} />   {/* todtod 디테일 */}
           <Route path='/community/fleamarket' element={<Fleamarket />} />
           <Route path='/community/fleamarket/:id' element={<FleamarketDetail />} />
           <Route path='/community/dailyDog' element={<DailyDog />} />
           <Route path='/community/dailyDog/:id' element={<DailyDogDetail />} />
           <Route path='/community/dailyDog/write' element={<DailyDogWrite />} />
-          <Route path='/community/Toktok/:author' element={<ToktokDetail />} />   {/* todtod 디테일 */}
           <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
           <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}
           <Route path='/community/Insert/:insertPage' element={<CommunityInsert />} />    {/* 커뮤니티 글등록 페이지 */}

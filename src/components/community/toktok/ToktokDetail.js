@@ -23,18 +23,22 @@ function ToktokDetail(props) {
 
   const commentTest = [
     {
+      postId: '001',
       name: '준우',
       content: '이이야이야111'
     },
     {
+      postId: '002',
       name: '하은',
       content: '이이야이야222'
     },
     {
+      postId: '003',
       name: '민수',
       content: '이이야이야333'
     },
     {
+      postId: '001',
       name: '지우최고',
       content: '이이야이야444'
     },
@@ -53,7 +57,8 @@ function ToktokDetail(props) {
   // 게시글아디
   // 타입은 커뮤 너네 머 자랑 / 육아 있다길래 나눠놓은거임   파람스로 요청시 같이ㄱㄱ 
 
-  const { author } = useParams();
+  const { _id } = useParams();
+  console.log(_id);
 
   const [commentValue, setCommentValue] = useState();
 
@@ -64,15 +69,19 @@ function ToktokDetail(props) {
     await axios.post('/댓글입력DB로 슈슈슛규슈슈슈슈윳')
   }
 
+  const commentFilter = commentTest.filter((id) => { // 게시글 _id 댓글 postId 필터링
+    return (id.postId == _id)
+  })
+
   return (
     <ToktokDetailWrapper>
-      {author}의 디테일 페이지지임임임임
+      {_id}의 디테일 페이지지임임임임
       <div className='a'>
         사진 게시글 등등
       </div>
       <hr /><br />
 
-      {commentTest.map((testlistMap) => {
+      {commentFilter.map((testlistMap) => {
         return <ToktokDetailCommentItem
           name={testlistMap.name}
           content={testlistMap.content}
