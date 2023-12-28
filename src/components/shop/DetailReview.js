@@ -317,6 +317,7 @@ function DetailReview(props) {
           <div className='modal-wrap'>
             <form>
               <h3>리뷰 작성📝</h3>
+              {/* 별점 추가 */}
               <div>
                 <label name='brand' className='brand'>브랜드명</label>
                 <input type='text' name='brand' className='input' readOnly />
@@ -347,8 +348,6 @@ function DetailReview(props) {
         </Modal>
       }
     </>
-    
-
   );
 }
 
