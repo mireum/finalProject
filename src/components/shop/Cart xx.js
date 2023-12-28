@@ -74,38 +74,23 @@ const CartWrapper = styled.div`
 `;
 
 function Cart(props) {
-  const [ cartList, setCartList ] = useState([]);
+  const dispatch = useDispatch();
+  const cartList = useSelector((selectCartList));
   const formatter = new Intl.NumberFormat('ko-KR');
-  // 유저정보 = useSelector();
 
   // useEffect(() => {
   //   const list = async () => {
-  //     await axios.get('/cart', { userId:_id } });
+  //     await axios.get('/plusCart', { params: { ??:_id } });
   //   }
-  //   setCartList(list);
   // }, []);
 
-  // const handleMinus = async (id) => {
-  //   const result = await axios.post('/minusCart', {id, userId});
-  //   setCartList(result);
+  // const plusCart = async () => {
+  //   await axios.post('/plusCart', { title, price, postId, count });
   // };
 
-  // const handlePlus = async (id) => {
-  //   const result = await axios.post('/plusCart', {id, userId});
-  //   setCartList(result);
-  // };
-  
-  // const handleDelete = async (id) => {
-  //   const result = await axios.post('/deleteCart', {id, userId});
-  //   setCartList(result);
-  // };
-  
   // const handlePay = () => {
   // };
 
-  const cartList = [
-
-  ];
   return (
     <CartWrapper>
       <h2>장바구니🛒</h2>
@@ -128,20 +113,20 @@ function Cart(props) {
               <td>
                 <button
                   className='count'
-                  onClick={() => { undefined(item.id) }}
+                  onClick={() => { dispatch(decreaseCount(item.id)); }}
                 >
                   -
                 </button>
                 {item.count}
                 <button 
                   className='count'
-                  onClick={() => { undefined(item.id) }}>
+                  onClick={() => { dispatch(increaseCount(item.id)); }}>
                   +
                 </button>
               </td>
-              <td>{formatter.format(item.price * item.count)}원</td>
-              {/* <td>{item.price}</td> */}
-              <td><button type='button' className='delete-btn' onClick={() => { undefined(item.id); }}>삭제</button></td>
+              {/* <td>{formatter.format(item.price * item.count)}원</td> */}
+              <td>{item.price}</td>
+              <td><button type='button' className='delete-btn' onClick={() => { dispatch(removeItemFromCart(item.id)); }}>삭제</button></td>
             </tr>
           )})}
 
