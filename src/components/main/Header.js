@@ -95,7 +95,7 @@ const NavContainer = styled.nav`
 function Header(props) {
   const navigate = useNavigate();
 
-  const [ isHover, setIsHover ] = useState({
+  const [isHover, setIsHover] = useState({
     communityTap: false,
     shopTap: false,
     test: false
@@ -104,15 +104,15 @@ function Header(props) {
   const { communityTap, shopTap, test } = isHover;
 
   const handleCommunityTapOver = () => {
-    setIsHover(prevHover => ({...prevHover, communityTap: true, shopTap: false}));
+    setIsHover(prevHover => ({ ...prevHover, communityTap: true, shopTap: false }));
   };
 
   const handleShopTapOver = () => {
-    setIsHover(prevHover => ({...prevHover, shopTap: true, communityTap: false}));
+    setIsHover(prevHover => ({ ...prevHover, shopTap: true, communityTap: false }));
   };
 
   const hadleTapMouseLeave = () => {
-    setIsHover(prevHover => ({...prevHover, shopTap: false, communityTap: false}));
+    setIsHover(prevHover => ({ ...prevHover, shopTap: false, communityTap: false }));
   };
 
   // if (communityTap || shopTap) {
@@ -130,50 +130,50 @@ function Header(props) {
           <div className='headerInner'>
             <div className='mainMenu'>
               <a><img src='' alt='logo' /></a>
-              <a 
+              <a
                 onMouseOver={handleCommunityTapOver}
                 onClick={() => navigate('/')}
               >
                 커뮤니티
-              </a> 
-              <a 
-                onMouseOver={handleShopTapOver} 
+              </a>
+              <a
+                onMouseOver={handleShopTapOver}
                 onClick={() => navigate('/shop')}
               >
                 쇼핑
               </a>
             </div>
             <div className='sumMenu'>
-              <a onClick={() => navigate('/')}>로그인</a>
+              <a onClick={() => navigate('/login')}>로그인</a>
               <a onClick={() => navigate('/')}>회원가입</a>
             </div>
           </div>
         </div>
-      {communityTap 
-        ? 
-        <NavContainer>
-          <div className='navInner'>
-            <a onClick={() => navigate('/')}>커뮤니티홈</a>
-            <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
-            <a onClick={() => navigate('/community/dailyDog')}>데일리독</a>
-            <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
-          </div>
-        </NavContainer>
-        : null
-      }
-      {shopTap 
-        ? 
-        <NavContainer>
-          <div className='navInner'>
-            <a onClick={() => navigate('/')}>쇼핑홈</a>
-            <a onClick={() => navigate('/')}>사료</a>
-            <a onClick={() => navigate('/')}>간식/영양제</a>
-            <a onClick={() => navigate('/')}>배변/위생</a>
-            <a onClick={() => navigate('/')}>산책/놀이</a>
-          </div>
-        </NavContainer>
-        : null
-      }
+        {communityTap
+          ?
+          <NavContainer>
+            <div className='navInner'>
+              <a onClick={() => navigate('/')}>커뮤니티홈</a>
+              <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
+              <a onClick={() => navigate('/community/dailyDog')}>데일리독</a>
+              <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
+            </div>
+          </NavContainer>
+          : null
+        }
+        {shopTap
+          ?
+          <NavContainer>
+            <div className='navInner'>
+              <a onClick={() => navigate('/')}>쇼핑홈</a>
+              <a onClick={() => navigate('/')}>사료</a>
+              <a onClick={() => navigate('/')}>간식/영양제</a>
+              <a onClick={() => navigate('/')}>배변/위생</a>
+              <a onClick={() => navigate('/')}>산책/놀이</a>
+            </div>
+          </NavContainer>
+          : null
+        }
       </HeaderContainer>
     </>
   );

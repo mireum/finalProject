@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import React from 'react';
 import styled from 'styled-components';
 
-
-const Test = styled.div`
+const SignupWrapper = styled.div`
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
 *,*:before,*:after{box-sizing:border-box}
 body{
@@ -86,50 +83,28 @@ body{
 }
 `
 
-function Login(props) {
-  const [id, setId] = useState('');
-  const [pw, setPw] = useState('');
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch()
-
-  const changeId = (e) => {
-    setId(e.target.value)
-  }
-  const changePw = (e) => {
-    setPw(e.target.value)
-  }
-
+function Signup(props) {
   return (
-    <Test>
+    <SignupWrapper>
       <div class="container" onclick="onclick">
         <div class="top"></div>
         <div class="bottom"></div>
         <div class="center">
-          <h2>로그인 하십셔~~</h2>
-          <label htmlFor='id' />
+          <h2>회원가입 페이지 입니다</h2>
           <input
-            id='id'
             type="text"
             placeholder="id"
-            value={id}
-            onChange={changeId}
           />
-          <label htmlFor='pw' />
           <input
-            id='pw'
             type="password"
             placeholder="password"
-            value={pw}
-            onChange={changePw}
           />
-          <button>로그인</button>
-          <button onClick={() => { navigate('/signup') }}>회원가입</button>
+          <button>회원가입</button>
           <h2>&nbsp;</h2>
         </div>
       </div>
-    </Test>
+    </SignupWrapper>
   );
 }
 
-export default Login;
+export default Signup;

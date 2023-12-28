@@ -18,6 +18,8 @@ import DailyDog from './components/community/dailyDog/DailyDog';
 import DailyDogWrite from './components/community/dailyDog/DailyDogWrite';
 import DailyDogDetail from './components/community/dailyDog/DailyDogDetail';
 import KakaoMap from './components/KakaoMap';
+import Login from './components/user/Login';
+import Signup from './components/user/Signup';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -41,6 +43,8 @@ function App() {
     <>
       <GlobalStyle />
       <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='/' element={<Main />} >
           <Route path='/' element={<Community />} />
           <Route path='/community/Toktok' element={<Toktok />} />
