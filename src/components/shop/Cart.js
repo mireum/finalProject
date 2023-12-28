@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decreaseCount, increaseCount, removeItemFromCart, selectCartList } from '../../features/cartSlice';
 import { Table } from 'react-bootstrap';
 import styled from 'styled-components';
 import axios from 'axios';
+import { pay } from './Pay';
 
 const CartWrapper = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 20px auto 40px auto;
   padding: 20px 0;
+  position: relative;
   h2 {
     font-size: 30px;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
   }
   thead {
     border: 1px solid #ddd;
@@ -55,12 +57,25 @@ const CartWrapper = styled.div`
   tbody .total {
     text-align: center;
   }
+  .payBtn {
+    width: 10rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    color: white;
+    background-color: #68a6fe;
+    position: absolute;
+    right: 0px;
+  }
+  .payBtn:hover {
+    background-color: #5396f5;
+  }
 `;
 
 function Cart(props) {
   const dispatch = useDispatch();
   const cartList = useSelector((selectCartList));
-
   const formatter = new Intl.NumberFormat('ko-KR');
 
   // useEffect(() => {
@@ -71,6 +86,9 @@ function Cart(props) {
 
   // const plusCart = async () => {
   //   await axios.post('/plusCart', { title, price, postId, count });
+  // };
+
+  // const handlePay = () => {
   // };
 
   return (
@@ -126,6 +144,8 @@ function Cart(props) {
           </tr>
         </tbody>
       </Table>
+
+      <button type='button' className='payBtn' onClick={undefined}>결제하기</button>
     </CartWrapper>
   );
 }
