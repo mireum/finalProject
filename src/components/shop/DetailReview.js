@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MdDelete } from "react-icons/md";
 import { dateFormat } from '../../util';
+import { useNavigate } from 'react-router-dom';
 
 const ReviewContainer = styled.div`
   margin: 0 auto;
@@ -146,11 +147,9 @@ const Modal = styled.div`
       text-align: center;
     }
     .modal-wrap p {
-      /* text-align: center; */
       margin-bottom: 10px;
     }
     .modal-wrap p {
-      /* text-align: center; */
       font-weight: bold;
       color: #555;
       font-size: 18px;
@@ -181,9 +180,6 @@ const Modal = styled.div`
       padding: 5px;
       width: 75%;
       border-radius: 10px;
-    }
-    .modal-wrap input[type="file"] {
-      /* display: none; */
     }
     .modal-wrap .btn-img {
       background-color: #68a6fe;
@@ -228,6 +224,7 @@ function DetailReview(props) {
   const [review, setReview] = useState('');
   const [reviewList, setReviewList] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -245,10 +242,11 @@ function DetailReview(props) {
     e.preventDefault();
     try {
       if (!review) {
-        alert('내용을 입력해주세요!');
+        return alert('내용을 입력해주세요!');
       }
       const formData = new FormData();
       const fileList = e.target.image.files[0];
+      console.log(fileList);
       for (const file of fileList) {
         formData.append('image', file);
       }
@@ -262,9 +260,20 @@ function DetailReview(props) {
     setModalOpen(false);
   };
 
+  // 삭제?
+  // const handleReviewDelete = async (id) => {
+  //   try {
+  //     await axios.post('라우터주소', { id, user });
+  //     const result = await axios.get('라우터주소', { params: { aa: _id } });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
   const openModal = () => {
     // if (!result.data.user) {
-    //   alert('로그인이 필요합니다!')
+    //   alert('로그인이 필요합니다!');
+    // navigate('/login');
     // }
     setModalOpen(true);
   };
@@ -326,8 +335,6 @@ function DetailReview(props) {
                 onChange={(e) => {setReview(e.target.value)}}
               />
               <div className='filebox'>
-                {/* <input name='image' className="upload-name" id='img-text' spellCheck="false" ></input>
-                <label type='file' htmlFor="file_upload" className='cursor-pointer btn-img' >이미지 업로드</label> */}
                 <input type='file' name="image" id='file_upload' multiple />
               </div>
               

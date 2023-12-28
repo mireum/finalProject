@@ -23,9 +23,6 @@ const CartWrapper = styled.div`
     color: #222;
     text-align: center;
   }
-  /* thead tr th + th {
-    border-left: 1px solid #999;
-  } */
   tbody {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
@@ -68,7 +65,7 @@ function Cart(props) {
 
   // useEffect(() => {
   //   const list = async () => {
-  //     await axios.get('/plusCart', { });
+  //     await axios.get('/plusCart', { params: { ??:_id } });
   //   }
   // }, []);
 
@@ -87,7 +84,6 @@ function Cart(props) {
             <th>수량</th>
             <th>금액</th>
             <th>상품관리</th>
-
           </tr>
         </thead>
         <tbody>
