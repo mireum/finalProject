@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import feed from "../../image/feed.jpg";
-import { useParams } from 'react-router-dom';
-import { Nav } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Modal, Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../features/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -12,6 +12,7 @@ import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
 import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
+import { pay } from './Pay';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -71,10 +72,14 @@ const ShopContainer = styled.div`
     margin-left: 40px;
     font-weight: bold; 
   }
-
+  .detail .detail-text .text2 .countBtn {
+    width: 30px;
+    border: 1px solid #111;
+    margin: 0 10px;
+    font-weight: bold;
+  }
   .detail .detail-btn {
     margin-top: 50px;
-    
   }
   .detail .detail-btn button {
     font-size: 20px;
@@ -109,7 +114,7 @@ const ShopContainer = styled.div`
 
 const TabContainer = styled.div`
   width: 90%;
-  margin: 0 auto;
+  margin: 80px auto;
 `;
 
 const NavBox = styled(Nav)`
@@ -129,10 +134,6 @@ const ItemBox = styled(Nav.Item)`
   :hover {
     color: #68a6fe;
   }
-  .active {
-    color: #68a6fe;
-    border-bottom: 1px solid black;
-  }
 `;
 
 const LinkBox = styled(Nav.Link)`
@@ -140,12 +141,15 @@ const LinkBox = styled(Nav.Link)`
   color: #000;
 `;
 
+
 function ShopDetail(props) {
   // const { productId } = useParams(); // app.js에서 지은
   const dispatch = useDispatch();
   const [ productCount, setProductCount ] = useState(1);
   const [showTab, setShowTab] = useState('detail');
   const [showModal, setShowModal] = useState(false);
+  const [showBuyModal, setShowBuyModal] = useState(false);
+  const navigate = useNavigate();
   // const product = useSelector(selectSelectedProduct);
 
   const handleMinus = () => {
@@ -161,6 +165,22 @@ function ShopDetail(props) {
     setShowModal(true);
   }
 
+  const handleBuy = () => {
+    setShowBuyModal(true);
+  };
+
+  const handlePay = async() => {
+    const result = await pay(product, productCount);
+    console.log(result);
+    if (result.event == 'done' || result.event == 'issued') {
+      alert('결제가 완료되었습니다!');
+      navigate('/shop');
+    }
+    else if (result.event == 'cancel') {
+      setShowBuyModal(false);
+      alert('결제 취소');
+    }
+  };
  
   // useEffect(() => {
   //   // 서버에 특정 상품의 데이터 요청
@@ -183,6 +203,17 @@ function ShopDetail(props) {
   // if (!product) {
   //   return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
   // } 
+  // const modalBackground = useRef();
+
+  const product = {
+    name: '퍼펙션 패드 소형 베이비파우더향 30매',
+    price: 180,
+    rate: 3.6,
+    content: '맛있는 사료에요',
+    age: 5,
+    size: 'middle',
+  };
+  const { name, price } = product;
 
   return (
     <ShopContainer>
@@ -192,14 +223,14 @@ function ShopDetail(props) {
         </div>
         <div className='detail-text'>
           <p>프로도기</p>
-          <h3>퍼펙션 패드 소형 베이비파우더향 30매</h3>
-          <h4>{18000 * productCount}원</h4>
+          <h3>{name}</h3>
+          <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>
           <span className='text2'>
-            <button type='button' onClick={handleMinus}>-</button>
+            <button type='button' className='countBtn' onClick={handleMinus}>-</button>
             {productCount}
-            <button type='button' onClick={handlePlus}>+</button>
-            </span><br />
+            <button type='button' className='countBtn' onClick={handlePlus}>+</button>
+          </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
           <div className='detail-btn'>
@@ -208,10 +239,33 @@ function ShopDetail(props) {
               className='cart cursor-pointer'
               onClick={handleCart}
             >장바구니</button>
-            <button type='submit' className='buy cursor-pointer'>구매하기</button>
+            <button type='submit' className='buy cursor-pointer'
+              onClick={handleBuy}
+            >구매하기</button>
           </div>
+           
+          <Modal show={showBuyModal} onHide={() => setShowBuyModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>알림</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              상품명: {name}<br />
+              수량: {productCount}<br />
+              금액: {price * productCount}원<br /><br />
+              구매하시겠습니까?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowBuyModal(false)}>
+                취소
+              </Button>
+              <Button variant="primary" onClick={handlePay}>
+                확인
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
+
       
       <TabContainer>
       <NavBox variant="tabs" defaultActiveKey="link-0" className='my-3'>
@@ -231,7 +285,7 @@ function ShopDetail(props) {
       {
         {
           // props로 item정보 넘겨줌
-          'detail': <div><DetailDetail /></div>,
+          'detail': <div><DetailDetail product={product} /></div>,
           'review': <div><DetailReview /></div>,
           // qa엔 productId줌
           'qa': <div><DetailQnA /></div>,
@@ -241,6 +295,7 @@ function ShopDetail(props) {
       </TabContainer>
       
       {showModal && <ShopModal />}
+
     </ShopContainer>
   );
 }
