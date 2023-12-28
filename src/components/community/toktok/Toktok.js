@@ -1,7 +1,6 @@
 import ToktokItem from './ToktokItem';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Paging from './Paging';
 import Pagination from 'react-js-pagination';
 import { useState } from 'react';
 
