@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { addToktokList } from '../../../features/toktokSlice';
 
 const CommunityInsertWrapper = styled.div`
   background-color: #ccc;
@@ -22,7 +20,6 @@ const CommunityInsertWrapper = styled.div`
 `;
 
 function CommunityInsert(props) {
-  const dispatch = useDispatch()
 
   const [insertTitle, setInsertTitle] = useState();
   const [insertContent, setInsertContent] = useState();
@@ -37,14 +34,14 @@ function CommunityInsert(props) {
   const changeImg = async (e) => {
     setInsertImg(e.target.value)
   }
-  const testImgUp = async (e) => {
+  const formDataList = async () => {
     try {
-      const formData = new FormData(); // multipart/form-data 타입으로 보냄
-      formData.append('img', e.target.img.files[0]);
+      const formData = new FormData();
+      formData.append('title', insertTitle);
+      formData.append('content', insertContent);
+      formData.append('img', insertImg[0]);
 
-      const result = await axios.post('/post/write', formData);
-      console.log(result.data);
-
+      const result = await axios.post('/주소솟소소소소소소솟솟', formData);
       if (!result.data.flag) {
         return alert(result.data.message);
       }
@@ -53,15 +50,6 @@ function CommunityInsert(props) {
     }
   }
 
-
-  const testList = {
-    insertTitle,
-    insertContent,
-    insertImg
-  }
-  const testListDis = () => {
-    dispatch(addToktokList(testList))
-  }
 
 
 
@@ -72,6 +60,7 @@ function CommunityInsert(props) {
         <input
           type='text'
           id='title'
+          name='title'
           value={insertTitle}
           onChange={changeTitle}
           placeholder='제목 입력' />
@@ -80,6 +69,7 @@ function CommunityInsert(props) {
         <textarea
           type='text'
           id='content'
+          name='content'
           value={insertContent}
           onChange={changeContent}
           placeholder='내용 입력' />
@@ -94,7 +84,7 @@ function CommunityInsert(props) {
           onChange={changeImg} />
 
         <button
-          onClick={testListDis}
+          onClick={formDataList}
         >글등록</button>
       </div>
     </CommunityInsertWrapper>
