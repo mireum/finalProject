@@ -114,7 +114,7 @@ const ShopContainer = styled.div`
 
 const TabContainer = styled.div`
   width: 90%;
-  margin: 0 auto;
+  margin: 80px auto;
 `;
 
 const NavBox = styled(Nav)`
