@@ -157,7 +157,8 @@ function ShopDetail(props) {
     setProductCount(productCount+1);
   };
 
-  const handleCart = () => {
+  const handleCart = async () => {
+    // await axios.post('', { userId, id, productCount });
     setShowModal(true);
   }
 
@@ -209,6 +210,7 @@ function ShopDetail(props) {
   // const modalBackground = useRef();
 
   const product = {
+    id: 1,
     title: '퍼펙션 패드 소형 베이비파우더향 30매',
     price: 180,
     rate: 3.6,
