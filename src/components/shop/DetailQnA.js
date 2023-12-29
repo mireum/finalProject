@@ -54,17 +54,29 @@ const QnABox = styled.div`
     .status {
       width: 20%;
     }
-    .content {
+    .title {
       width: 50%;
     }
+    .date {
+      width: 20%;
+    }
+    .borderBottom.active {
+      border-bottom: none;
+    }
+    .contentTr {
+      border-top: none;
+      line-height: 20px;
+      transition: 1s;
+    }
   }
-
 `;
 
 function DetailQnA(props) {
   // const { productId } = props;
   const navigate = useNavigate();
-  const [qna, setQna] = useState();
+  const [ qna, setQna ] = useState();
+  const [ text, setText ] = useState(false);
+
 
   // useEffect(() => {
   //   const getQnA = async () => {
@@ -95,36 +107,46 @@ function DetailQnA(props) {
         <table>
           <colgroup>
             <col className='status' />
-            <col className='content' />
+            <col className='title' />
             <col className='author' />
             <col className='date' />
           </colgroup>
           <tr className='firstLine'>
             <th scope='col' className='status'>답변상태</th>
-            <th scope='col' className='content'>제목</th>
+            <th scope='col' className='title'>제목</th>
             <th scope='col' className='author'>작성자</th>
             <th scope='col' className='date'>작성일</th>
           </tr>
           <tbody>
-            <tr>
+            <tr className={text ? 'borderBottom active' : 'borderBottom'}>
               <td className='status'>답변대기</td>
-              <td className='content'>맛없어요</td>
+              <td className='title cursor-pointer' onClick={() => {setText(prev=>!prev)}}>맛없어요</td>
               <td className='author'>qwer</td>
               <td className='date'>2020-20-20 20:20</td>
             </tr>
-            {qna ? qna.map((item) => {
-              const { status, content, author, date } = item;
-              <tr>
+            {text && <tr className='contentTr'>
+              <td></td>
+              <td className='title'>게으른빠가들은나가난천재로태어나가가가가가가가가한국에서나보다랩만은랩있으면난와</td>
+            </tr>}
+
+            {/* {qna ? qna.map((item) => {
+              const { status, title, content, author, date } = item;
+              <tr className='borderBottom'>
                 <td className='status'>{status}</td>
-                <td className='content'>{content}</td>
+                <td className='title cursor-pointer' onClick={() => {setText(prev=>!prev)}}>{title}</td>
                 <td className='author'>{author}</td>
                 <td className='date'>{date}</td>
               </tr>
-            }) :
+              {text && <tr className={text ? 'contentTr active' : 'contentTr'}>
+                <td></td>
+                <td className='title contentTd'>{content}</td>
+              </tr>}
+            }) 
+            :
             <tr>
               <td colSpan={4}>문의가 없습니다.</td>
             </tr>
-            }
+            } */}
           </tbody>
         </table>
       </div>

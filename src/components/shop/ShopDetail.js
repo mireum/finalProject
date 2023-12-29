@@ -177,6 +177,7 @@ function ShopDetail(props) {
     const result = await pay(product, productCount, productCount * product.price);
     console.log(result);
     if (result.event == 'done' || result.event == 'issued') {
+      // const result = await axios.post('', { userId, productId, productCount });
       alert('결제가 완료되었습니다!');
       navigate('/shop');
     }
@@ -207,7 +208,6 @@ function ShopDetail(props) {
   // if (!product) {
   //   return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
   // } 
-  // const modalBackground = useRef();
 
   const product = {
     id: 1,
