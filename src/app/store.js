@@ -6,7 +6,7 @@ import useReducer from "../features/userInfoSlice"
 export const store = configureStore({
   reducer: {
     product: productReducer,
-    cart: cartReducer,
+    // cart: cartReducer,
     dailyDog: dailyDogReducer,
     user: useReducer
   }
