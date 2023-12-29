@@ -5,7 +5,7 @@ function StarStar({ star }) {
 
   return (
     <div>
-      {star.map(item => item ? <FaStar style={{ color: 'red'}}/> : <FaStar style={{ color: 'gray' }} /> )}
+      {star.map((item, i) => item ? <FaStar key={i} style={{ color: 'red'}}/> : <FaStar key={i} style={{ color: 'gray' }} /> )}
     </div>
   );
 }
