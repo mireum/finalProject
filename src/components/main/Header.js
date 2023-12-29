@@ -6,7 +6,7 @@ const HeaderContainer = styled.header`
   position: sticky;
   background: #fff;
   top: 0;
-  z-index: 9;
+  z-index: 21;
   
   a {
     cursor: pointer;

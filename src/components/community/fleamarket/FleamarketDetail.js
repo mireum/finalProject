@@ -6,7 +6,8 @@ import styled from 'styled-components';
 
 const FleamarketDetailContainer = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
+  min-height: 800px;
+  margin: 70px auto;
 
   .abcd {
     max-width: 600px;
