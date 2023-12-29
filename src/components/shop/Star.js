@@ -1,32 +1,67 @@
-import React, { useState } from 'react';
-import { ImStarFull } from "react-icons/im";
+import React, { useEffect, useState } from 'react';
+import { FaStar } from "react-icons/fa";
+import styled from 'styled-components';
+
+const RatingBox = styled.div`
+  margin: 0 auto;
+
+  & svg {
+    color: #C4C4C4;
+    cursor: pointer;
+  }
+  :hover svg {
+    color: black;
+  }
+  & svg:hover ~ svg {
+    color: #C4C4C4;
+  }
+  .yellow {
+    color: red;
+  }
+`
 
 const array = [ 0, 1, 2, 3, 4 ];
 
-function Star(props) {
+function Star({handleStar}) {
   const [ clicked, setClicked ] = useState([false, false, false, false, false]);
+
+
+  
+
+  useEffect(() => {
+    sendReview();
+  }, [clicked]);
+
+  const sendReview = () => {
+    let score = clicked.filter(Boolean).length;
+  };
 
   const handleStarClick = (index) => {
     let clickStates = [...clicked];
     for (let i = 0; i < 5; i++) {
       clickStates[i] = i <= index ? true : false;
     }
+    // if (clickStates === 0) {
+    //   document.getElementById('starText').innerHTML = '별로에요';
+    // }
     setClicked(clickStates);
+    handleStar(clicked);
   };
 
+
   return (
-    <div>
-      {array.map((item) => {
+    <RatingBox>
+      {array.map((item, index) => {
         return (
-          <ImStarFull 
-            key={item}
+          <FaStar 
+            key={index}
             onClick={() => {handleStarClick(item)}}
             className={clicked[item] && 'yellow'}
             size="35"
           />
         )
       })}
-    </div>
+    </RatingBox>
   );
 }
 
