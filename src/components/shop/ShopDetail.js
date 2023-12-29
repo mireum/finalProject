@@ -10,7 +10,6 @@ import DetailReview from './DetailReview';
 import DetailDetail from './DetailDetail';
 import DetailQnA from './DetailQnA';
 import DetailExchange from './DetailExchange';
-import { addItemToCart } from '../../features/cartSlice';
 import ShopModal from './ShopModal';
 import Cart from './Cart';
 import { pay } from './Pay';
@@ -37,7 +36,6 @@ const ShopContainer = styled.div`
   .detail .detail-text h3,
   .detail .detail-text h4 {
     font-weight: bold;
-    /* font-size: 30px; */
   }
   .detail .detail-text p {
     font-size: 16px;
@@ -62,8 +60,6 @@ const ShopContainer = styled.div`
     display: inline-block;
     width: 1px;
     height: 15px;
-    /* text-align: center; */
-    /* color: #333; */
     background-color: #666;
     margin-left: 10px;
   }
@@ -130,7 +126,6 @@ const ItemBox = styled(Nav.Item)`
   text-align: center;
   padding: 14px 0;
   font-size: 20px;
-  /* border: 1px solid #000; */
 
   :hover {
     color: #68a6fe;
@@ -163,10 +158,8 @@ function ShopDetail(props) {
   };
 
   const handleCart = () => {
-    dispatch(addItemToCart({ ...product, count: productCount }));
     setShowModal(true);
   }
-
 
   const openModal = () => {
     setShowModal(true)
@@ -180,7 +173,7 @@ function ShopDetail(props) {
   };
 
   const handlePay = async() => {
-    const result = await pay(product, productCount);
+    const result = await pay(product, productCount, productCount * product.price);
     console.log(result);
     if (result.event == 'done' || result.event == 'issued') {
       alert('결제가 완료되었습니다!');
@@ -216,14 +209,14 @@ function ShopDetail(props) {
   // const modalBackground = useRef();
 
   const product = {
-    name: '퍼펙션 패드 소형 베이비파우더향 30매',
+    title: '퍼펙션 패드 소형 베이비파우더향 30매',
     price: 180,
     rate: 3.6,
     content: '맛있는 사료에요',
     age: 5,
     size: 'middle',
   };
-  const { name, price } = product;
+  const { title, price } = product;
 
   return (
     <ShopContainer>
@@ -233,7 +226,7 @@ function ShopDetail(props) {
         </div>
         <div className='detail-text'>
           <p>프로도기</p>
-          <h3>{name}</h3>
+          <h3>{title}</h3>
           <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>
           <span className='text2'>
@@ -259,7 +252,7 @@ function ShopDetail(props) {
               <Modal.Title>알림</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              상품명: {name}<br />
+              상품명: {title}<br />
               수량: {productCount}<br />
               금액: {price * productCount}원<br /><br />
               구매하시겠습니까?
@@ -294,10 +287,9 @@ function ShopDetail(props) {
       </NavBox>
       {
         {
-          // props로 item정보 넘겨줌
           'detail': <div><DetailDetail product={product} /></div>,
           'review': <div><DetailReview /></div>,
-          // qa엔 productId줌
+          // qa에 productId줌
           'qa': <div><DetailQnA /></div>,
           'exchange': <div><DetailExchange /></div>
         }[showTab]
