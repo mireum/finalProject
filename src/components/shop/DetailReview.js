@@ -5,7 +5,8 @@ import { MdDelete } from "react-icons/md";
 import { dateFormat } from '../../util';
 import { useNavigate } from 'react-router-dom';
 import Star from './Star';
-import StarStar from './StarStar';
+import StarStar from './StarReview';
+import StarReview from './StarReview';
 
 const ReviewContainer = styled.div`
   margin: 0 auto;
@@ -337,7 +338,7 @@ function DetailReview(props) {
               <div className='list' key={index}>
                 <div><img src={item.image}/></div>
                 <div className='titlewrap'>
-                  <StarStar star={item.star}/>
+                  <StarReview star={item.star}/>
                   {/* <p>{item.star}</p> */}
                   <p className='userId'>{item.id}<span className='date'>{dateFormat(item.date)}</span></p>
                   <p>{item.content}</p>

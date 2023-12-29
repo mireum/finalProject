@@ -10,17 +10,20 @@ const RatingBox = styled.div`
     cursor: pointer;
   }
   :hover svg {
-    color: black;
+    color: red;
   }
   & svg:hover ~ svg {
     color: #C4C4C4;
   }
-  .yellow {
+  .red {
     color: red;
   }
-`
+`;
+
+
 
 const array = [ 0, 1, 2, 3, 4 ];
+
 
 function Star({handleStar}) {
   const [ clicked, setClicked ] = useState([false, false, false, false, false]);
@@ -50,7 +53,7 @@ function Star({handleStar}) {
           <FaStar 
             key={index}
             onClick={() => {handleStarClick(item)}}
-            className={clicked[item] && 'yellow'}
+            className={clicked[item] && 'red'}
             size="35"
           />
         )
