@@ -337,7 +337,7 @@ function DetailReview(props) {
               <div className='list' key={index}>
                 <div><img src={item.image}/></div>
                 <div className='titlewrap'>
-                  <p><StarStar star={item.star}/></p>
+                  <StarStar star={item.star}/>
                   {/* <p>{item.star}</p> */}
                   <p className='userId'>{item.id}<span className='date'>{dateFormat(item.date)}</span></p>
                   <p>{item.content}</p>
@@ -357,6 +357,7 @@ function DetailReview(props) {
               <h3>리뷰 작성📝</h3>
               <div className='starwrap'>
                 <p>상품을 사용해보셨나요?</p>
+                {/* <div><Star handleStar={handleStar}/></div> */}
                 <div><Star handleStar={handleStar}/></div>
               </div>
               <div>

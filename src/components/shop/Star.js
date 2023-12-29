@@ -25,9 +25,6 @@ const array = [ 0, 1, 2, 3, 4 ];
 function Star({handleStar}) {
   const [ clicked, setClicked ] = useState([false, false, false, false, false]);
 
-
-  
-
   useEffect(() => {
     sendReview();
   }, [clicked]);
@@ -41,9 +38,6 @@ function Star({handleStar}) {
     for (let i = 0; i < 5; i++) {
       clickStates[i] = i <= index ? true : false;
     }
-    // if (clickStates === 0) {
-    //   document.getElementById('starText').innerHTML = '별로에요';
-    // }
     setClicked(clickStates);
     handleStar(clicked);
   };
