@@ -41,11 +41,6 @@ const FleamarketItemContainer = styled(Container)`
   margin-top: 20px;
 `;
 
-const StyledRow = styled(Row)`
-  display: flex;
-  justify-content: space-between;
-`;
-
 function Fleamarket(props) {
   const navigate = useNavigate();
   const testList = useSelector(selectFleamarket);
@@ -59,9 +54,9 @@ function Fleamarket(props) {
         <button onClick={() => navigate('/community/fleamarket/write')}>판매하기</button>
       </div>
       <FleamarketItemContainer>
-        <StyledRow>
+        <Row>
           {testList.map((item, index) => <FleamarketItem key={index} item={item}/>)}
-        </StyledRow>
+        </Row>
       </FleamarketItemContainer>
     </FleamarketContainer>
 
