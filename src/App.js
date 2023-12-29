@@ -20,6 +20,7 @@ import DailyDogDetail from './components/community/dailyDog/DailyDogDetail';
 import KakaoMap from './components/KakaoMap';
 import Login from './components/user/Login';
 import Signup from './components/user/Signup';
+import FleamarketWrite from './components/community/fleamarket/FleamarketWrite';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -58,6 +59,7 @@ function App() {
           <Route path='/community/Toktok/:_id' element={<ToktokDetail />} />   {/* todtod 디테일 */}
           <Route path='/community/fleamarket' element={<Fleamarket />} />
           <Route path='/community/fleamarket/:id' element={<FleamarketDetail />} />
+          <Route path='/community/fleamarket/write' element={<FleamarketWrite />} />
           <Route path='/community/dailyDog' element={<DailyDog />} />
           <Route path='/community/dailyDog/:id' element={<DailyDogDetail />} />
           <Route path='/community/dailyDog/write' element={<DailyDogWrite />} />
