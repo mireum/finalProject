@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from "styled-components";
+import { getLoginUser } from '../../features/userInfoSlice';
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -94,6 +96,7 @@ const NavContainer = styled.nav`
 
 function Header(props) {
   const navigate = useNavigate();
+  const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
 
   const [isHover, setIsHover] = useState({
     communityTap: false,
@@ -144,8 +147,15 @@ function Header(props) {
               </a>
             </div>
             <div className='sumMenu'>
-              <a onClick={() => navigate('/login')}>로그인</a>
-              <a onClick={() => navigate('/')}>회원가입</a>
+              {로그인중 ?
+                <span>환영합니다 {로그인중.signUserNicname}</span> :
+                <span></span>
+              }
+              {로그인중 ?
+                <a onClick={() => navigate('/login')}>로그아웃</a> : /* 로그아웃 할라면 새로고침 한번 ㄱㄱ */
+                <a onClick={() => navigate('/login')}>로그인</a>
+              }
+              <a onClick={() => navigate('/signup')}>회원가입</a>
             </div>
           </div>
         </div>

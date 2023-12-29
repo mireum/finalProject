@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { getLoginUser, getLoginUserInfo, pushUserInfo, selectUserList } from '../../features/userInfoSlice';
 
 
 const Test = styled.div`
@@ -91,13 +92,34 @@ function Login(props) {
   const [pw, setPw] = useState('');
 
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const 로그인중 = useSelector(getLoginUser);
+  const localStorageInfo = window.localStorage?.getItem(id);
+  const localStorageInfoStr = JSON.parse(localStorageInfo)
+  console.log(로그인중);
+
 
   const changeId = (e) => {
     setId(e.target.value)
   }
   const changePw = (e) => {
     setPw(e.target.value)
+  }
+
+  const handleLogin = () => {
+    if (!id) {
+      alert('아이디를 입력하세요.');
+    } else if (!pw) {
+      alert('비밀번호를 입력하세요.');
+    } else if (localStorageInfoStr?.signId !== id) {
+      alert('아이디 또는 비밀번호가 틀림');
+    } else if (localStorageInfoStr?.signPw !== pw) {
+      alert('비밀번호가 틀림');
+    } else {
+      alert('환영합니다' + localStorageInfoStr.signUserNicname + '님');
+      dispatch(getLoginUserInfo(localStorageInfoStr));
+      navigate('/');
+    }
   }
 
   return (
@@ -123,8 +145,8 @@ function Login(props) {
             value={pw}
             onChange={changePw}
           />
-          <button>로그인</button>
-          <button onClick={() => { navigate('/signup') }}>회원가입</button>
+          <button onClick={() => { handleLogin(); }}>로그인</button>
+          <button onClick={() => { navigate('/signup'); }}>회원가입</button>
           <h2>&nbsp;</h2>
         </div>
       </div>
