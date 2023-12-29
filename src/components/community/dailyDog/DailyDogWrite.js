@@ -93,7 +93,7 @@ function DailyDogWrite(props) {
     setValues(value => ({ ...value, content, src: word }));
   };
 
-  const getSubmitValue = () => {
+  const handleSubmitValue = () => {
     const newDaily = {
       id: testList.length + 1,
       title,
@@ -165,7 +165,7 @@ function DailyDogWrite(props) {
       />  
       <div className='btn-box'>
         <button onClick={() => navigate(-1)}>취소</button>
-        <button onClick={getSubmitValue}>등록</button>
+        <button onClick={handleSubmitValue}>등록</button>
       </div>
     </DailyDogWriteContainer>
   );

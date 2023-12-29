@@ -7,6 +7,8 @@ import { Button } from 'react-bootstrap';
 import FleamarketItem from './FleamarketItem';
 import testImage from '../../../images/app.jpg'
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectFleamarket } from '../../../features/dailyDogSlice';
 
 
 const FleamarketContainer = styled.div`
@@ -20,6 +22,13 @@ const FleamarketContainer = styled.div`
     margin-bottom: 20px;
   }
 
+  button {
+    padding: 6px 8px;
+    border: none;
+    background: #68a6fe;
+    color: #fff;
+  }
+  
   .info {
     display: flex;
     justify-content: space-between;
@@ -39,34 +48,8 @@ const StyledRow = styled(Row)`
 
 function Fleamarket(props) {
   const navigate = useNavigate();
-
-  const test = [
-    {
-      id: 1,
-      title: '첫번째 물품',
-      price: 10000,
-      place: '경기도 화성시'
-    },
-    {
-      id: 2,
-      title: '두번째 물품',
-      price: 20000,
-      place: '경기도 평택시'
-    },
-    {
-      id: 3,
-      title: '세번째 물품',
-      price: 15000,
-      place: '서울시 구로구'
-    },
-    {
-      id: 4,
-      title: '네번째 물품',
-      price: 8000,
-      place: '인천시 계양구'
-    }
-  ]
-
+  const testList = useSelector(selectFleamarket);
+  console.log(testList);
 
   return (
     <FleamarketContainer>
@@ -77,7 +60,7 @@ function Fleamarket(props) {
       </div>
       <FleamarketItemContainer>
         <StyledRow>
-          {test.map((item, index) => <FleamarketItem key={index} item={item}/>)}
+          {testList.map((item, index) => <FleamarketItem key={index} item={item}/>)}
         </StyledRow>
       </FleamarketItemContainer>
     </FleamarketContainer>

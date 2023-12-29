@@ -78,7 +78,45 @@ const initialState = {
       view: 0,
       comment: 0,
     },
-  ]
+  ],
+   fleamarket: [
+    {
+      id: 4,
+      title: '네번째 물품',
+      price: 10000,
+      category: '',
+      place: '경기도 화성시',
+      content: '',
+      src: '',
+    },
+    {
+      id: 3,
+      title: '세번째 물품',
+      price: 20000,
+      category: '',
+      place: '경기도 평택시',
+      content: '',
+      src: '',
+    },
+    {
+      id: 2,
+      title: '두번째 물품',
+      price: 15000,
+      category: '',
+      place: '서울시 구로구',
+      content: '',
+      src: '',
+    },
+    {
+      id: 1,
+      title: '첫번째 물품',
+      price: 8000,
+      category: '',
+      place: '인천시 계양구',
+      content: '',
+      src: '',
+    }
+  ],
 };
 
 const dailyDogSlice = createSlice({
@@ -88,12 +126,17 @@ const dailyDogSlice = createSlice({
     addListToDailyDog: (state, action) => {
       state.dailyDogList.unshift(action.payload);
     },
+    addItemToFleamarket: (state, action) => {
+      console.log(action.payload);
+      state.fleamarket.unshift(action.payload);
+    },
   }
 });
 
-export const { addListToDailyDog } = dailyDogSlice.actions;
+export const { addListToDailyDog, addItemToFleamarket } = dailyDogSlice.actions;
 
 export const selectDailyDogList = state => state.dailyDog.dailyDogList;
 export const selectToktokList = state => state.dailyDog.toktok;
+export const selectFleamarket = state => state.dailyDog.fleamarket;
 
 export default dailyDogSlice.reducer;
