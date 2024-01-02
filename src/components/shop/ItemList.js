@@ -176,9 +176,8 @@ function ItemList(props) {
   // const [ sorttext, setSorttext ]
 
   // useEffect(() => {
-  //   if (!productList) return
   //   try {
-  //     const result =  axios.get('https://라우터주소/')
+  //     const result =  axios.get('http://localhost:8088/shop/')
   //     dispatch(getProducts(result.data));
   //   } catch (error) {
   //     console.error(error);
