@@ -75,6 +75,9 @@ const ShopContainer = styled.div`
     margin: 0 10px;
     font-weight: bold;
   }
+  .detail .totalStar {
+    color: #111;
+  }
   .detail .detail-btn {
     margin-top: 50px;
   }
@@ -238,6 +241,9 @@ function ShopDetail(props) {
           </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
+          <div className='totalStar'>
+            <p>평점:</p>
+          </div>
           <div className='detail-btn'>
             <button 
               type='submit' 
