@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import dog from "../../image/dog.png";
+import { useNavigate } from 'react-router';
+
 
 const DetailBox = styled.div`
   margin: 0 auto;
@@ -28,13 +31,150 @@ const DetailBox = styled.div`
       }
     }
   }
+  .top-wrap {
+    width: 100%;
+    height: 200px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .top-wrap img {
+    width: 150px;
+    height: 150px;
+  }
+  .top-wrap .top-text {
+    width: 60%;
+  }
+  .top-wrap .top-text p{
+    margin-bottom: 7px;
+  }
+  .top-wrap .top-text .weight::before {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: #999;
+    margin: 0px 5px 5px;
+  }
+  .top-wrap .top-text .type {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .top-wrap .top-text p:last-child {
+    font-weight: bold;
+    color: #555;
+  }
+  .top-wrap .name {
+    font-weight: bold;
+    font-size: 25px;
+    color: #555;
+  }
+  .top-wrap .top-myPage {
+    width: 10%;
+    align-self: flex-start;
+    padding: 20px 0px 0px 0px ;
+    font-weight: bold;
+    color: #555;
+  }
+  .top-wrap .top-myPage .more::after {
+    content: '';
+    width: 13px;
+    height: 13px;
+    margin-left: 5px;
+    border-top: 2px solid #68a6fe;
+    border-right: 2px solid #68a6fe;
+    display: inline-block;
+    transform: rotate(42deg);
+  }
+  .top-wrap-copy {
+    width: 100%;
+    height: 200px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #eee;
+    /* position: relative; */
+    background-color:rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .top-wrap-copy h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    color: #fff;
+  }
+  .top-wrap-copy .login-btn {
+    text-align: center;
+    margin-top: 20px;
+    background-color: #68a6fe;
+    color: #fff;
+    width: 170px;
+    padding: 10px 0px;
+    border-radius: 20px;
+    font-weight: bold;
+  }
+  .top-wrap-copy .login-btn::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    margin-bottom: 1px;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+    display: inline-block;
+    transform: rotate(42deg);
+  }
 `;
 
 function DetailDetail(props) {
   const { name, price, rate, content, age, size } = props.product;
+  const navigate = useNavigate();
+
+  const mypage =  {
+    useId: '주인',
+    name: '가을',
+    age: 2,
+    weight: 3.8,
+    dogType: '말티푸'
+  };
 
   return (
     <DetailBox>
+      <h1>강아지 정보🔎</h1>
+        {
+          mypage.useId ? (
+            <div className='top-wrap'>
+              <img src={dog} alt='강아지 프로필 사진'/>
+              <div className='top-text'>
+                <p className='name'>{mypage.name}</p>
+                <span>{mypage.age}살</span>
+                <span className='weight'>{mypage.weight}kg</span>
+                <p className='type'>{mypage.dogType}</p>
+                {
+                age === mypage.age ? <p>해당 제품은 {mypage.name}이와 맞는 상품이에요 :)</p>
+                : <p>해당 제품은 {mypage.name}이와 맞지 않는 상품이에요 :(</p>
+                }
+              </div>
+              <div className='top-myPage cursor-pointer' onClick={() => {navigate('/mypage')}}>
+                <span className='more'>더보기</span>
+              </div>
+            </div>
+          ) : (
+            <div className='top-wrap-copy'>
+              <h2>지금 로그인하고 <br className='mg-t' /> 내 강아지에게 맞는 상품인지 확인해보세요!</h2>
+              <span className='login-btn cursor-pointer' onClick={() => {navigate('/login')}}>로그인/회원가입</span>
+            </div>
+          )
+        }
+        
+      
+        
       <h1>상세정보🔍</h1>
       <div className='tableBox'>
         <table>
@@ -60,8 +200,8 @@ function DetailDetail(props) {
             <tr>
               <th>권장 나이</th>
               <td>{age}살</td>
-              <th>권장 크기</th>
-              <td>{size}</td>
+              {/* <th>권장 크기</th>
+              <td>{size}</td> */}
             </tr>
           </tbody>
         </table>

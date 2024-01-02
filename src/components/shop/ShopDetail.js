@@ -70,10 +70,16 @@ const ShopContainer = styled.div`
     font-weight: bold; 
   }
   .detail .detail-text .text2 .countBtn {
-    width: 30px;
-    border: 1px solid #111;
+    width: 20px;
+    border-radius: 50%;
+    border: none;
     margin: 0 10px;
     font-weight: bold;
+    padding-bottom: 2px;
+    /* line-height: 1; */
+  }
+  .detail .totalStar {
+    color: #111;
   }
   .detail .detail-btn {
     margin-top: 50px;
@@ -83,8 +89,8 @@ const ShopContainer = styled.div`
     width: 47%;
     font-weight: bold;
     background-color: #fff;
-    border-radius: 15px;
-    padding: 7px 0px;
+    border-radius: 10px;
+    padding: 10px 0px;
     border: 2px solid #cdcdcd;
   }
   .detail .detail-btn button + button {
@@ -216,7 +222,6 @@ function ShopDetail(props) {
     rate: 3.6,
     content: '맛있는 사료에요',
     age: 5,
-    size: 'middle',
   };
   const { title, price } = product;
 
@@ -238,6 +243,9 @@ function ShopDetail(props) {
           </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
+          <div className='totalStar'>
+            <p>평점:</p>
+          </div>
           <div className='detail-btn'>
             <button 
               type='submit' 

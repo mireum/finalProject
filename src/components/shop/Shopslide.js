@@ -1,5 +1,8 @@
 import React from 'react';
-import img1 from "../../image/1.png";
+import img1 from "../../image/slide1.png";
+import img2 from "../../image/slide2.png";
+import img3 from "../../image/slide3.png";
+import img4 from "../../image/slide4.png";
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
@@ -81,13 +84,13 @@ function Shopslide(props) {
           <img src={img1} />
         </div>
         <div>
-          
+          <img src={img2} />
         </div>
         <div>
-          
+          <img src={img3} />
         </div>
         <div>
-          
+          <img src={img4} /> 
         </div>
 
       </StyledSlide>

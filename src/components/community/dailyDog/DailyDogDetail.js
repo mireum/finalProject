@@ -19,8 +19,8 @@ const DailyDogDetailContainer = styled.div`
   }
 
   img {
-    max-width: 460px;
-    max-height: 300px;
+    width: 460px;
+    height: 360px;
     margin: 16px 0;
   }
 `;
