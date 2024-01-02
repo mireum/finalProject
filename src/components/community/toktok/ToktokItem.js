@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const ToktokItemWrapper = styled.div`
   height: 180px;
   padding: 10px;
-  margin:  10px;
+  margin:  10px 0;
   border: 1px solid #ccc;
   display: flex;
   justify-content: space-between;

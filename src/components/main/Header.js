@@ -97,6 +97,7 @@ const NavContainer = styled.nav`
 function Header(props) {
   const navigate = useNavigate();
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
+  console.log(로그인중);
 
   const [isHover, setIsHover] = useState({
     communityTap: false,
@@ -134,6 +135,11 @@ function Header(props) {
             <div className='mainMenu'>
               <a><img src='' alt='logo' /></a>
               <a
+                style={{ color: 'blue' }}
+                onClick={() => navigate('/personaldog')}
+              >{로그인중 ? 로그인중.signDogName : null}
+              </a>
+              <a
                 onMouseOver={handleCommunityTapOver}
                 onClick={() => navigate('/')}
               >
@@ -148,8 +154,8 @@ function Header(props) {
             </div>
             <div className='sumMenu'>
               {로그인중 ?
-                <span>환영합니다 {로그인중.signUserNicname}</span> :
-                <span></span>
+                <span>환영합니다 {로그인중.signUserNicname}님</span> :
+                null
               }
               {로그인중 ?
                 <a onClick={() => navigate('/login')}>로그아웃</a> : /* 로그아웃 할라면 새로고침 한번 ㄱㄱ */
