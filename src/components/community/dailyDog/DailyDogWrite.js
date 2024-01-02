@@ -88,8 +88,10 @@ function DailyDogWrite(props) {
 
   const contentOnChange = () => {
     const content = editorRef.current?.getInstance().getHTML();
-    const word = content.substring(content.indexOf('src')+5, content.indexOf('contenteditable')-2);
-
+    let word = content.substring(content.indexOf('src')+5, content.indexOf('contenteditable')-2);
+    if (word.length < 10) {
+      word = '';
+    }
     setValues(value => ({ ...value, content, src: word }));
   };
 
@@ -146,7 +148,7 @@ function DailyDogWrite(props) {
     <DailyDogWriteContainer>
       <h1>데일리독</h1>
       <div className='tip-box'>
-        <p>* 첫번째로 삽입한 이미지가 대표 이미지가 되며 업로드 시 이미지의 크기는 460*300으로 고정 됩니다.</p>
+        <p>* 첫번째로 삽입한 이미지가 대표 이미지가 되며 업로드 시 이미지의 크기는 460*360으로 고정 됩니다.</p>
         <p>* 작성하신 글은 자동으로 가운데 정렬 됩니다.</p>
       </div>
       <input type='text' value={title} onChange={titleOnChange} placeholder='제목을 입력해주세요' />

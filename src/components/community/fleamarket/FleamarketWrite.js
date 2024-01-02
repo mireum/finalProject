@@ -214,7 +214,7 @@ function FleamarketWrite(props) {
     <FleamarketWriteContainer>
       <h1>중고거래</h1>
       <div className='tip-box'>
-        <p>* 첫번째로 삽입한 사진 대표 사진이 되며 업로드 시 이미지의 크기는 460*300으로 고정 됩니다.</p>
+        <p>* 첫번째로 삽입한 사진 대표 사진이 되며 업로드 시 이미지의 크기는 600*360으로 고정 됩니다.</p>
         <p>* 사진은 최대 5장까지 첨부 가능합니다.</p>
       </div>
       <div className='img-box'>

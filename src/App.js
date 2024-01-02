@@ -21,6 +21,7 @@ import KakaoMap from './components/KakaoMap';
 import Login from './components/user/Login';
 import Signup from './components/user/Signup';
 import FleamarketWrite from './components/community/fleamarket/FleamarketWrite';
+import Chatting from './components/main/Chatting';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -66,6 +67,7 @@ function App() {
           <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
           <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}
           <Route path='/community/Insert/:insertPage' element={<CommunityInsert />} />    {/* 커뮤니티 글등록 페이지 */}
+          <Route path='/user/chatting' element={<Chatting />} />
         </Route>
       </Routes>
     </>
