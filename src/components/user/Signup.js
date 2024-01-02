@@ -13,9 +13,11 @@ body{
 }
 .container{
   position:absolute;
+  left: 0;
+  right: 0;
   width:100%;
   height:100%;
-  overflow:hidden;
+  /* overflow:hidden; */
   &:hover,&:active{
     .top, .bottom{
       &:before, &:after{ // 내부 공간 설정
@@ -87,11 +89,14 @@ body{
 `
 
 function Signup(props) {
-  const [signId, setSignId] = useState();
-  const [signPw, setSignPw] = useState();
-  const [signUserNicname, setSignUserNicname] = useState();
-  const [signDogType, setSignDogType] = useState();
-  const [signDogAge, setSignDogAge] = useState();
+  const [signId, setSignId] = useState(); // 아이디
+  const [signPw, setSignPw] = useState(); // 비번
+  const [signUserNicname, setSignUserNicname] = useState(); // 유저닉네임
+  const [signDogType, setSignDogType] = useState(); // 견종
+  const [signDogAge, setSignDogAge] = useState(); // 개나이
+  const [signDogName, setSignDogName] = useState(); // 개이름
+  const [weight, setSignWeight] = useState(); // 개몸무게
+  /* 몸무게??? 기입할까 */
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -111,7 +116,10 @@ function Signup(props) {
   const changeDogAge = (e) => {
     setSignDogAge(e.target.value)
   }
-  const userInput = { signId, signPw, signUserNicname, signDogType, signDogAge }
+  const changeDogNmae = (e) => {
+    setSignDogName(e.target.value)
+  }
+  const userInput = { signId, signPw, signUserNicname, signDogType, signDogAge, signDogName }
 
   const handleSignUp = () => {
     dispatch(pushUserInfo(userInput));
@@ -164,6 +172,14 @@ function Signup(props) {
             placeholder="DogAge"
             value={signDogAge}
             onChange={changeDogAge}
+          />
+          <label htmlFor='signDogName' /> {/* 개이름 */}
+          <input
+            id='signDogName'
+            type="text"
+            placeholder="DogName"
+            value={signDogName}
+            onChange={changeDogNmae}
           />
           <button onClick={() => { handleSignUp() }}>회원가입</button>
           <h2>&nbsp;</h2>

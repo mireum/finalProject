@@ -21,6 +21,8 @@ import KakaoMap from './components/KakaoMap';
 import Login from './components/user/Login';
 import Signup from './components/user/Signup';
 import FleamarketWrite from './components/community/fleamarket/FleamarketWrite';
+
+import PersonalDog from './components/personalDog/PersonalDog';
 import Chatting from './components/main/Chatting';
 
 const GlobalStyle = createGlobalStyle`
@@ -48,6 +50,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/' element={<Main />} >
+          <Route path='/personaldog' element={<PersonalDog />} />
           <Route path='/' element={<Community />} />
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop' element={<Shop />} />

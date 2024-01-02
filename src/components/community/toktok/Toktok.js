@@ -9,16 +9,16 @@ const ToktokWrapper = styled.div`
   width: 1208px;
   height: 1000px;
   background-color: #fff;
+  padding: 0 20px;
   h1 {
     font-size: 44px;
     font-weight: bold;
     color: #000;
-    padding: 10px 20px;
+    padding: 10px 0;
   }
   .between {
     display: flex;
     justify-content: space-between;
-    padding: 0 20px;
   }
   .test {
     font-size: 33px;
@@ -27,7 +27,7 @@ const ToktokWrapper = styled.div`
   }
 `;
 
-const PagWrapper = styled.div`
+const PagWrapper = styled.div` // 페이지네이션
 .pagination {
     display: flex;
     justify-content: center;
