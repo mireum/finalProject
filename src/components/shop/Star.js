@@ -60,6 +60,6 @@ function Star({handleStar}) {
       })}
     </RatingBox>
   );
-}
+} 
 
 export default Star;
