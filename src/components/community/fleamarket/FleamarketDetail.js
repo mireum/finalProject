@@ -10,6 +10,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { GrNext, GrPrevious } from "react-icons/gr";
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 const FleamarketDetailContainer = styled.div`
   max-width: 1200px;
@@ -122,19 +123,21 @@ function FleamarketDetail(props) {
   //   return null;
   // }
 
-  const testList = useSelector(selectFleamarket);
-
   const [ item, setItem ] = useState('');
   const { id } = useParams();
 
   useEffect(() => {
-    const getItem = async () => {
-      const result = await testList.filter(item => item.id == id);
-      setItem(result);
-    } 
-    getItem();
-  }, []);
-  
+    const fleamarketData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8888/vintage');        
+        setItem(response.data.filter(item => item.id == id));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fleamarketData();
+  }, [])
+
   if (!item) {
     return null;
   } 
@@ -153,8 +156,8 @@ function FleamarketDetail(props) {
     <FleamarketDetailContainer>
       <div className='abcd'>
         <Slider {...settings}>
-          {item[0].src
-            ? item[0].src.map((srcItem, index) => 
+          {item[0].imgUrl
+            ? item[0].imgUrl.map((srcItem, index) => 
                 <div key={index}>
                   <img
                     src={srcItem}

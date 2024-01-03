@@ -23,14 +23,15 @@ const ItemImage = styled.img`
 `;
 
 function FleamarketItem(props) {
-  const { item: { id, title, price, category, place, src } } = props;
+  const { item: { id, title, price, category, place, src, imgUrl }, index } = props;
 
+  console.log(props);
   const navigate = useNavigate();
 
   return (
     <StyledCol md={3} onClick={() => navigate(`/community/fleamarket/${id}`)}>
-      {src
-        ? <ItemImage src={src[0]} />
+      {imgUrl
+        ? <ItemImage src={imgUrl[0]} />
         : <ItemImage src={testImage} />
       }
       <h2>{category}</h2>

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import io from "socket.io-client";
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../features/userInfoSlice';
 
 const ChattingContainer = styled.div`
   max-width: 1200px;
@@ -67,17 +69,23 @@ const ChattingContainer = styled.div`
     
     .chatting-box {
       flex-basis: 700px;
-      padding: 0 10px;
       display: flex;
       flex-direction: column;
 
       .sellerinfo-box {
         height: 100px;
+        border-bottom: 1px solid #ccc;
+
+        span {
+          font-size: 18px;
+          font-weight: bold;
+        }
       }
 
       .chatting-detail-box {
         height: 560px;
         overflow: auto;
+        padding: 0 10px;
         /* display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -85,6 +93,17 @@ const ChattingContainer = styled.div`
 
         &::-webkit-scrollbar {
           display: none;
+        }
+
+        .message-notme-box {
+          max-width: 50%;
+          margin-top: 10px;
+          min-height: 36px;
+          padding: 10px;
+          background-color: #ccc;
+          border-radius: 10px;
+          clear: both;
+          float: left;
         }
 
         .message-box {
@@ -100,6 +119,7 @@ const ChattingContainer = styled.div`
 
         .day {
           text-align: center;
+          padding-top: 20px
         }
       }
 
@@ -129,19 +149,27 @@ const ChattingContainer = styled.div`
 
 function Chatting(props) {
   const scrollRef = useRef();
+  const 로그인중 = useSelector(getLoginUser);
+
   const [ chats, setChats ] = useState([]);
   const [ value, setValue ] = useState('');
   const [ room, setRoom ] = useState('');
+  const [ userId, setUserId ] = useState(로그인중.signId);
   
-  // const socket = io.connect("http://localhost:8000");
+  const socket = io.connect("http://localhost:8888");
 
   const valueOnChange = (e) => {
     setValue(e.target.value);
   };
   
   const handleSubmitMessage = () => {
-    setChats(prevChat => [...prevChat, value]);
-    // socket.emit('send_message', { message: value });
+    // setChats(prevChat => [...prevChat, value]);
+    const data = {
+      msg: value,
+      id: userId,
+      room: '김뽀삐와 이푸들',
+    }
+    socket.emit('userSend', data);
     setValue('');
   };
 
@@ -149,11 +177,13 @@ function Chatting(props) {
     scrollToBottom();
   }, [chats]);
 
-  // useEffect(() => {
-  //   socket.on("receive_message", data => {
-  //     setChats(prevChat => [...prevChat, data.message]);
-  //   });
-  // }, [socket]);
+  useEffect(() => {
+    socket.on("start", data => {
+      console.log(data);
+      setChats([...chats, data.msg]);
+    });
+  }, [chats]);
+
 
   // io.on("connection", socket => {
   //   console.log(`User Connected: ${socket.id}`);
@@ -218,10 +248,12 @@ function Chatting(props) {
                 <React.Fragment key={index}>
                   {index === 0 && <p className='day'>{today}</p>}
                   <p className='message-box'>
-                    {item}
+                    {`${userId}: ${item}`}
                   </p>
                 </React.Fragment>
               ))}
+              <p className='message-notme-box'>냥냥</p>
+              <p className='message-notme-box'>냥냥</p>
           </div>
           <div className='chatting-input-box' >
             <textarea

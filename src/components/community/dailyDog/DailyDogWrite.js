@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { addListToDailyDog, selectDailyDogList } from '../../../features/dailyDogSlice';
+import axios from 'axios';
 
 const DailyDogWriteContainer = styled.div`
   max-width: 1200px;
@@ -69,7 +70,7 @@ function DailyDogWrite(props) {
   const [ values, setValues ] = useState({
     title: '',
     content: '',
-    src: '',
+    img: [],
   });
 
   const { title, content, src } = values;
@@ -77,9 +78,10 @@ function DailyDogWrite(props) {
   const editorRef = useRef();
 
   // 이미지 파일명으로 가져오기
-  // const onUploadImage = async (blob, callback) => {
-  //   console.log(blob);
-  // }
+  const onUploadImage = async (blob, callback) => {
+    console.log(blob);
+
+  }
   
   const titleOnChange = (e) => {
    const title = e.target.value
@@ -88,6 +90,7 @@ function DailyDogWrite(props) {
 
   const contentOnChange = () => {
     const content = editorRef.current?.getInstance().getHTML();
+    console.log(content);
     let word = content.substring(content.indexOf('src')+5, content.indexOf('contenteditable')-2);
     if (word.length < 10) {
       word = '';
@@ -95,54 +98,75 @@ function DailyDogWrite(props) {
     setValues(value => ({ ...value, content, src: word }));
   };
 
-  const handleSubmitValue = () => {
-    const newDaily = {
-      id: testList.length + 1,
-      title,
-      content,
-      src,
-    }
+  const handleSubmitValue = async () => {
 
     if (title && content) {
-      dispatch(addListToDailyDog(newDaily));
-      alert('게시글이 등록되었습니다.');
-      navigate('/community/dailyDog');
+      try {
+        const formData = new FormData();
+
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('title', title);
+
+        await axios.post('http://localhost:8888/community/daily/insert', { title, content, src })
+        alert('게시글이 등록되었습니다.');
+        navigate('/community/dailyDog');
+      } catch (err) {
+        console.error(err);
+      }
     } else if (!title) {
       alert('제목을 입력해주세요.');
     } else if (!content) {
       alert('내용을 입력해주세요.');
     }
+
+    // const newDaily = {
+    //   id: testList.length + 1,
+    //   title,
+    //   content,
+    //   src,
+    // }
+
+    // if (title && content) {
+    //   dispatch(addListToDailyDog(newDaily));
+    //   alert('게시글이 등록되었습니다.');
+    //   navigate('/community/dailyDog');
+    // } else if (!title) {
+    //   alert('제목을 입력해주세요.');
+    // } else if (!content) {
+    //   alert('내용을 입력해주세요.');
+    // }
   };
 
 
 
   // 이미지 첨부를 위한 코드
   // https://kim-hasa.tistory.com/133
-  // useEffect(() => {
-  //   if (editorRef.current) {
-  //     editorRef.current.getInstance().removeHook('addImageBlobHook');
-  //     editorRef.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-  //       (async () => {
-  //         let formData = new FormData();
-  //         formData.append('image', blob);
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.getInstance().removeHook('addImageBlobHook');
+      editorRef.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
+        (async () => {
+          let formData = new FormData();
+          formData.append('img', blob);
 
-  //         await axios.post(`{저장할 서버 api}`, formData, {
-  //           header: { 'content-type': 'multipart/formdata' },
-  //           withCredentials: true,
-  //         });
+          await axios.post('http://localhost:8888/community/daily/insert', formData, {
+            header: { 'content-type': 'multipart/formdata' },
+            withCredentials: true,
+          });
 
-  //         const imageUrl = '저장된 서버 주소' + blob.name;
+          const imageUrl = `https://finaltp.s3.ap-northeast-2.amazonaws.com/original/${Date.now()}_${blob.name}`;
 
-  //         setImages([...images, imageUrl]);
-  //         callback(imageUrl, 'image');
-  //       })();
+          setValues(prevValue => ({ ...prevValue, img: imageUrl }));
+          callback(imageUrl, 'img');
+        })();
 
-  //       return false;
-  //     });
-  //   }
+        return false;
+      });
+    }
 
-  //   return () => {};
-  // }, [editorRef]);
+    return () => {};
+  }, [editorRef]);
 
   return (
     <DailyDogWriteContainer>
@@ -163,7 +187,7 @@ function DailyDogWrite(props) {
         plugins={[colorSyntax]}
         hideModeSwitch={true}
         onChange={contentOnChange}
-        // hooks={{addImageBlobHook: onUploadImage}}
+        hooks={{addImageBlobHook: onUploadImage}}
       />  
       <div className='btn-box'>
         <button onClick={() => navigate(-1)}>취소</button>
