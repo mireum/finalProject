@@ -176,7 +176,8 @@ function ItemList(props) {
     const result = await axios.get(`http://localhost:8888/shop/${selectedCategory}/?nextId=${productList[productList.length - 1]._id}`);
     console.log(result.data.posts);
     dispatch(addMoreProducts(result.data.posts));
-    // if (result.data.) {setMoreBtn(false)}
+    // 서버코드에서 끝났다는 신호
+    if (result.data.end) {setMoreBtn(false)}
   };
 
   return (

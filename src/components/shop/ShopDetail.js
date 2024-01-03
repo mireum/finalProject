@@ -25,13 +25,10 @@ const ShopContainer = styled.div`
     align-items: center;
   }
   .detail .detail-img .img{
-    background-image: url(${feed});
-    background-position: center;
-    background-size: 500px 500px;
     border-radius: 10px;
     border: 0.5px solid #cdcdcd;
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
   }
  
   .detail .detail-text p,
@@ -152,7 +149,7 @@ function ShopDetail(props) {
   const [showModal, setShowModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
   const user = useSelector(getLoginUser);
-  // const product = useSelector(selectSelectedProduct);
+  const product = useSelector(selectSelectedProduct);
 
   const handleMinus = () => {
     if (productCount != 1) setProductCount(productCount-1);
@@ -169,6 +166,7 @@ function ShopDetail(props) {
     //   else return
     // }
     try {
+      // 로그인 연동 후에 다시
       const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount });
       console.log(result);
       
@@ -203,47 +201,49 @@ function ShopDetail(props) {
     }
   };
  
-  // useEffect(() => {
-  //   // 서버에 특정 상품의 데이터 요청
-  //   const fetchProductById = async () => {
-  //     try {
-  //       const response = await axios.get(`라우터주소${productId}`);
-  //       dispatch(getSelectedProduct(response.data))
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchProductById();
+  useEffect(() => {
+    // 서버에 특정 상품의 데이터 요청
+    const fetchProductById = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8888/shop/detail/${postId}`);
+        dispatch(getSelectedProduct(response.data.itemDetail))
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductById();
 
-  //   return () => {
-  //     dispatch(clearSelectedProduct());
-  //   };
-  // }, []);
+    return () => {
+      dispatch(clearSelectedProduct());
+    };
+  }, []);
 
 
-  // if (!product) {
-  //   return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
-  // } 
+  if (!product) {
+    return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
+  } 
 
-  const product = {
-    id: 1,
-    title: '퍼펙션 패드 소형 베이비파우더향 30매',
-    price: 180,
-    rate: 3.6,
-    content: '맛있는 사료에요',
-    age: 5,
-    size: 'middle',
-  };
-  const { title, price } = product;
+  // const product = {
+  //   id: 1,
+  //   title: '퍼펙션 패드 소형 베이비파우더향 30매',
+  //   price: 180,
+  //   rate: 3.6,
+  //   content: '맛있는 사료에요',
+  //   age: 5,
+  //   size: 'middle',
+  // };
+  console.log(product);
+  const { brand, title, price, imgUrl } = product;
 
   return (
     <ShopContainer>
       <div className='detail'>
         <div className='detail-img'>
-          <img className='img'/>
+          <img className='img' src={imgUrl}/>
         </div>
         <div className='detail-text'>
-          <p>프로도기</p>
+          <p>{brand}</p>
+          <div>별점</div>
           <h3>{title}</h3>
           <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>
@@ -254,9 +254,6 @@ function ShopDetail(props) {
           </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
-          <div className='totalStar'>
-            <p>평점:</p>
-          </div>
           <div className='detail-btn'>
             <button 
               type='submit' 
@@ -309,18 +306,14 @@ function ShopDetail(props) {
       {
         {
           'detail': <div><DetailDetail product={product} /></div>,
-          'review': <div><DetailReview /></div>,
-          // qa에 productId줌
-          'qa': <div><DetailQnA /></div>,
+          'review': <div><DetailReview product={product} postId={postId} /></div>,
+          'qa': <div><DetailQnA postId={postId} /></div>,
           'exchange': <div><DetailExchange /></div>
         }[showTab]
       }
       </TabContainer>
       
-      {showModal && <ShopModal  show={showModal} open={openModal} close={closeModal}/>}
-      {/* {showModal && <Cart />} */}
-      {/* {showModal && <ShopModal serShowModal={setShowModal}/>} */}
-
+      {showModal && <ShopModal show={showModal} open={openModal} close={closeModal}/>}
     </ShopContainer>
   );
 }

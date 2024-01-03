@@ -20,21 +20,10 @@ const RatingBox = styled.div`
   }
 `;
 
-
-
 const array = [ 0, 1, 2, 3, 4 ];
-
 
 function Star({handleStar}) {
   const [ clicked, setClicked ] = useState([false, false, false, false, false]);
-
-  // useEffect(() => {
-  //   sendReview();
-  // }, [clicked]);
-
-  // const sendReview = () => {
-  //   let score = clicked.filter(Boolean).length;
-  // };
 
   const handleStarClick = (index) => {
     let clickStates = [...clicked];
@@ -42,7 +31,11 @@ function Star({handleStar}) {
       clickStates[i] = i <= index ? true : false;
     }
     setClicked(clickStates);
-    handleStar(clickStates);
+
+    const sum = clickStates.reduce(function (a, b) {
+      return a + b;
+    })
+    handleStar(sum);
   };
 
 
