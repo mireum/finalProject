@@ -128,6 +128,7 @@ function ItemList(props) {
   const selectedCategory = useSelector(selectSelectedCategory);
   const sortRef = useRef();
   const [ isOpen, setIsOpen ] = useDetectClose(sortRef, true);
+  const [ moreBtn, setMoreBtn ] = useState(true);
 
   useEffect(() => {
     try {
@@ -175,6 +176,7 @@ function ItemList(props) {
     const result = await axios.get(`http://localhost:8888/shop/${selectedCategory}/?nextId=${productList[productList.length - 1]._id}`);
     console.log(result.data.posts);
     dispatch(addMoreProducts(result.data.posts));
+    // if (result.data.) {setMoreBtn(false)}
   };
 
   return (
@@ -213,7 +215,7 @@ function ItemList(props) {
           })}
         </Row>
       </Container>
-      <button className='moreBtn cursor-pointer' onClick={handleMore}>더보기</button>
+      {moreBtn && <button className='moreBtn cursor-pointer' onClick={handleMore}>더보기</button>}
     </ItemContainer>
   );
 }

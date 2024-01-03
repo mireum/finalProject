@@ -53,8 +53,7 @@ function App() {
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop/:nextId?' element={<Shop />} />
           <Route path='/cart' element={<Cart />} />
-          {/* 나중에 ? 지우기 */}
-          <Route path='/shop/detail/:productId?' element={<ShopDetail />} />
+          <Route path='/shop/detail/:postId' element={<ShopDetail />} />
           {/* <Route path='/shop/detail/:productId?/quest' element={<Question />} /> */}
           <Route path='/shop/detail/quest' element={<Question />} />
           <Route path='/community/Toktok' element={<Toktok />} />   {/* toktok 메인화면 */}

@@ -56,7 +56,7 @@ const StyledCategory = styled.ul`
     color: #555;
   }
 `;
-// 'http://localhost:8888/shop/?tag={selectedCategory}&nextId={productList[productList.length - 1]._id}', {}, {withCredentials: true});
+
 
 function ShopCategory(props) {
   const dispatch = useDispatch();
@@ -70,26 +70,24 @@ function ShopCategory(props) {
   const axiosFeed = async () => {
     const result = await axios.get(`http://localhost:8888/shop/feed`);
     dispatch(getProducts(result.data.posts));
-    console.log('feed가져옴');
     dispatch(getSelectedCategory('feed'));
   };
   const axiosSnack = async () => {
     // const result = await axios.get();
-    // dispatch(getProducts(result.data));
+    // dispatch(getProducts(result.data.posts));
     // dispatch(getSelectedCategory('snack'));
   };
   const axiosBeauty = async () => {
     // const result = await axios.get();
-    // dispatch(getProducts(result.data));
+    // dispatch(getProducts(result.data.posts));
     // dispatch(getSelectedCategory('beauty'));
   };
   const axiosAccessory = async () => {
     // const result = await axios.get();
-    // dispatch(getProducts(result.data));
+    // dispatch(getProducts(result.data.posts));
     // dispatch(getSelectedCategory('accessory'));
   };
   
-
   return (
     <StyledCategory>
       <li onClick={axiosAll}>

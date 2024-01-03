@@ -13,6 +13,8 @@ import DetailExchange from './DetailExchange';
 import ShopModal from './ShopModal';
 import Cart from './Cart';
 import { pay } from './Pay';
+import { getLoginUser, getLoginUserInfo } from '../../features/userInfoSlice';
+import { needLogin } from '../../util';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -142,15 +144,15 @@ const LinkBox = styled(Nav.Link)`
 
 
 function ShopDetail(props) {
-  // const { productId } = useParams(); // app.js에서 지은
+  const { postId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [ productCount, setProductCount ] = useState(1);
   const [showTab, setShowTab] = useState('detail');
   const [showModal, setShowModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
-  const navigate = useNavigate();
+  const user = useSelector(getLoginUser);
   // const product = useSelector(selectSelectedProduct);
-
 
   const handleMinus = () => {
     if (productCount != 1) setProductCount(productCount-1);
@@ -160,8 +162,19 @@ function ShopDetail(props) {
     setProductCount(productCount+1);
   };
 
-  const handleCart = async () => {
-    // await axios.post('', { userId, id, productCount });
+  const handleCart = async (title, price) => {
+    // if (!user) {
+    //   const result = needLogin();
+    //   if (result) navigate('/login');
+    //   else return
+    // }
+    try {
+      const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount });
+      console.log(result);
+      
+    } catch (error) {
+      console.error(error);
+    }
     setShowModal(true);
   }
 
@@ -248,7 +261,7 @@ function ShopDetail(props) {
             <button 
               type='submit' 
               className='cart cursor-pointer'
-              onClick={() => {handleCart()}}
+              onClick={() => {handleCart(title, price)}}
             >장바구니</button>
             <button type='submit' className='buy cursor-pointer'
               onClick={handleBuy}
