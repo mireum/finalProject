@@ -191,9 +191,11 @@ function ShopDetail(props) {
     const result = await pay(product, productCount, productCount * product.price);
     console.log(result);
     if (result.event == 'done' || result.event == 'issued') {
-      // const result = await axios.post('', { userId, productId, productCount });
-      alert('결제가 완료되었습니다!');
-      navigate('/shop');
+      // const result = await axios.post('http://localhost:8888/purchase/add', { user, postId, productCount, date });
+      // if (result.data.flag) {
+        alert('결제가 완료되었습니다!');
+        navigate('/shop');
+      // }
     }
     else if (result.event == 'cancel') {
       setShowBuyModal(false);
