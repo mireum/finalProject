@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { pushUserInfo } from '../../features/userInfoSlice';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SignupWrapper = styled.div`
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
@@ -94,8 +95,8 @@ function Signup(props) {
   const [signUserNicname, setSignUserNicname] = useState(); // 유저닉네임
   const [signDogType, setSignDogType] = useState(); // 견종
   const [signDogAge, setSignDogAge] = useState(); // 개나이
+  const [signDogWeight, setSignDogWeight] = useState(); // 개몸무게
   const [signDogName, setSignDogName] = useState(); // 개이름
-  const [weight, setSignWeight] = useState(); // 개몸무게
   /* 몸무게??? 기입할까 */
 
   const dispatch = useDispatch();
@@ -116,16 +117,27 @@ function Signup(props) {
   const changeDogAge = (e) => {
     setSignDogAge(e.target.value)
   }
+  const changeDogWeigth = (e) => {
+    setSignDogWeight(e.target.value);
+  }
   const changeDogNmae = (e) => {
     setSignDogName(e.target.value)
   }
   const userInput = { signId, signPw, signUserNicname, signDogType, signDogAge, signDogName }
 
+  // const handleSignUp = () => {
+  //   dispatch(pushUserInfo(userInput));
+  //   window.localStorage.setItem(signId, JSON.stringify(userInput)); // 회원정보 로컬스토리지
+  //   navigate('/login')
+  // }
   const handleSignUp = () => {
     dispatch(pushUserInfo(userInput));
-    window.localStorage.setItem(signId, JSON.stringify(userInput)); // 회원정보 로컬스토리지
+    axios.post('http://localhost:8888/register', { userInput })
     navigate('/login')
   }
+
+
+  const test = ['허스키', '푸들', '리트리버', '포메라니안', '스피츠']
   return (
     <SignupWrapper>
       <div class="container" onclick="onclick">
@@ -165,13 +177,37 @@ function Signup(props) {
             value={signDogType}
             onChange={changeDogType}
           />
+          <select
+            id='signDogType'
+            value={signDogType}
+            onChange={changeDogType}
+          >
+            {/* <option value={'푸들'}>푸들</option>
+            <option value={'리트리버'}>리트리버</option>
+            <option value={'허스키'}>허스키</option>
+            <option value={'포메라니안'}>포메라니안</option>
+            <option value={'스피츠'}>스피츠</option> */}
+            {
+              test.map((a) => {
+                return (<option>{a}</option>)
+              })
+            }
+          </select>
           <label htmlFor='signDogAge' /> {/* 개나이 */}
           <input
             id='signDogAge'
-            type="text"
+            type="number"
             placeholder="DogAge"
             value={signDogAge}
             onChange={changeDogAge}
+          />
+          <label htmlFor='signDogWeight' /> {/* 개무게 */}
+          <input
+            id='signDogWeight'
+            type="number"
+            placeholder="DogWeight"
+            value={signDogWeight}
+            onChange={changeDogWeigth}
           />
           <label htmlFor='signDogName' /> {/* 개이름 */}
           <input
