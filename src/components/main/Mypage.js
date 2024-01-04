@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AiFillEdit } from "react-icons/ai";
@@ -24,8 +24,9 @@ const Container = styled.div`
       justify-content: space-between;
       margin: 26px 10px;
       position: relative;
-      input {
-        width: 70%;
+      line-height: 30px;
+      input, select {
+        width: 50%;
         height: 2rem;
         border-radius: 10px;
         text-align: center;
@@ -50,29 +51,56 @@ const Container = styled.div`
         font-size: 20px;
         position: absolute;
         right: 10px;
-        top: 2px;
         cursor: pointer;
       }
     }
   }
 `;
 
+
 function Mypage(props) {
   // const user = useSelector();
+  const [ OnInput, setOnInput ] = useState({
+    nick: false,
+    dogtype: false,
+    dogname: false,
+    dogage: false,
+  })
+
+  const spacies = [ '말티즈', '푸들', '치와와', '포메라니안',
+    '시츄', '스파니엘', '닥스훈트', '보더콜리', '리트리버', '비글', 
+    '진돗개', '웰시코기', '도베르만', '불독', '사모예드', '시바견',
+    '퍼그', '셰퍼드', '달마시안'];
 
   return (
     <Container>
       <div className='box'>
         <h1>내 정보</h1>
         <div className='inner'>이름<input type='text' value='qwer' disabled/></div>
+        <div className='inner'>이메일<input type='text' value='qwer' disabled/></div>
         <div className='inner'>닉네임 
-          <input type='text' />
+          <input type='text' disabled />
           <div className='editBtn'>
             <AiFillEdit />
           </div>
         </div>
-        <div className='inner'>강아지 이름 <input type='text' /></div>
-        <div className='inner'>강아지 나이 <input type='text' /></div>
+        <div className='inner'>강아지 종류 
+          <select type='text' >
+            {spacies.map(item => <option>{item}</option>)}
+          </select>
+        </div>
+        <div className='inner'>강아지 이름 
+          <input type='text' disabled/>
+          <div className='editBtn'>
+            <AiFillEdit />
+          </div>
+        </div>
+        <div className='inner'>강아지 나이 
+          <input type='text' disabled/>
+          <div className='editBtn'>
+            <AiFillEdit />
+          </div>
+        </div>
         
         <div className='inner'>
           <button type='button' className='botton'>비밀번호 변경</button>
