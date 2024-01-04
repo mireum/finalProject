@@ -68,21 +68,29 @@ function DailyDogWrite(props) {
   const testList = useSelector(selectDailyDogList);
 
   const [ values, setValues ] = useState({
+    id: '',
     title: '',
     content: '',
-    img: [],
   });
+  const [ images, setImages ] = useState([]);
+  const [ imagesKey, setImagesKey ] = useState([]);
 
-  const { title, content, src } = values;
+  const { id, title, content } = values;
+
+  useEffect(() => {
+    const dailyDogData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8888/community/daily');
+        setValues(prevValue => ({ ...prevValue, id: response.data.data ? response.data.data.length + 1 : 1 }));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    dailyDogData();
+  }, [])
 
   const editorRef = useRef();
 
-  // 이미지 파일명으로 가져오기
-  const onUploadImage = async (blob, callback) => {
-    console.log(blob);
-
-  }
-  
   const titleOnChange = (e) => {
    const title = e.target.value
    setValues(value => ({ ...value, title }));
@@ -90,55 +98,8 @@ function DailyDogWrite(props) {
 
   const contentOnChange = () => {
     const content = editorRef.current?.getInstance().getHTML();
-    console.log(content);
-    let word = content.substring(content.indexOf('src')+5, content.indexOf('contenteditable')-2);
-    if (word.length < 10) {
-      word = '';
-    }
-    setValues(value => ({ ...value, content, src: word }));
+    setValues(value => ({ ...value, content }));
   };
-
-  const handleSubmitValue = async () => {
-
-    if (title && content) {
-      try {
-        const formData = new FormData();
-
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('title', title);
-
-        await axios.post('http://localhost:8888/community/daily/insert', { title, content, src })
-        alert('게시글이 등록되었습니다.');
-        navigate('/community/dailyDog');
-      } catch (err) {
-        console.error(err);
-      }
-    } else if (!title) {
-      alert('제목을 입력해주세요.');
-    } else if (!content) {
-      alert('내용을 입력해주세요.');
-    }
-
-    // const newDaily = {
-    //   id: testList.length + 1,
-    //   title,
-    //   content,
-    //   src,
-    // }
-
-    // if (title && content) {
-    //   dispatch(addListToDailyDog(newDaily));
-    //   alert('게시글이 등록되었습니다.');
-    //   navigate('/community/dailyDog');
-    // } else if (!title) {
-    //   alert('제목을 입력해주세요.');
-    // } else if (!content) {
-    //   alert('내용을 입력해주세요.');
-    // }
-  };
-
-
 
   // 이미지 첨부를 위한 코드
   // https://kim-hasa.tistory.com/133
@@ -150,14 +111,16 @@ function DailyDogWrite(props) {
           let formData = new FormData();
           formData.append('img', blob);
 
-          await axios.post('http://localhost:8888/community/daily/insert', formData, {
+          const response = await axios.post('http://localhost:8888/community/daily/insert/image', formData, {
             header: { 'content-type': 'multipart/formdata' },
             withCredentials: true,
           });
 
-          const imageUrl = `https://finaltp.s3.ap-northeast-2.amazonaws.com/original/${Date.now()}_${blob.name}`;
+          const imageUrl = `${response.data.fileName}`;
+          const imageKey = `${response.data.fileKey}`;
+          setImages(image => [ ...image, imageUrl ]);
+          setImagesKey(imagekey => [ ...imagekey, imageKey ]);
 
-          setValues(prevValue => ({ ...prevValue, img: imageUrl }));
           callback(imageUrl, 'img');
         })();
 
@@ -167,6 +130,23 @@ function DailyDogWrite(props) {
 
     return () => {};
   }, [editorRef]);
+
+  const handleSubmitValue = async () => {
+
+    if (title && content) {
+      try {
+        await axios.post('http://localhost:8888/community/daily/insert', { id, title, content, imgUrl: images, imgKey: imagesKey })
+        alert('게시글이 등록되었습니다.');
+        navigate('/community/dailyDog');
+      } catch (err) {
+        console.error(err);
+      }
+    } else if (!title) {
+      alert('제목을 입력해주세요.');
+    } else if (!content) {
+      alert('내용을 입력해주세요.');
+    }
+  };
 
   return (
     <DailyDogWriteContainer>
@@ -187,7 +167,6 @@ function DailyDogWrite(props) {
         plugins={[colorSyntax]}
         hideModeSwitch={true}
         onChange={contentOnChange}
-        hooks={{addImageBlobHook: onUploadImage}}
       />  
       <div className='btn-box'>
         <button onClick={() => navigate(-1)}>취소</button>

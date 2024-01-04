@@ -128,8 +128,6 @@ const FleamarketWriteContainer = styled.div`
 
 function FleamarketWrite(props) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const testList = useSelector(selectFleamarket);
 
   const [ values, setValues ] = useState(
     {
@@ -143,7 +141,6 @@ function FleamarketWrite(props) {
   );
   const [ images, setImages ] = useState([]);
   const [ sendImages, setSendImages ] = useState([]);
-  const [ imagesLimit, setImagesLimit ] = useState([]);
   const [ represent, setRepresent ] = useState(images[0]);
 
   const { id, title, price, category, place, content } = values;
@@ -162,6 +159,7 @@ function FleamarketWrite(props) {
 
   const handleFileChange = async (e) => {
     const files = e.target.files;
+    console.log(files);
     setSendImages(prevSendImg => [...prevSendImg, ...files]);
 
     if (files && files.length > 0) {
@@ -195,8 +193,6 @@ function FleamarketWrite(props) {
     const { name, value } = e.target;
     setValues(prevValue => ({ ...prevValue, [name]: value }));
   }
-
-  console.log(id);
 
   const handleSubmitValue = async () => {
 
@@ -233,34 +229,6 @@ function FleamarketWrite(props) {
     } else if (!content) {
       alert('내용을 입력해주세요.');
     }
-    
-    // const newItem = {
-    //   id: testList.length + 1,
-    //   title,
-    //   price,
-    //   category,
-    //   place,
-    //   content,
-    //   src: images,
-    // }
-
-    // if (title && price && category && place && content && images[0]) {
-    //   dispatch(addItemToFleamarket(newItem));
-    //   alert('게시글이 등록되었습니다.');
-    //   navigate('/community/Fleamarket');
-    // } else if (!images[0]) {
-    //   alert('최소 1장 이상의 사진을 첨부해주세요.');
-    // } else if (!title) {
-    //   alert('제목을 입력해주세요.');
-    // } else if (!price) {
-    //   alert('가격을 입력해주세요.');
-    // } else if (!category) {
-    //   alert('카테고리를 정해주세요.');
-    // } else if (!place) {
-    //   alert('장소를 입력해주세요.');
-    // } else if (!content) {
-    //   alert('내용을 입력해주세요.');
-    // }
   }
 
   return (

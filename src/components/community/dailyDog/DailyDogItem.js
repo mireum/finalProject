@@ -29,15 +29,15 @@ const ItemImage = styled.img`
 `;
 
 function DailyDogItem(props) {
-  const { item: { id, title, src } } = props;
+  const { item: { id, title, imgUrl } } = props;
 
   const navigate = useNavigate();
 
   return (
     <>
       <StyledCol md={4} onClick={() => navigate(`/community/dailyDog/${id}`)}>
-        {src 
-          ? <ItemImage src={src} />
+        {imgUrl[0] 
+          ? <ItemImage src={imgUrl[0]} />
           : <ItemImage src={testImage} /> 
         }
         <h2>{title}</h2>

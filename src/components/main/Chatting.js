@@ -178,8 +178,7 @@ function Chatting(props) {
   }, [chats]);
 
   useEffect(() => {
-    socket.on("start", data => {
-      console.log(data);
+    socket.on("sendMsg", data => {
       setChats([...chats, data.msg]);
     });
   }, [chats]);

@@ -25,7 +25,6 @@ const ItemImage = styled.img`
 function FleamarketItem(props) {
   const { item: { id, title, price, category, place, src, imgUrl }, index } = props;
 
-  console.log(props);
   const navigate = useNavigate();
 
   return (

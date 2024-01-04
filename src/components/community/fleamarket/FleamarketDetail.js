@@ -106,23 +106,7 @@ const FleamarketDetailContainer = styled.div`
 `;
 
 function FleamarketDetail(props) {
-
   const navigate = useNavigate();
-
-  // const [ item, setItem ] = useState(null);
-
-  // useEffect(() => {
-  //   const getItem = async () => {
-  //     const result = await getFleamarketById();
-  //     setItem(result);
-  //   } 
-  //   getItem();
-  // }, []);
-
-  // if (!item) {
-  //   return null;
-  // }
-
   const [ item, setItem ] = useState('');
   const { id } = useParams();
 
