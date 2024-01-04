@@ -271,7 +271,7 @@ const Modal = styled.div`
 
 function DetailReview(props) {
   const navigate = useNavigate();
-  const [review, setReview] = useState('');
+  const [upDown, setUpDown] = useState('등록순');
   const [content, setContent] = useState('');
   const [reviewList, setReviewList] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
