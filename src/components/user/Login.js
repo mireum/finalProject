@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getLoginUser, getLoginUserInfo, pushUserInfo, selectUserList } from '../../features/userInfoSlice';
+import axios from 'axios';
 
 
 const Test = styled.div`
@@ -18,7 +19,8 @@ body{
   right: 0;
   width:100%;
   height:100%;
-  /* overflow:hidden; */
+  max-width: 100%;
+  overflow:hidden;
   &:hover,&:active{
     .top, .bottom{
       &:before, &:after{
@@ -101,28 +103,27 @@ function Login(props) {
   console.log(로그인중);
 
 
-  const changeId = (e) => {
-    setId(e.target.value)
-  }
-  const changePw = (e) => {
-    setPw(e.target.value)
-  }
+  const changeId = (e) => { setId(e.target.value) }
+  const changePw = (e) => { setPw(e.target.value) }
+  const loginInput = { id, pw }
 
   const handleLogin = () => {
-    if (!id) {
-      alert('아이디를 입력하세요.');
-    } else if (!pw) {
-      alert('비밀번호를 입력하세요.');
-    } else if (localStorageInfoStr?.signId !== id) {
-      alert('아이디 또는 비밀번호가 틀림');
-    } else if (localStorageInfoStr?.signPw !== pw) {
-      alert('비밀번호가 틀림');
-    } else {
-      alert('환영합니다' + localStorageInfoStr.signUserNicname + '님');
-      dispatch(getLoginUserInfo(localStorageInfoStr));
-      navigate('/');
-    }
-  }
+    // if (!id) {
+    //   alert('아이디를 입력하세요.');
+    // } else if (!pw) {
+    //   alert('비밀번호를 입력하세요.');
+    // } else if (localStorageInfoStr?.signId !== id) {
+    //   alert('아이디 또는 비밀번호가 틀림');
+    // } else if (localStorageInfoStr?.signPw !== pw) {
+    //   alert('비밀번호가 틀림');
+    // } else {
+    const result = axios.post('http://localhost:8888/user/login', { loginInput }, { withCredentials: true });
+    // alert('환영합니다' + localStorageInfoStr.signUserNicname + '님');
+    // dispatch(getLoginUserInfo(localStorageInfoStr));
+    navigate('/');
+    console.log(result);
+    // }
+  };
 
   return (
     <Test>
@@ -131,6 +132,7 @@ function Login(props) {
         <div class="bottom"></div>
         <div class="center">
           <h2>로그인 하십셔~~</h2>
+          <h2 onClick={() => { navigate('/') }}>홈홈홈홈홈홈홈</h2>
           <label htmlFor='id' />
           <input
             id='id'
