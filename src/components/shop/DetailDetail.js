@@ -133,7 +133,6 @@ const DetailBox = styled.div`
 `;
 
 function DetailDetail(props) {
-//   const { title, price, rate, brand, age, size } = props.product;
   const { title, price, rate, content, age, size, brand } = props.product;
   const navigate = useNavigate();
 
