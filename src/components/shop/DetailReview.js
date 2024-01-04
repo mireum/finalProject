@@ -266,15 +266,16 @@ function DetailReview(props) {
 
 
   useEffect(() => {
-    const list = async () => {
-      try {
-        const result = await axios.get(`http://localhost:8888/review/${postId}`);
-        setReviewList(result.data);
+    try {
+        const list = async () => {
+          const result = await axios.get(`http://localhost:8888/shop/review/${postId}`);
+          console.log(result.data);
+          setReviewList(result.data.itemReview);
+        }
         list();
       } catch (err) {
         console.error(err);
       }
-    }
   }, []);
   
   const handleSubmit = async (e) => {
@@ -284,14 +285,20 @@ function DetailReview(props) {
         return alert('내용을 입력해주세요!');
       }
       const formData = new FormData();
-      const fileList = e.target.image.files[0];
-      console.log(fileList);
-      for (const file of fileList) {
-        formData.append('image', file);
-      }
-      const result = await axios.post('라우터 주소', { content, star, formData });
-      // const result = await axios.get('라우터 주소', );
-      setReviewList(result.data);
+      const fileInput = document.querySelector('input[type=file]');
+      const img = fileInput.files[0];
+      const date = dateFormat(new Date());
+      
+      formData.append('img', img);
+      formData.append('star', star);
+      formData.append('content', content);
+      formData.append('postId', postId);
+      formData.append('title', title);
+      formData.append('date', date);
+
+      const result = await axios.post(`http://localhost:8888/shop/reviewInsert/${postId}`, formData);
+      console.log(result.data);
+      // setReviewList(result.data);
     } catch (err) {
       console.error(err);
     }
@@ -356,7 +363,7 @@ function DetailReview(props) {
         )}
       </ReviewContainer>
       {modalOpen && 
-        <Modal review={content} setReview={setContent}>
+        <Modal>
           <div className='modal-wrap'>
             <form>
               <h3>리뷰 작성📝</h3>
@@ -380,7 +387,7 @@ function DetailReview(props) {
                 onChange={(e) => {setContent(e.target.value)}}
               />
               <div className='filebox'>
-                <input type='file' name="image" id='file_upload' multiple />
+                <input type='file' name="img" id='file_upload' />
               </div>
               
               <div className='btn-wrap'>

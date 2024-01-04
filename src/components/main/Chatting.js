@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
 const ChattingContainer = styled.div`
   max-width: 1200px;
