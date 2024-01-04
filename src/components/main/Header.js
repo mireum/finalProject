@@ -118,6 +118,7 @@ function Header(props) {
   const navigate = useNavigate();
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
   const [ logdrop, setLogdrop ] = useState(false);
+  console.log(로그인중);
 
   const [isHover, setIsHover] = useState({
     communityTap: false,
@@ -166,6 +167,11 @@ function Header(props) {
           <div className='headerInner'>
             <div className='mainMenu'>
               <a><img src='' alt='logo' /></a>
+              <a
+                style={{ color: 'blue' }}
+                onClick={() => navigate('/personaldog')}
+              >{로그인중 ? 로그인중.signDogName : null}
+              </a>
               <a
                 onMouseOver={handleCommunityTapOver}
                 onClick={() => navigate('/')}

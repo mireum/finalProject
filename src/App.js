@@ -23,6 +23,9 @@ import Signup from './components/user/Signup';
 import FleamarketWrite from './components/community/fleamarket/FleamarketWrite';
 import Mypage from './components/main/Mypage';
 
+import PersonalDog from './components/personalDog/PersonalDog';
+import Chatting from './components/main/Chatting';
+
 const GlobalStyle = createGlobalStyle`
   ${reset}
 
@@ -48,6 +51,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/' element={<Main />} >
+          <Route path='/personaldog' element={<PersonalDog />} />
           <Route path='/' element={<Community />} />
           <Route path='/mypage' element={<Mypage />}/>
           <Route path='/community/Toktok' element={<Toktok />} />
@@ -67,6 +71,7 @@ function App() {
           <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
           <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}
           <Route path='/community/Insert/:insertPage' element={<CommunityInsert />} />    {/* 커뮤니티 글등록 페이지 */}
+          <Route path='/user/chatting' element={<Chatting />} />
         </Route>
       </Routes>
     </>

@@ -69,10 +69,13 @@ const ShopContainer = styled.div`
     font-weight: bold; 
   }
   .detail .detail-text .text2 .countBtn {
-    width: 30px;
-    border: 1px solid #111;
+    width: 20px;
+    border-radius: 50%;
+    border: none;
     margin: 0 10px;
     font-weight: bold;
+    padding-bottom: 2px;
+    /* line-height: 1; */
   }
   .detail .totalStar {
     color: #111;
@@ -85,8 +88,8 @@ const ShopContainer = styled.div`
     width: 47%;
     font-weight: bold;
     background-color: #fff;
-    border-radius: 15px;
-    padding: 7px 0px;
+    border-radius: 10px;
+    padding: 10px 0px;
     border: 2px solid #cdcdcd;
   }
   .detail .detail-btn button + button {
