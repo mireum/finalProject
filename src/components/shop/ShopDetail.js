@@ -13,6 +13,8 @@ import DetailExchange from './DetailExchange';
 import ShopModal from './ShopModal';
 import Cart from './Cart';
 import { pay } from './Pay';
+import { getLoginUser, getLoginUserInfo } from '../../features/userInfoSlice';
+import { needLogin } from '../../util';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -23,13 +25,10 @@ const ShopContainer = styled.div`
     align-items: center;
   }
   .detail .detail-img .img{
-    background-image: url(${feed});
-    background-position: center;
-    background-size: 500px 500px;
     border-radius: 10px;
     border: 0.5px solid #cdcdcd;
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
   }
  
   .detail .detail-text p,
@@ -145,15 +144,15 @@ const LinkBox = styled(Nav.Link)`
 
 
 function ShopDetail(props) {
-  // const { productId } = useParams(); // app.js에서 지은
+  const { postId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [ productCount, setProductCount ] = useState(1);
   const [showTab, setShowTab] = useState('detail');
   const [showModal, setShowModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
-  const navigate = useNavigate();
-  // const product = useSelector(selectSelectedProduct);
-
+  const user = useSelector(getLoginUser);
+  const product = useSelector(selectSelectedProduct);
 
   const handleMinus = () => {
     if (productCount != 1) setProductCount(productCount-1);
@@ -163,8 +162,20 @@ function ShopDetail(props) {
     setProductCount(productCount+1);
   };
 
-  const handleCart = async () => {
-    // await axios.post('', { userId, id, productCount });
+  const handleCart = async (title, price) => {
+    // if (!user) {
+    //   const result = needLogin();
+    //   if (result) navigate('/login');
+    //   else return
+    // }
+    try {
+      // 로그인 연동 후에 다시
+      const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount });
+      console.log(result);
+      
+    } catch (error) {
+      console.error(error);
+    }
     setShowModal(true);
   }
 
@@ -183,9 +194,11 @@ function ShopDetail(props) {
     const result = await pay(product, productCount, productCount * product.price);
     console.log(result);
     if (result.event == 'done' || result.event == 'issued') {
-      // const result = await axios.post('', { userId, productId, productCount });
-      alert('결제가 완료되었습니다!');
-      navigate('/shop');
+      // const result = await axios.post('http://localhost:8888/purchase/add', { user, postId, productCount, date });
+      // if (result.data.flag) {
+        alert('결제가 완료되었습니다!');
+        navigate('/shop');
+      // }
     }
     else if (result.event == 'cancel') {
       setShowBuyModal(false);
@@ -193,46 +206,49 @@ function ShopDetail(props) {
     }
   };
  
-  // useEffect(() => {
-  //   // 서버에 특정 상품의 데이터 요청
-  //   const fetchProductById = async () => {
-  //     try {
-  //       const response = await axios.get(`라우터주소${productId}`);
-  //       dispatch(getSelectedProduct(response.data))
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchProductById();
+  useEffect(() => {
+    // 서버에 특정 상품의 데이터 요청
+    const fetchProductById = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8888/shop/detail/${postId}`);
+        dispatch(getSelectedProduct(response.data.itemDetail))
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductById();
 
-  //   return () => {
-  //     dispatch(clearSelectedProduct());
-  //   };
-  // }, []);
+    return () => {
+      dispatch(clearSelectedProduct());
+    };
+  }, []);
 
 
-  // if (!product) {
-  //   return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
-  // } 
+  if (!product) {
+    return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
+  } 
 
-  const product = {
-    id: 1,
-    title: '퍼펙션 패드 소형 베이비파우더향 30매',
-    price: 180,
-    rate: 3.6,
-    content: '맛있는 사료에요',
-    age: 5,
-  };
-  const { title, price } = product;
+  // const product = {
+  //   id: 1,
+  //   title: '퍼펙션 패드 소형 베이비파우더향 30매',
+  //   price: 180,
+  //   rate: 3.6,
+  //   content: '맛있는 사료에요',
+  //   age: 5,
+  //   size: 'middle',
+  // };
+  console.log(product);
+  const { brand, title, price, imgUrl } = product;
 
   return (
     <ShopContainer>
       <div className='detail'>
         <div className='detail-img'>
-          <img className='img'/>
+          <img className='img' src={imgUrl}/>
         </div>
         <div className='detail-text'>
-          <p>프로도기</p>
+          <p>{brand}</p>
+          <div>별점</div>
           <h3>{title}</h3>
           <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>
@@ -243,14 +259,11 @@ function ShopDetail(props) {
           </span><br />
           <span className='text1'>배송방법</span>
           <span className='text2'>무료배송</span>
-          <div className='totalStar'>
-            <p>평점:</p>
-          </div>
           <div className='detail-btn'>
             <button 
               type='submit' 
               className='cart cursor-pointer'
-              onClick={() => {handleCart()}}
+              onClick={() => {handleCart(title, price)}}
             >장바구니</button>
             <button type='submit' className='buy cursor-pointer'
               onClick={handleBuy}
@@ -298,18 +311,14 @@ function ShopDetail(props) {
       {
         {
           'detail': <div><DetailDetail product={product} /></div>,
-          'review': <div><DetailReview /></div>,
-          // qa에 productId줌
-          'qa': <div><DetailQnA /></div>,
+          'review': <div><DetailReview product={product} postId={postId} /></div>,
+          'qa': <div><DetailQnA postId={postId} /></div>,
           'exchange': <div><DetailExchange /></div>
         }[showTab]
       }
       </TabContainer>
       
-      {showModal && <ShopModal  show={showModal} open={openModal} close={closeModal}/>}
-      {/* {showModal && <Cart />} */}
-      {/* {showModal && <ShopModal serShowModal={setShowModal}/>} */}
-
+      {showModal && <ShopModal show={showModal} open={openModal} close={closeModal}/>}
     </ShopContainer>
   );
 }

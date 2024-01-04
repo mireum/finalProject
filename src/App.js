@@ -21,6 +21,7 @@ import KakaoMap from './components/KakaoMap';
 import Login from './components/user/Login';
 import Signup from './components/user/Signup';
 import FleamarketWrite from './components/community/fleamarket/FleamarketWrite';
+import Mypage from './components/main/Mypage';
 
 import PersonalDog from './components/personalDog/PersonalDog';
 import Chatting from './components/main/Chatting';
@@ -52,11 +53,11 @@ function App() {
         <Route path='/' element={<Main />} >
           <Route path='/personaldog' element={<PersonalDog />} />
           <Route path='/' element={<Community />} />
+          <Route path='/mypage' element={<Mypage />}/>
           <Route path='/community/Toktok' element={<Toktok />} />
-          <Route path='/shop' element={<Shop />} />
+          <Route path='/shop/:nextId?' element={<Shop />} />
           <Route path='/cart' element={<Cart />} />
-          {/* 나중에 ? 지우기 */}
-          <Route path='/shop/detail/:productId?' element={<ShopDetail />} />
+          <Route path='/shop/detail/:postId' element={<ShopDetail />} />
           {/* <Route path='/shop/detail/:productId?/quest' element={<Question />} /> */}
           <Route path='/shop/detail/quest' element={<Question />} />
           <Route path='/community/Toktok' element={<Toktok />} />   {/* toktok 메인화면 */}
