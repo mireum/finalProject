@@ -356,6 +356,9 @@ function DetailReview(props) {
     setModalOpen(false);
   };
 
+  const handleChangeList = (e) => {
+    const value = e.target.value;
+  };
   
   return (
     <>
