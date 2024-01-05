@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MdDelete } from "react-icons/md";
 import { dateFormat } from '../../util';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Star from './Star';
 import StarStar from './StarReview';
 import StarReview from './StarReview';
@@ -11,6 +11,8 @@ import StarReview from './StarReview';
 const ReviewContainer = styled.div`
   margin: 0 auto;
   width: 83%;
+  display: flex;
+  flex-direction: column;
 
   .review-wrap h3 {
     font-size: 30px;
@@ -26,6 +28,14 @@ const ReviewContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
+  }
+  .sorting {
+    text-align: center;
+    border-radius: 10px;
+    padding: 3px 5px;
+    width: 13%;
+    align-self: flex-end;
+    margin-bottom: 10px;
   }
   .review-wrap {
     width: 50%;
@@ -59,6 +69,9 @@ const ReviewContainer = styled.div`
     padding: 5px 10px;
     border-radius: 10px;
   }
+  .list .starwrap {
+    margin-bottom: 10px;
+  }
   .list div img {
     width: 180px;
     height: 180px;
@@ -66,6 +79,11 @@ const ReviewContainer = styled.div`
   }
   .list .titlewrap {
     width: 600px;
+    margin-left: 20px;
+  }
+  .list .titlewrap .date {
+    margin: 5px 0px 10px;
+    display: inline-block;
   }
   .list div:nth-child(1) {
     margin-bottom: 5px;
@@ -95,6 +113,7 @@ const ReviewContainer = styled.div`
 `;
 
 const Modal = styled.div`
+  overflow-y: auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -258,6 +277,7 @@ function DetailReview(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [star, setStar] = useState('');
   const { product: { brand, title }, postId } = props;
+  // const params = useParams();
 
   const handleStar = (rate) => {
     setStar(rate);
@@ -266,7 +286,7 @@ function DetailReview(props) {
 
 
   useEffect(() => {
-    try {
+      try {
         const list = async () => {
           const result = await axios.get(`http://localhost:8888/shop/review/${postId}`);
           console.log(result.data);
@@ -284,10 +304,11 @@ function DetailReview(props) {
       if (!content) {
         return alert('내용을 입력해주세요!');
       }
-      const formData = new FormData();
       const fileInput = document.querySelector('input[type=file]');
       const img = fileInput.files[0];
       const date = dateFormat(new Date());
+      console.log(img);
+      const formData = new FormData();
       
       formData.append('img', img);
       formData.append('star', star);
@@ -296,9 +317,10 @@ function DetailReview(props) {
       formData.append('title', title);
       formData.append('date', date);
 
-      const result = await axios.post(`http://localhost:8888/shop/reviewInsert/${postId}`, formData);
-      console.log(result.data);
-      // setReviewList(result.data);
+      const result = await axios.post(`http://localhost:8888/shop/reviewInsert/${postId}`, formData );
+      // const result = await axios.get(`http://localhost:8888/shop/review/${postId}`, { params: { postId }} );
+      console.log(result);
+      setReviewList(result.data);
     } catch (err) {
       console.error(err);
     }
@@ -322,6 +344,11 @@ function DetailReview(props) {
     // navigate('/login');
     // }
     setModalOpen(true);
+    if (modalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
   };
 
   const closeModal = () => {
@@ -341,16 +368,18 @@ function DetailReview(props) {
         </div>
         
         <hr />
-        
+        <select className='sorting'>
+          <option>최신순</option>
+          <option selected>등록순</option>
+        </select>
         {reviewList.length > 0 && (
-          // reviewList.map((item, index) => {
           reviewList && reviewList.map((item, index) => {
             return (
               <div className='list' key={index}>
-                <div><img src={item.image}/></div>
+                <div><img src={item.imgUrl}/></div>
                 <div className='titlewrap'>
-                  <StarReview star={item.star}/>
-                  {/* <p>{item.star}</p> */}
+                  <p className='starwrap'><StarReview star={item.star}/></p>
+                  <p>상품명: {item.title}</p>
                   <p className='userId'>{item.id}<span className='date'>{dateFormat(item.date)}</span></p>
                   <p>{item.content}</p>
                 </div>

@@ -10,13 +10,13 @@ const RatingBox = styled.div`
     cursor: pointer;
   }
   :hover svg {
-    color: red;
+    color: #B4BDFF;
   }
   & svg:hover ~ svg {
     color: #C4C4C4;
   }
-  .red {
-    color: red;
+  .true {
+    color: #B4BDFF;
   }
 `;
 
@@ -46,7 +46,7 @@ function Star({handleStar}) {
           <FaStar 
             key={index}
             onClick={() => {handleStarClick(item)}}
-            className={clicked[item] && 'red'}
+            className={clicked[item] && 'true'}
             size="35"
           />
         )
