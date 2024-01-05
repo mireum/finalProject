@@ -5,7 +5,6 @@ import { AiFillEdit } from "react-icons/ai";
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 
-
 const Container = styled.div`
   margin: 0 auto;
   max-width: 1200px;
@@ -54,9 +53,6 @@ const Container = styled.div`
         margin-top: 20px;
         margin-left: 20px;
       }
-      /* button + button {
-        margin-left: 20px;
-      } */
       button:hover, .inputBtn:hover {
         background-color: #2c619e;
       }
@@ -69,7 +65,6 @@ const Container = styled.div`
     }
   }
 `;
-
 
 function Mypage(props) {
   const dispatch = useDispatch();
