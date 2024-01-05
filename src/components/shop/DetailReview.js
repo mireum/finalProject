@@ -291,7 +291,6 @@ function DetailReview(props) {
           const result = await axios.get(`http://localhost:8888/shop/review/${postId}`);
           console.log(result.data);
           setReviewList(result.data.itemReview);
-          // console.log(result.data);
         }
         list();
       } catch (err) {
@@ -310,14 +309,14 @@ function DetailReview(props) {
       const date = dateFormat(new Date());
       console.log(img);
       const formData = new FormData();
-      // for (const img of imgs) {
-      // }
+      
       formData.append('img', img);
       formData.append('star', star);
       formData.append('content', content);
       formData.append('postId', postId);
       formData.append('title', title);
       formData.append('date', date);
+
       const result = await axios.post(`http://localhost:8888/shop/reviewInsert/${postId}`, formData );
       // const result = await axios.get(`http://localhost:8888/shop/review/${postId}`, { params: { postId }} );
       console.log(result);
