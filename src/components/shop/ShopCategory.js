@@ -57,37 +57,37 @@ const StyledCategory = styled.ul`
   }
 `;
 
+
 function ShopCategory(props) {
   const dispatch = useDispatch();
 
   // 카테고리 별 페이지 요청 할 axios
   const axiosAll = async () => {
-    // const result = await axios.get();
-    // dispatch(getProducts(result.data));
-    // dispatch(getSelectedCategory(''));
+    const result = await axios.get(`http://localhost:8888/shop/`);
+    dispatch(getProducts(result.data.posts));
+    dispatch(getSelectedCategory(''));
   };
   const axiosFeed = async () => {
-    // const result = await axios.get();
-    // dispatch(getProducts(result.data));
-    // dispatch(getSelectedCategory('feed'));
+    const result = await axios.get(`http://localhost:8888/shop/feed`);
+    dispatch(getProducts(result.data.posts));
+    dispatch(getSelectedCategory('feed'));
   };
   const axiosSnack = async () => {
     // const result = await axios.get();
-    // dispatch(getProducts(result.data));
+    // dispatch(getProducts(result.data.posts));
     // dispatch(getSelectedCategory('snack'));
   };
   const axiosBeauty = async () => {
     // const result = await axios.get();
-    // dispatch(getProducts(result.data));
+    // dispatch(getProducts(result.data.posts));
     // dispatch(getSelectedCategory('beauty'));
   };
   const axiosAccessory = async () => {
     // const result = await axios.get();
-    // dispatch(getProducts(result.data));
+    // dispatch(getProducts(result.data.posts));
     // dispatch(getSelectedCategory('accessory'));
   };
   
-
   return (
     <StyledCategory>
       <li onClick={axiosAll}>

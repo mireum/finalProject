@@ -10,31 +10,20 @@ const RatingBox = styled.div`
     cursor: pointer;
   }
   :hover svg {
-    color: red;
+    color: #B4BDFF;
   }
   & svg:hover ~ svg {
     color: #C4C4C4;
   }
-  .red {
-    color: red;
+  .true {
+    color: #B4BDFF;
   }
 `;
 
-
-
 const array = [ 0, 1, 2, 3, 4 ];
-
 
 function Star({handleStar}) {
   const [ clicked, setClicked ] = useState([false, false, false, false, false]);
-
-  // useEffect(() => {
-  //   sendReview();
-  // }, [clicked]);
-
-  // const sendReview = () => {
-  //   let score = clicked.filter(Boolean).length;
-  // };
 
   const handleStarClick = (index) => {
     let clickStates = [...clicked];
@@ -42,7 +31,11 @@ function Star({handleStar}) {
       clickStates[i] = i <= index ? true : false;
     }
     setClicked(clickStates);
-    handleStar(clickStates);
+
+    const sum = clickStates.reduce(function (a, b) {
+      return a + b;
+    })
+    handleStar(sum);
   };
 
 
@@ -53,7 +46,7 @@ function Star({handleStar}) {
           <FaStar 
             key={index}
             onClick={() => {handleStarClick(item)}}
-            className={clicked[item] && 'red'}
+            className={clicked[item] && 'true'}
             size="35"
           />
         )

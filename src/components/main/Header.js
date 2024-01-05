@@ -43,7 +43,27 @@ const HeaderContainer = styled.header`
     }
 
     .sumMenu {
+      position: relative;
+      .dropmenu {
+        position: absolute;
+        top: 26px;
+        left: 20px;
 
+        li {
+          border: 1px solid #111;
+          padding: 8px;
+          background-color: #fff;
+          cursor: pointer;
+        }
+        li:hover {
+          color: blue;
+          font-weight: bold;
+        }
+        li + li {
+          border-top: none;
+        }
+        
+      }
       a {
         font-size: 14px;
         color: #222;
@@ -97,6 +117,7 @@ const NavContainer = styled.nav`
 function Header(props) {
   const navigate = useNavigate();
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
+  const [ logdrop, setLogdrop ] = useState(false);
   console.log(로그인중);
 
   const [isHover, setIsHover] = useState({
@@ -118,6 +139,18 @@ function Header(props) {
   const hadleTapMouseLeave = () => {
     setIsHover(prevHover => ({ ...prevHover, shopTap: false, communityTap: false }));
   };
+
+  const handleDrop = () => {
+    setLogdrop(!logdrop);
+  };
+  const handleMypage = () => {
+    navigate('/mypage');
+    handleDrop();
+  }
+  const handleCart = () => {
+    navigate('/cart');
+    handleDrop();
+  }
 
   // if (communityTap || shopTap) {
   //   const navElement = document.querySelector('nav');
@@ -154,14 +187,18 @@ function Header(props) {
             </div>
             <div className='sumMenu'>
               {로그인중 ?
-                <span>환영합니다 {로그인중.signUserNicname}님</span> :
-                null
+                <span className='cursor-pointer' onClick={handleDrop}>환영합니다 {로그인중.signUserNicname}</span> :
+                <span></span>
               }
-              {로그인중 ?
-                <a onClick={() => navigate('/login')}>로그아웃</a> : /* 로그아웃 할라면 새로고침 한번 ㄱㄱ */
-                <a onClick={() => navigate('/login')}>로그인</a>
+              {logdrop && 
+                <ul className='dropmenu'>
+                  <li onClick={handleMypage}>마이페이지</li>
+                  <li onClick={handleCart}>장바구니</li>
+                  <li onClick={() => navigate('/login')}>로그아웃</li>
+                </ul>
               }
-              <a onClick={() => navigate('/signup')}>회원가입</a>
+              {!로그인중 && <a onClick={() => navigate('/login')}>로그인</a>}
+              {!로그인중 && <a onClick={() => navigate('/signup')}>회원가입</a>}
             </div>
           </div>
         </div>
@@ -173,19 +210,6 @@ function Header(props) {
               <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
               <a onClick={() => navigate('/community/dailyDog')}>데일리독</a>
               <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
-            </div>
-          </NavContainer>
-          : null
-        }
-        {shopTap
-          ?
-          <NavContainer>
-            <div className='navInner'>
-              <a onClick={() => navigate('/')}>쇼핑홈</a>
-              <a onClick={() => navigate('/')}>사료</a>
-              <a onClick={() => navigate('/')}>간식/영양제</a>
-              <a onClick={() => navigate('/')}>배변/위생</a>
-              <a onClick={() => navigate('/')}>산책/놀이</a>
             </div>
           </NavContainer>
           : null

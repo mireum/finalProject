@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import { useSelector } from 'react-redux';
 import { getLoginUser } from '../../features/userInfoSlice';
 
+
 const ChattingContainer = styled.div`
   max-width: 1200px;
   height: 800px;
