@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AiFillEdit } from "react-icons/ai";
 import axios from 'axios';
-import { Button, Modal } from 'bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 
 const Container = styled.div`
@@ -72,18 +72,19 @@ const Container = styled.div`
 
 
 function Mypage(props) {
+  const dispatch = useDispatch();
   // const user = useSelector();
   const [ OnInput, setOnInput ] = useState({
     nick: '',
-    dogtype: '',
-    dogname: '',
-    dogage: '',
+    dogType: '',
+    dogName: '',
+    dogAge: '',
     editNickname: true,
-    editDogtype: true,
+    editDogType: true,
     editDogName: true,
     editDogAge: true,
   });
-  const { nick, dogtype, dogname, dogage, editNickname, editDogtype, editDogName, editDogAge } = OnInput;
+  const { nick, dogType, dogName, dogAge, editNickname, editDogType, editDogName, editDogAge } = OnInput;
 
   const [ showModal, setShowModal ] = useState(false);
 
@@ -96,7 +97,7 @@ function Mypage(props) {
     setOnInput(prev => ({ ...prev, editNickname: false }));
   };
   const handleEditDogType = () => {
-    setOnInput(prev => ({ ...prev, editDogtype: false }));
+    setOnInput(prev => ({ ...prev, editDogType: false }));
   };
   const handleEditDogName = () => {
     setOnInput(prev => ({ ...prev, editDogName: false }));
@@ -111,19 +112,22 @@ function Mypage(props) {
     })
   };
   const handleSave = async () => {
-    if ((editNickname && editDogtype && editDogName && editDogAge)) alert('변경사항이 없습니다.');
+    if ((editNickname && editDogType && editDogName && editDogAge)) alert('변경사항이 없습니다.');
     
-    const result = await axios.post('http://localhost:8888/editPersonalInfo', {nick, dogtype, dogname, dogage}, {withCredentials: true});
+    const result = await axios.post('http://localhost:8888/user/editPersonalInfo', {nick, dogType, dogName, dogAge}, {withCredentials: true});
     if (result.data.flag) alert('저장되었습니다!');
   };
 
   const handleChangePw = async () => {
 
   };
-  const handleQuit = async () => {
+  const handleClickQuit = async () => {
     setShowModal(true);
-    // const result = await axios.get('http://localhost:8888/accountQuit', {withCredentials:true});
-    // if (result.data.flag) 
+  };
+  const handleQuit = async () => {
+    // const result = await axios.get('http://localhost:8888/uesr/accountQuit', {withCredentials:true});
+    // if (result.data.flag) alert(`$(result.data.message)`);
+    // dispatch
   };
 
   return (
@@ -139,21 +143,21 @@ function Mypage(props) {
           </div>
         </div>
         <div className='inner'>강아지 종류 
-          <select type='text' className='input' name='dogtype' onChange={handleChange} disabled={editDogtype}>
+          <select type='text' className='input' name='dogType' onChange={handleChange} disabled={editDogType}>
             {spacies.map((item, index) => <option key={index}>{item}</option>)}
           </select>
-          <div className='editBtn' id='editDogtype' onClick={handleEditDogType}>
+          <div className='editBtn' id='editDogType' onClick={handleEditDogType}>
             <AiFillEdit />
           </div>
         </div>
         <div className='inner'>강아지 이름 
-          <input type='text' className='input' name='dogname' onChange={handleChange} disabled={editDogName} />
+          <input type='text' className='input' name='dogName' onChange={handleChange} disabled={editDogName} />
           <div className='editBtn' id='editDogName' onClick={handleEditDogName}>
             <AiFillEdit />
           </div>
         </div>
         <div className='inner'>강아지 나이 
-          <input type='text' className='input' name='dogage' onChange={handleChange} disabled={editDogAge} />
+          <input type='text' className='input' name='dogAge' onChange={handleChange} disabled={editDogAge} />
           <div className='editBtn' id='editDogAge' onClick={handleEditDogAge}>
             <AiFillEdit />
           </div>
@@ -162,10 +166,10 @@ function Mypage(props) {
         <div className='inner'>
           <input type='button' className='inputBtn' onClick={handleSave} value='변경사항 저장' />
           {/* <button type='button' className='botton' onClick={handleChangePw}>비밀번호 변경</button> */}
-          <button type='button' className='button' onClick={handleQuit}>회원 탈퇴</button>
+          <button type='button' className='button' onClick={handleClickQuit}>회원 탈퇴</button>
       </div>
-      {/* <Modal show={showModal}>
-        <Modal.Header closeButton>
+      {<Modal show={showModal}>
+        <Modal.Header>
           <Modal.Title>알림🛑</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -173,14 +177,14 @@ function Mypage(props) {
           정말 탈퇴하시겠습니까?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary">
+          <Button variant="secondary" onClick={() => {setShowModal(false)}}>
             취소
           </Button>
-          <Button variant="primary" onClick={undefined}>
+          <Button variant="primary" onClick={handleQuit}>
             확인
           </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>}
     </div>
     </Container>
   );
