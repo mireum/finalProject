@@ -7,9 +7,18 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "./app/store";
 import ScrollToTop from "./components/ScrollToTop";
+import { getLoginUserInfo } from './features/userInfoSlice';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const loginUserInfo = JSON.parse(sessionStorage.getItem('userttt'));
+console.log(loginUserInfo);
+const loginUser = async () => {
+  store.dispatch(getLoginUserInfo(loginUserInfo));
+}
+loginUser();
+
 
 root.render(
   <Provider store={store}>
