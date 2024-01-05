@@ -136,6 +136,9 @@ function FleamarketDetail(props) {
     prevArrow: <GrPrevious />,
   };
 
+
+  // 채팅하기 더미 테스트
+  const toChat = 'hosik'
   return (
     <FleamarketDetailContainer>
       <div className='abcd'>
@@ -177,7 +180,7 @@ function FleamarketDetail(props) {
           <p>{item[0].content}</p>
         </div>
         <div className='btn-box'>
-          <button onClick={() => navigate('/user/chatting')}>채팅하기</button>
+          <button onClick={() => navigate(`/user/chatting/${toChat}`)}>채팅하기</button>
         </div>
       </div>
     </FleamarketDetailContainer>

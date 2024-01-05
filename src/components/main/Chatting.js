@@ -153,13 +153,13 @@ const ChattingContainer = styled.div`
 function Chatting(props) {
   const scrollRef = useRef();
   const { id } = useParams();
-  const 로그인중 = useSelector(getLoginUser);
+  const isLogin = useSelector(getLoginUser);
 
   const [ chats, setChats ] = useState([]);
   const [ chatDetail, setChatDetail ] = useState([]);
   const [ value, setValue ] = useState('');
   const [ room, setRoom ] = useState('');
-  // const [ userId, setUserId ] = useState(로그인중.signId);
+  const [ userId, setUserId ] = useState(isLogin?.userId);
   
   const socket = io.connect("http://localhost:8888");
 
@@ -190,7 +190,7 @@ function Chatting(props) {
   // }, [chats]);
   useEffect(() => {
     const getChatListHandler = async () => {
-      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList');
+      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
       setChats(getChatList.data.chatData);
     };
     // 임시
@@ -202,7 +202,7 @@ function Chatting(props) {
 
   const handleToChatroom = async (id) => {
     console.log(id);
-    const chatting = await axios.post(`http://localhost:8888/getChatting`, { id });
+    const chatting = await axios.post(`http://localhost:8888/getChatting`, { id }, {withCredentials: true});
     setChatDetail(chatting.data.resulte[0].chatList)
   };
 
