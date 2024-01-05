@@ -142,7 +142,7 @@ function Login(props) {
 
   return (
     <Test>
-      <div class="container" onClick="onclick">
+      <div class="container">
         <div class="top"></div>
         <div class="bottom"></div>
         <div class="center">
