@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import Parser from 'html-react-parser'
 import styled from 'styled-components';
 import axios from 'axios';
+import DailyDogComment from './DailyDogComment';
+import { BiLike, BiDislike } from "react-icons/bi";
 
 const DailyDogDetailContainer = styled.div`
   max-width: 1200px;
@@ -41,11 +43,38 @@ const DailyDogDetailContainer = styled.div`
   .content-box {
     margin: 40px auto;
     max-width: 460px;
-    min-height: 600px;
+    min-height: 500px;
+  }
+
+  .like-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      width: 26px;
+    }
+
+    .like-btn {
+      margin: 40px 10px;
+      padding: 5px 10px;
+      font-size: 50px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      background: none;
+    }
+
+    .up-btn-acitve {
+      background-color: #B22222;
+    }
+
+    .down-btn-acitve {
+      background-color: #4169E1;
+    }
   }
 
   .comment-box {
-    padding-top: 20px;
+    padding-top: 40px;
     border-top: 1px solid #ccc;
 
     .comment-detail-box {
@@ -78,7 +107,11 @@ const DailyDogDetailContainer = styled.div`
           width: 10%;
           border: none;
           background-color: #fff;
+          color: #68a6fe;
           padding: 10px;
+          font-weight: bold;
+          font-size: 18px;
+          border-radius: 50%;
         }
       }
     }
@@ -93,15 +126,39 @@ const DailyDogDetailContainer = styled.div`
       .comment-one-box {
         display: flex;
 
-        div {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
+        .comment-user-box {
+          padding: 10px;
+          text-align: left;
+
+          & p:first-child {
+            padding: 10px 0;
+          }
+
+          & p:last-child {
+            line-height: 24px;
+          }
+
+          
+          .comment-expanded {
+            
+            p {
+              padding: 0;
+            }
+
+            button {
+              color: #68a6fe;
+              border: none;
+              background: none;
+            }
+          }
         }
 
         span {
           font-weight: bold;
+          padding: 10px 0;
+          margin-right: 10px;
         }
+
       }
     }
     
@@ -113,6 +170,17 @@ function DailyDogDetail(props) {
   const [ item, setItem ] = useState('');
   const [ comments, setComments ] = useState([]);
   const [ newComment, setNewComment ] = useState('');
+  const [ likeBtn, setLikeBtn ] = useState({
+    upBtn: false,
+    downBtn: false,
+  });
+  const [ likeCount, setLikeCount ] = useState({
+    upCount: 0,
+    downCount: 0,
+  });
+
+  const { upBtn, downBtn } = likeBtn;
+  const { upCount, downCount } = likeCount;
 
   useEffect(() => {
     const dailyDogData = async () => {
@@ -151,6 +219,26 @@ function DailyDogDetail(props) {
     setNewComment('');
   }
 
+  const toggleLikeUpBtn = () => {
+    setLikeBtn(prev => ({ ...prev, upBtn: !upBtn, downBtn: false }));
+    
+    if (!upBtn) {
+      setLikeCount(prev => ({ ...prev, upCount: 1, downCount: 0 }))
+    } else {
+      setLikeCount(prev => ({ ...prev, upCount: 0 }))
+    }
+  }
+  
+  const toggleLikeDownBtn = () => {
+    setLikeBtn(prev => ({ ...prev, downBtn: !downBtn, upBtn: false }));
+
+    if (!downBtn) {
+      setLikeCount(prev => ({ ...prev, downCount: -1, upCount: 0 }))
+    } else {
+      setLikeCount(prev => ({ ...prev, downCount: 0 }))
+    }
+  }
+
   return (
     <DailyDogDetailContainer>
       <div className='title-box'>
@@ -164,9 +252,25 @@ function DailyDogDetail(props) {
       <div className='content-box'>
         {Parser(item[0].content)}
       </div>
+      <div className='like-box'>
+        <p>{downCount}</p>
+        <button 
+          className={`like-btn ${downBtn && 'down-btn-acitve'}`} 
+          onClick={toggleLikeDownBtn}
+          >
+          <BiDislike />
+        </button>
+        <button 
+          className={`like-btn ${upBtn && 'up-btn-acitve'}`} 
+          onClick={toggleLikeUpBtn}
+        >
+          <BiLike />
+        </button>
+        <p>{upCount}</p>
+      </div>
       <div className='comment-box'>
         <div className='comment-detail-box'>
-          <h2>댓글 2</h2>
+          <h2>댓글 {comments.length}</h2>
           <div className='comment-insert-box'>
             <input 
               type='text' 
@@ -178,19 +282,7 @@ function DailyDogDetail(props) {
           </div>
           <div className='comment-list-box'>
             {comments &&
-              comments.map(comment => 
-                {
-                  return (
-                    <div className='comment-one-box' key={comment._id}>
-                      <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp'/>
-                      <div>
-                        <p><span>작성자</span></p>
-                        <p>{comment.comment}</p>
-                      </div>
-                    </div>
-                  ) 
-                }
-              )
+              comments.map((comment, index) => <DailyDogComment key={index} comment={comment} />)
             }
           </div>
         </div>

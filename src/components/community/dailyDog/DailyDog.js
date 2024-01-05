@@ -3,8 +3,6 @@ import { Container, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import DailyDogItem from './DailyDogItem';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectDailyDogList } from '../../../features/dailyDogSlice';
 import axios from 'axios';
 
 const DailyDogContainer = styled.div`
