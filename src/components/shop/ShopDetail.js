@@ -15,6 +15,7 @@ import Cart from './Cart';
 import { pay } from './Pay';
 import { getLoginUser, getLoginUserInfo } from '../../features/userInfoSlice';
 import { needLogin } from '../../util';
+import StarReview from './StarReview';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -238,7 +239,7 @@ function ShopDetail(props) {
   //   size: 'middle',
   // };
   console.log(product);
-  const { brand, title, price, imgUrl } = product;
+  const { brand, title, price, imgUrl, rate } = product;
 
   return (
     <ShopContainer>
@@ -248,7 +249,7 @@ function ShopDetail(props) {
         </div>
         <div className='detail-text'>
           <p>{brand}</p>
-          <div>별점</div>
+          <div><StarReview star={rate} />{rate}점</div>
           <h3>{title}</h3>
           <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>

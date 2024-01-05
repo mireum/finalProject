@@ -157,7 +157,6 @@ function ItemList(props) {
       case '추천 순':
         array.sort(function (a, b) {
           return Number(a.rate) > Number(b.rate) ? -1 : Number(a.rate) < Number(b.rate) ? 1 : 0;
-          // return a.rate > b.rate ? -1 : a.rate < b.rate ? 1 : 0;
         })
         dispatch(getProducts(array));
         text.textContent = '추천 순';
@@ -184,7 +183,6 @@ function ItemList(props) {
     <ItemContainer>
       <Container>
         <div className='sortBox'>
-          {/* <div className='productCount'>총 {array.length}개 상품</div> */}
           <div className='productCount'>총 {productList.length}개 상품</div>
           <div ref={sortRef} className='sortBtn' onClick={() => setIsOpen(!isOpen)}>
             <div className='text'>추천 순</div>
@@ -199,7 +197,6 @@ function ItemList(props) {
           }
         </div>
         <Row id='itemlist'>
-          {/* {productList.map((item) => {})}; */}
           {productList.map((item, index) => {
             return (
               <div key={index} className='cursor-pointer'>
