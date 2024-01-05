@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -98,32 +98,47 @@ function Login(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const 로그인중 = useSelector(getLoginUser);
-  const localStorageInfo = window.localStorage?.getItem(id);
-  const localStorageInfoStr = JSON.parse(localStorageInfo)
-  console.log(로그인중);
+  sessionStorage.setItem('userttt', JSON.stringify(로그인중));
 
+  // useEffect(() => {
+  //   const userInfo = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:8888/user/login', { withCredentials: true })
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   userInfo();
+  // }, []);
 
   const changeId = (e) => { setId(e.target.value) }
   const changePw = (e) => { setPw(e.target.value) }
-  const loginInput = { id, pw }
 
-  const handleLogin = () => {
-    // if (!id) {
-    //   alert('아이디를 입력하세요.');
-    // } else if (!pw) {
-    //   alert('비밀번호를 입력하세요.');
+  const handleLogin = async () => {
+    try {
+      if (!id) {
+        alert('아이디를 입력하세요.');
+      } else if (!pw) {
+        alert('비밀번호를 입력하세요.');
+      }
+      const result = await axios.post('http://localhost:8888/user/login', { userId: id, passwd: pw }, { withCredentials: true });
+      dispatch(getLoginUserInfo(result.data.user));
+      alert(`환영합니다! ${result.data.user.signUserNicname} 님!`);
+      console.log(result);
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
     // } else if (localStorageInfoStr?.signId !== id) {
     //   alert('아이디 또는 비밀번호가 틀림');
     // } else if (localStorageInfoStr?.signPw !== pw) {
     //   alert('비밀번호가 틀림');
     // } else {
-    const result = axios.post('http://localhost:8888/user/login', { loginInput }, { withCredentials: true });
     // alert('환영합니다' + localStorageInfoStr.signUserNicname + '님');
-    // dispatch(getLoginUserInfo(localStorageInfoStr));
-    navigate('/');
-    console.log(result);
     // }
   };
+
+
 
   return (
     <Test>
@@ -136,6 +151,7 @@ function Login(props) {
           <label htmlFor='id' />
           <input
             id='id'
+            name='id'
             type="text"
             placeholder="id"
             value={id}
@@ -144,6 +160,7 @@ function Login(props) {
           <label htmlFor='pw' />
           <input
             id='pw'
+            name='pw'
             type="password"
             placeholder="password"
             value={pw}

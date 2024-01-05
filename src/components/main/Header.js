@@ -97,8 +97,10 @@ const NavContainer = styled.nav`
 function Header(props) {
   const navigate = useNavigate();
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
-  console.log(로그인중);
-
+  const handleLogOut = () => {
+    sessionStorage.clear();
+    window.location.reload();
+  }
   const [isHover, setIsHover] = useState({
     communityTap: false,
     shopTap: false,
@@ -158,7 +160,7 @@ function Header(props) {
                 null
               }
               {로그인중 ?
-                <a onClick={() => navigate('/login')}>로그아웃</a> : /* 로그아웃 할라면 새로고침 한번 ㄱㄱ */
+                <a onClick={() => handleLogOut()}>로그아웃</a> :
                 <a onClick={() => navigate('/login')}>로그인</a>
               }
               <a onClick={() => navigate('/signup')}>회원가입</a>

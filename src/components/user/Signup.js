@@ -132,7 +132,7 @@ function Signup(props) {
   const changeDogAge = (e) => { setSignDogAge(e.target.value) }
   const changeDogWeigth = (e) => { setSignDogWeight(e.target.value); }
   const changeDogName = (e) => { setSignDogName(e.target.value) }
-  const userInput = { signId, signPw, signEmail, signUserNicname, signDogType, signDogAge, signDogName }
+  const userInput = { userId: signId, passwd: signPw, signEmail, signUserNicname, signDogType, signDogAge, signDogName }
 
   // const handleSignUp = () => {
   //   dispatch(pushUserInfo(userInput));
