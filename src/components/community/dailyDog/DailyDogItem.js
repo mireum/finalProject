@@ -1,5 +1,5 @@
 import React from 'react';
-import testImage from '../../../images/app.jpg'
+import nophoto from '../../../images/nophoto.jpg'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -29,16 +29,16 @@ const ItemImage = styled.img`
 `;
 
 function DailyDogItem(props) {
-  const { item: { id, title, src } } = props;
+  const { item: { id, title, imgUrl } } = props;
 
   const navigate = useNavigate();
 
   return (
     <>
       <StyledCol md={4} onClick={() => navigate(`/community/dailyDog/${id}`)}>
-        {src 
-          ? <ItemImage src={src} />
-          : <ItemImage src={testImage} /> 
+        {imgUrl[0] 
+          ? <ItemImage src={imgUrl[0]} />
+          : <ItemImage src={nophoto} /> 
         }
         <h2>{title}</h2>
       </StyledCol>

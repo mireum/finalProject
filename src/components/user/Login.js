@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getLoginUser, getLoginUserInfo, pushUserInfo, selectUserList } from '../../features/userInfoSlice';
+import axios from 'axios';
 
 
 const Test = styled.div`
@@ -18,7 +19,8 @@ body{
   right: 0;
   width:100%;
   height:100%;
-  /* overflow:hidden; */
+  max-width: 100%;
+  overflow:hidden;
   &:hover,&:active{
     .top, .bottom{
       &:before, &:after{
@@ -96,44 +98,60 @@ function Login(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const 로그인중 = useSelector(getLoginUser);
-  const localStorageInfo = window.localStorage?.getItem(id);
-  const localStorageInfoStr = JSON.parse(localStorageInfo)
-  console.log(로그인중);
+  sessionStorage.setItem('userttt', JSON.stringify(로그인중));
 
+  // useEffect(() => {
+  //   const userInfo = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:8888/user/login', { withCredentials: true })
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   userInfo();
+  // }, []);
 
-  const changeId = (e) => {
-    setId(e.target.value)
-  }
-  const changePw = (e) => {
-    setPw(e.target.value)
-  }
+  const changeId = (e) => { setId(e.target.value) }
+  const changePw = (e) => { setPw(e.target.value) }
 
-  const handleLogin = () => {
-    if (!id) {
-      alert('아이디를 입력하세요.');
-    } else if (!pw) {
-      alert('비밀번호를 입력하세요.');
-    } else if (localStorageInfoStr?.signId !== id) {
-      alert('아이디 또는 비밀번호가 틀림');
-    } else if (localStorageInfoStr?.signPw !== pw) {
-      alert('비밀번호가 틀림');
-    } else {
-      alert('환영합니다' + localStorageInfoStr.signUserNicname + '님');
-      dispatch(getLoginUserInfo(localStorageInfoStr));
+  const handleLogin = async () => {
+    try {
+      if (!id) {
+        alert('아이디를 입력하세요.');
+      } else if (!pw) {
+        alert('비밀번호를 입력하세요.');
+      }
+      const result = await axios.post('http://localhost:8888/user/login', { userId: id, passwd: pw }, { withCredentials: true });
+      dispatch(getLoginUserInfo(result.data.user));
+      alert(`환영합니다! ${result.data.user.signUserNicname} 님!`);
+      console.log(result);
       navigate('/');
+    } catch (error) {
+      console.error(error);
     }
-  }
+    // } else if (localStorageInfoStr?.signId !== id) {
+    //   alert('아이디 또는 비밀번호가 틀림');
+    // } else if (localStorageInfoStr?.signPw !== pw) {
+    //   alert('비밀번호가 틀림');
+    // } else {
+    // alert('환영합니다' + localStorageInfoStr.signUserNicname + '님');
+    // }
+  };
+
+
 
   return (
     <Test>
-      <div class="container" onClick="onclick">
+      <div class="container">
         <div class="top"></div>
         <div class="bottom"></div>
         <div class="center">
           <h2>로그인 하십셔~~</h2>
+          <h2 onClick={() => { navigate('/') }}>홈홈홈홈홈홈홈</h2>
           <label htmlFor='id' />
           <input
             id='id'
+            name='id'
             type="text"
             placeholder="id"
             value={id}
@@ -142,6 +160,7 @@ function Login(props) {
           <label htmlFor='pw' />
           <input
             id='pw'
+            name='pw'
             type="password"
             placeholder="password"
             value={pw}

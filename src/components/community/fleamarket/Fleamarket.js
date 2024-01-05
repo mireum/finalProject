@@ -1,15 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { Button } from 'react-bootstrap';
 import FleamarketItem from './FleamarketItem';
-import testImage from '../../../images/app.jpg'
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectFleamarket } from '../../../features/dailyDogSlice';
-
+import axios from 'axios';
 
 const FleamarketContainer = styled.div`
   max-width: 1200px;
@@ -43,8 +38,19 @@ const FleamarketItemContainer = styled(Container)`
 
 function Fleamarket(props) {
   const navigate = useNavigate();
-  const testList = useSelector(selectFleamarket);
-  console.log(testList);
+  const [ data, setData ] = useState([]);
+
+  useEffect(() => {
+    const fleamarketData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8888/vintage');
+        setData(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fleamarketData();
+  }, [])
 
   return (
     <FleamarketContainer>
@@ -55,7 +61,7 @@ function Fleamarket(props) {
       </div>
       <FleamarketItemContainer>
         <Row>
-          {testList.map((item, index) => <FleamarketItem key={index} item={item}/>)}
+          {data && data.map((item, index) => <FleamarketItem key={index} item={item} id={index} />).reverse()}
         </Row>
       </FleamarketItemContainer>
     </FleamarketContainer>

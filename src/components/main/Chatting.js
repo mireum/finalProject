@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-// import io from "socket.io-client";
+import io from "socket.io-client";
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../features/userInfoSlice';
+import axios from 'axios';
+import { useParams } from 'react-router';
+
 
 const ChattingContainer = styled.div`
   max-width: 1200px;
@@ -67,17 +72,23 @@ const ChattingContainer = styled.div`
     
     .chatting-box {
       flex-basis: 700px;
-      padding: 0 10px;
       display: flex;
       flex-direction: column;
 
       .sellerinfo-box {
         height: 100px;
+        border-bottom: 1px solid #ccc;
+
+        span {
+          font-size: 18px;
+          font-weight: bold;
+        }
       }
 
       .chatting-detail-box {
         height: 560px;
         overflow: auto;
+        padding: 0 10px;
         /* display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -85,6 +96,17 @@ const ChattingContainer = styled.div`
 
         &::-webkit-scrollbar {
           display: none;
+        }
+
+        .message-notme-box {
+          max-width: 50%;
+          margin-top: 10px;
+          min-height: 36px;
+          padding: 10px;
+          background-color: #ccc;
+          border-radius: 10px;
+          clear: both;
+          float: left;
         }
 
         .message-box {
@@ -100,6 +122,7 @@ const ChattingContainer = styled.div`
 
         .day {
           text-align: center;
+          padding-top: 20px
         }
       }
 
@@ -129,19 +152,30 @@ const ChattingContainer = styled.div`
 
 function Chatting(props) {
   const scrollRef = useRef();
+  const { id } = useParams();
+  const 로그인중 = useSelector(getLoginUser);
+
   const [ chats, setChats ] = useState([]);
+  const [ chatDetail, setChatDetail ] = useState([]);
   const [ value, setValue ] = useState('');
   const [ room, setRoom ] = useState('');
+  // const [ userId, setUserId ] = useState(로그인중.signId);
   
-  // const socket = io.connect("http://localhost:8000");
+  const socket = io.connect("http://localhost:8888");
 
   const valueOnChange = (e) => {
     setValue(e.target.value);
   };
   
   const handleSubmitMessage = () => {
-    setChats(prevChat => [...prevChat, value]);
-    // socket.emit('send_message', { message: value });
+    // setChats(prevChat => [...prevChat, value]);
+    const data = {
+      msg: value,
+      id: '천지민',
+      // id: userId,
+      room: '천지민',
+    }
+    socket.emit('userSend', data);
     setValue('');
   };
 
@@ -150,10 +184,29 @@ function Chatting(props) {
   }, [chats]);
 
   // useEffect(() => {
-  //   socket.on("receive_message", data => {
-  //     setChats(prevChat => [...prevChat, data.message]);
+  //   socket.on("sendMsg", data => {
+  //     setChats([...chats, data.msg]);
   //   });
-  // }, [socket]);
+  // }, [chats]);
+  useEffect(() => {
+    const getChatListHandler = async () => {
+      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList');
+      setChats(getChatList.data.chatData);
+    };
+    // 임시
+    const server = '천지민'
+    socket.emit('login', server);
+    getChatListHandler();
+  }, []);
+
+
+  const handleToChatroom = async (id) => {
+    console.log(id);
+    const chatting = await axios.post(`http://localhost:8888/getChatting`, { id });
+    setChatDetail(chatting.data.resulte[0].chatList)
+  };
+
+
 
   // io.on("connection", socket => {
   //   console.log(`User Connected: ${socket.id}`);
@@ -207,22 +260,65 @@ function Chatting(props) {
               <p>대화내용</p>
             </div>
           </div>
+          <div className='chattinglist-inner-box'>
+            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
+            <div className='chattinglist-userinfo-box'>
+              <div className='sort'>
+                <p><span>디디</span></p>
+                <p>어제</p>   
+              </div>
+              <p>대화내용</p>
+            </div>
+          </div>
+          { chats.map(chat => {
+            return (
+              <div className='chattinglist-inner-box' key={chat.user} onClick={() => {handleToChatroom(chat.user)}}>
+                <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
+                <div className='chattinglist-userinfo-box'>
+                  <div className='sort'>
+                    <p><span>{chat.user}</span></p>
+                    <p>어제</p>   
+                  </div>
+                  <p>{chat.msg}</p>
+                </div>
+              </div>
+            )
+          })
+        }
         </div>
         <div className='chatting-box' >
           <div className='sellerinfo-box'>
-            <p><span>중식이</span></p>
+            <p><span>{chatDetail[0]?.user}</span></p>
           </div>
           <div ref={scrollRef} className='chatting-detail-box'>
-              {chats.map((item,index) =>
-                ( 
-                <React.Fragment key={index}>
-                  {index === 0 && <p className='day'>{today}</p>}
-                  <p className='message-box'>
-                    {item}
-                  </p>
-                </React.Fragment>
-              ))}
+          { chatDetail.map((chat, index) => {
+            return (
+              <>
+                {index === 0 && <p className='day'>{today}</p>}
+                <p className='message-notme-box'>{chat.msg}</p>
+                {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
+                {chat.user2 && <p className='message-box'>{chat.msg}</p>}
+              </>
+            )
+          })}
           </div>
+
+
+          {/* { chatDetail.map((chat, index) => {
+            return (
+              <>
+                <div className='sellerinfo-box'>
+                  <p><span>{chat.user}</span></p>
+                </div>
+                <div ref={scrollRef} className='chatting-detail-box'>
+                  {index === 0 && <p className='day'>{today}</p>}
+                  <p className='message-box'></p>
+                  <p className='message-notme-box'>{chat.msg}</p>
+                </div>
+              </>
+            )
+          })} */}
+
           <div className='chatting-input-box' >
             <textarea
               value={value} 
