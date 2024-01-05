@@ -306,15 +306,6 @@ function DetailReview(props) {
     setContent('');
     setModalOpen(false);
   };
-  
-  const handleReviewDelete = async (_id) => {
-    try {
-      await axios.post('http://localhost:8888/shop/reviewDelete', { _id }, {withCredentials: true});
-      setReview(prev => !prev);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const openModal = () => {
     // if (!result.data.user) {
@@ -334,6 +325,14 @@ function DetailReview(props) {
   };
   const handleStar = (rate) => {
     setStar(rate);
+  };
+  const handleReviewDelete = async (_id) => {
+    try {
+      await axios.post('http://localhost:8888/shop/reviewDelete', { _id, postId }, {withCredentials: true});
+      setReview(prev => !prev);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

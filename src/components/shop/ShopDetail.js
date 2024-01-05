@@ -31,7 +31,10 @@ const ShopContainer = styled.div`
     width: 400px;
     height: 400px;
   }
- 
+  .rate {
+    font-size: 20px;
+    padding-bottom: 10px;
+  }
   .detail .detail-text p,
   .detail .detail-text h3,
   .detail .detail-text h4 {
@@ -229,15 +232,6 @@ function ShopDetail(props) {
     return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
   } 
 
-  // const product = {
-  //   id: 1,
-  //   title: '퍼펙션 패드 소형 베이비파우더향 30매',
-  //   price: 180,
-  //   rate: 3.6,
-  //   content: '맛있는 사료에요',
-  //   age: 5,
-  //   size: 'middle',
-  // };
   console.log(product);
   const { brand, title, price, imgUrl, rate } = product;
 
@@ -249,7 +243,9 @@ function ShopDetail(props) {
         </div>
         <div className='detail-text'>
           <p>{brand}</p>
-          <div><StarReview star={rate} />{rate}점</div>
+          {rate ?
+          <div className='rate'><StarReview star={rate} />{rate}점</div>
+          : <div className='rate'>평점없음</div>}
           <h3>{title}</h3>
           <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>

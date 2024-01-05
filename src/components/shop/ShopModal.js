@@ -8,7 +8,7 @@ function ShopModal(props) {
   
   return (
     <Modal show={show} open={open}>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>장바구니 알림🛒</Modal.Title>
       </Modal.Header>
       <Modal.Body>
