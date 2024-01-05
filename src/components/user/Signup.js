@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { pushUserInfo } from '../../features/userInfoSlice';
@@ -124,6 +124,14 @@ function Signup(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const signUserInfoGet = async () => {
+      const response = await axios.get('http://localhost:8888/user/register');
+      console.log(response);
+    }
+    signUserInfoGet();
+  }, []);
+
   const changeId = (e) => { setSignId(e.target.value) }
   const changePw = (e) => { setSignPw(e.target.value) }
   const changeEmail = (e) => { setSignEmail(e.target.value) }
@@ -134,15 +142,33 @@ function Signup(props) {
   const changeDogName = (e) => { setSignDogName(e.target.value) }
   const userInput = { userId: signId, passwd: signPw, signEmail, signUserNicname, signDogType, signDogAge, signDogName }
 
-  // const handleSignUp = () => {
-  //   dispatch(pushUserInfo(userInput));
-  //   window.localStorage.setItem(signId, JSON.stringify(userInput)); // 회원정보 로컬스토리지
-  //   navigate('/login')
-  // }
+
   const handleSignUp = async () => {
-    // await dispatch(pushUserInfo(userInput));
-    await axios.post('http://localhost:8888/user/register', userInput);
-    navigate('/login');
+    try {
+      if (signId.length < 5 || signId.length > 15) {
+        alert('아이디는 4자 이상 14자 이하로 기입');
+      } if (signId == '') {
+        alert('아이디를 입력해 주세요.');
+      } if (signPw == '') {
+        alert('비밀번호를 입력해 주세요.')
+      } if (signEmail === '') {
+        alert('email을 입력해 주세요');
+      } if (signUserNicname == '') {
+        alert('닉네임을 입력해 주세요.');
+      } if (!signDogType) {
+        alert('견종 입력');
+      } if (signDogAge == '') {
+        alert('반려견의의 나이를 입력해 주세요.');
+      } if (signDogWeight == '') {
+        alert('반려견의 몸무게를 입력해 주세요.');
+      } if (signDogName == '') {
+        alert('반려견의 이름을 입력해 주세요.')
+      }
+      await axios.post('http://localhost:8888/user/register', userInput);
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 

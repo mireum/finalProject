@@ -37,7 +37,7 @@ const DailyDogItemContainer = styled(Container)`
 
 function DailyDog(props) {
   const navigate = useNavigate();
-  const [ data, setData ] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const dailyDogData = async () => {
@@ -60,7 +60,7 @@ function DailyDog(props) {
       </div>
       <DailyDogItemContainer>
         <Row>
-          {data.map((item, index) => <DailyDogItem key={index} item={item}/>).reverse()}
+          {data.map((item, index) => <DailyDogItem key={index} item={item} />).reverse()}
         </Row>
       </DailyDogItemContainer>
     </DailyDogContainer>
