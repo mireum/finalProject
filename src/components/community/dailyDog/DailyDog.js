@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import DailyDogItem from './DailyDogItem';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectDailyDogList } from '../../../features/dailyDogSlice';
+import axios from 'axios';
 
 const DailyDogContainer = styled.div`
   max-width: 1200px;
@@ -38,7 +37,19 @@ const DailyDogItemContainer = styled(Container)`
 
 function DailyDog(props) {
   const navigate = useNavigate();
-  const testList = useSelector(selectDailyDogList);
+  const [ data, setData ] = useState([]);
+
+  useEffect(() => {
+    const dailyDogData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8888/community/daily');
+        setData(response.data.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    dailyDogData();
+  }, [])
 
   return (
     <DailyDogContainer>
@@ -49,7 +60,7 @@ function DailyDog(props) {
       </div>
       <DailyDogItemContainer>
         <Row>
-          {testList.map((item, index) => <DailyDogItem key={index} item={item}/>)}
+          {data.map((item, index) => <DailyDogItem key={index} item={item}/>).reverse()}
         </Row>
       </DailyDogItemContainer>
     </DailyDogContainer>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiPlusCircle } from "react-icons/fi";
 import { addItemToFleamarket, selectFleamarket } from '../../../features/dailyDogSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 const FleamarketWriteContainer = styled.div`
   max-width: 1200px;
@@ -127,11 +128,10 @@ const FleamarketWriteContainer = styled.div`
 
 function FleamarketWrite(props) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const testList = useSelector(selectFleamarket);
 
   const [ values, setValues ] = useState(
     {
+      id: '',
       title: '',
       price: '',
       category: '',
@@ -140,13 +140,27 @@ function FleamarketWrite(props) {
     }
   );
   const [ images, setImages ] = useState([]);
-  const [ imagesLimit, setImagesLimit ] = useState([]);
+  const [ sendImages, setSendImages ] = useState([]);
   const [ represent, setRepresent ] = useState(images[0]);
 
-  const { title, price, category, place, content } = values;
+  const { id, title, price, category, place, content } = values;
+
+  useEffect(() => {
+    const fleamarketData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8888/vintage');
+        setValues(prevValue => ({ ...prevValue, id: response.data ? response.data.length + 1 : 1 }));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fleamarketData();
+  }, [])
 
   const handleFileChange = async (e) => {
     const files = e.target.files;
+    console.log(files);
+    setSendImages(prevSendImg => [...prevSendImg, ...files]);
 
     if (files && files.length > 0) {
       if (images.length + files.length <= 5) {
@@ -180,21 +194,28 @@ function FleamarketWrite(props) {
     setValues(prevValue => ({ ...prevValue, [name]: value }));
   }
 
-  const handleSubmitValue = () => {
-    const newItem = {
-      id: testList.length + 1,
-      title,
-      price,
-      category,
-      place,
-      content,
-      src: images,
+  const handleSubmitValue = async () => {
+
+    const formData = new FormData();
+
+    formData.append('id', id);
+    formData.append('title', title);
+    formData.append('price', price);
+    formData.append('category', category);
+    formData.append('place', place);
+    formData.append('content', content);
+    for (const image of sendImages) {
+      formData.append('img', image);
     }
 
     if (title && price && category && place && content && images[0]) {
-      dispatch(addItemToFleamarket(newItem));
-      alert('게시글이 등록되었습니다.');
-      navigate('/community/Fleamarket');
+      try {
+        axios.post('http://localhost:8888/vintage/insert', formData)
+        alert('게시글이 등록되었습니다.');
+        navigate('/community/Fleamarket');
+      } catch (err) {
+        console.error(err);
+      } 
     } else if (!images[0]) {
       alert('최소 1장 이상의 사진을 첨부해주세요.');
     } else if (!title) {

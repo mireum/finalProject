@@ -133,7 +133,7 @@ const DetailBox = styled.div`
 `;
 
 function DetailDetail(props) {
-  const { name, price, rate, content, age, size } = props.product;
+  const { title, price, rate, content, age, size, brand } = props.product;
   const navigate = useNavigate();
 
   const mypage =  {
@@ -156,10 +156,10 @@ function DetailDetail(props) {
                 <span>{mypage.age}살</span>
                 <span className='weight'>{mypage.weight}kg</span>
                 <p className='type'>{mypage.dogType}</p>
-                {
+                {/* {
                 age === mypage.age ? <p>해당 제품은 {mypage.name}이와 맞는 상품이에요 :)</p>
                 : <p>해당 제품은 {mypage.name}이와 맞지 않는 상품이에요 :(</p>
-                }
+                } */}
               </div>
               <div className='top-myPage cursor-pointer' onClick={() => {navigate('/mypage')}}>
                 <span className='more'>더보기</span>
@@ -187,9 +187,9 @@ function DetailDetail(props) {
           <tbody>
             <tr>
               <th>상품명</th>
-              <td>{name}</td>
-              <th>상세설명</th>
-              <td>{content}</td>
+              <td>{title}</td>
+              <th>브랜드</th>
+              <td>{brand}</td>
             </tr>
             <tr>
               <th>평점</th>
@@ -199,9 +199,9 @@ function DetailDetail(props) {
             </tr>
             <tr>
               <th>권장 나이</th>
-              <td>{age}살</td>
-              {/* <th>권장 크기</th>
-              <td>{size}</td> */}
+              <td>{age}</td>
+              <th>권장 크기</th>
+              <td>{size}</td>
             </tr>
           </tbody>
         </table>
