@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const CommunityInsertWrapper = styled.div`
@@ -25,6 +26,8 @@ function CommunityInsert(props) {
   const [insertContent, setInsertContent] = useState();
   const [insertImg, setInsertImg] = useState();
 
+  const { insertPage } = useParams();
+
   const changeTitle = (e) => {
     setInsertTitle(e.target.value)
   }
@@ -32,16 +35,17 @@ function CommunityInsert(props) {
     setInsertContent(e.target.value)
   }
   const changeImg = async (e) => {
-    setInsertImg(e.target.value)
+    setInsertImg(e.target.file)
+    console.log(insertImg);
   }
   const formDataList = async () => {
     try {
       const formData = new FormData();
       formData.append('title', insertTitle);
       formData.append('content', insertContent);
-      formData.append('img', insertImg[0]);
-
-      const result = await axios.post('/주소솟소소소소소소솟솟', formData);
+      formData.append('imgUrl', insertImg);
+      const result = await axios.post(`/community/${insertPage}/insert`, formData);
+      console.log(result.data);
       if (!result.data.flag) {
         return alert(result.data.message);
       }
@@ -74,17 +78,20 @@ function CommunityInsert(props) {
           onChange={changeContent}
           placeholder='내용 입력' />
 
-        <label htmlFor='img' />
+        <label htmlFor='imgUrl' />
         <input
           type='file'
           accept='image/*'
-          id='img'
-          name='img'
+          id='imgUrl'
+          name='imgUrl'
           value={insertImg}
-          onChange={changeImg} />
+          onChange={changeImg}
+        />
 
         <button
-          onClick={formDataList}
+          onClick={() => {
+            formDataList();
+          }}
         >글등록</button>
       </div>
     </CommunityInsertWrapper>
