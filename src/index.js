@@ -8,17 +8,15 @@ import { BrowserRouter } from "react-router-dom";
 import { store } from "./app/store";
 import ScrollToTop from "./components/ScrollToTop";
 import { getLoginUserInfo } from './features/userInfoSlice';
-
+import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const loginUserInfo = JSON.parse(sessionStorage.getItem('userttt'));
-console.log(loginUserInfo);
-const loginUser = async () => {
-  store.dispatch(getLoginUserInfo(loginUserInfo));
+const loginUserInfo = async () => {
+  const result = await axios.get(`http://localhost:8888/user/login`, {withCredentials: true});
+  if (result.data.flag) store.dispatch(getLoginUserInfo(result.data.data));
 }
-loginUser();
-
+loginUserInfo();
 
 root.render(
   <Provider store={store}>
@@ -29,7 +27,4 @@ root.render(
   </Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

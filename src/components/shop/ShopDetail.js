@@ -158,63 +158,11 @@ function ShopDetail(props) {
   const user = useSelector(getLoginUser);
   const product = useSelector(selectSelectedProduct);
 
-  const handleMinus = () => {
-    if (productCount != 1) setProductCount(productCount-1);
-  };
-
-  const handlePlus = () => {
-    setProductCount(productCount+1);
-  };
-
-  const handleCart = async (title, price) => {
-    // if (!user) {
-    //   const result = needLogin();
-    //   if (result) navigate('/login');
-    //   else return
-    // }
-    try {
-      // 로그인 연동 후에 다시
-      const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount });
-      console.log(result);
-      
-    } catch (error) {
-      console.error(error);
-    }
-    setShowModal(true);
-  }
-
-  const openModal = () => {
-    setShowModal(true)
-  }
-  const closeModal = () => {
-    setShowModal(false)
-  }
-
-  const handleBuy = () => {
-    setShowBuyModal(true);
-  };
-
-  const handlePay = async() => {
-    const result = await pay(product, productCount, productCount * product.price);
-    console.log(result);
-    if (result.event == 'done' || result.event == 'issued') {
-      // const result = await axios.post('http://localhost:8888/purchase/add', { user, postId, productCount, date });
-      // if (result.data.flag) {
-        alert('결제가 완료되었습니다!');
-        navigate('/shop');
-      // }
-    }
-    else if (result.event == 'cancel') {
-      setShowBuyModal(false);
-      alert('결제 취소');
-    }
-  };
- 
   useEffect(() => {
     // 서버에 특정 상품의 데이터 요청
     const fetchProductById = async () => {
       try {
-        const response = await axios.get(`http://localhost:8888/shop/detail/${postId}`);
+        const response = await axios.get(`http://localhost:8888/shop/detail/${postId}`, {withCredentials: true});
         dispatch(getSelectedProduct(response.data.itemDetail))
       } catch (error) {
         console.error(error);
@@ -227,11 +175,54 @@ function ShopDetail(props) {
     };
   }, []);
 
+  const handleMinus = () => {
+    if (productCount != 1) setProductCount(productCount-1);
+  };
 
+  const handlePlus = () => {
+    setProductCount(productCount+1);
+  };
+
+  const handleCart = async (title, price) => {
+    if (!user) {
+      const result = needLogin();
+      if (result) navigate('/login');
+    }
+    try {
+      const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount }, {withCredentials:true});
+      console.log(result);
+      
+    } catch (error) {
+      console.error(error);
+    }
+    setShowModal(true);
+  }
+
+  
+  const handlePay = async() => {
+    const result = await pay(product, productCount, productCount * product.price);
+    console.log(result);
+    if (result.event == 'done' || result.event == 'issued') {
+      // const result = await axios.post('http://localhost:8888/purchase/add', { user, postId, productCount, date });
+      // if (result.data.flag) {
+        alert('결제가 완료되었습니다!');
+        navigate('/shop');
+        // }
+    }
+    else if (result.event == 'cancel') {
+      setShowBuyModal(false);
+      alert('결제 취소');
+    }
+  };
+    
+  const openModal = () => {setShowModal(true)};
+  const closeModal = () => {setShowModal(false)};
+  const handleBuy = () => {setShowBuyModal(true)};
+    
   if (!product) {
     return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
   } 
-
+    
   console.log(product);
   const { brand, title, price, imgUrl, rate } = product;
 

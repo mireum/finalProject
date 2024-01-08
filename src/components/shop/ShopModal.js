@@ -7,7 +7,7 @@ function ShopModal(props) {
   const { show, open, close } = props;
   
   return (
-    <Modal show={show} open={open}>
+    <Modal show={show}>
       <Modal.Header>
         <Modal.Title>장바구니 알림🛒</Modal.Title>
       </Modal.Header>
