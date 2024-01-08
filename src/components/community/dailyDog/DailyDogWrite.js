@@ -65,11 +65,7 @@ const DailyDogWriteContainer = styled.div`
 
 function DailyDogWrite(props) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const testList = useSelector(selectDailyDogList);
   const user = useSelector(getLoginUser);
-
-  console.log(user);
 
   const [ values, setValues ] = useState({
     id: '',
@@ -141,8 +137,7 @@ function DailyDogWrite(props) {
       try {
         const date = new Date();
 
-        await axios.post('http://localhost:8888/community/daily/insert', 
-        { id, title, content, imgUrl: images, imgKey: imagesKey, author: user.userId, authorId: user._id, date })
+        await axios.post('http://localhost:8888/community/daily/insert', { id, title, content, imgUrl: images, imgKey: imagesKey, author: user.signUserNicname, authorId: user._id, date })
         alert('게시글이 등록되었습니다.');
         navigate('/community/dailyDog');
       } catch (err) {

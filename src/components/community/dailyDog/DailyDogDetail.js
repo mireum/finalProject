@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import axios from 'axios';
 import DailyDogComment from './DailyDogComment';
 import { BiLike, BiDislike } from "react-icons/bi";
+import { dateFormat, needLogin } from '../../../util';
+import { getLoginUser } from '../../../features/userInfoSlice';
+import { useSelector } from 'react-redux';
 
 const DailyDogDetailContainer = styled.div`
   max-width: 1200px;
@@ -28,6 +31,7 @@ const DailyDogDetailContainer = styled.div`
     border-bottom: 1px solid #ccc;
 
     .subtitle-box {
+      margin-top: 20px;
       display: flex;
       justify-content: flex-end;
 
@@ -167,6 +171,7 @@ const DailyDogDetailContainer = styled.div`
 
 function DailyDogDetail(props) {
   const { id } = useParams();
+  const user = useSelector(getLoginUser);
   const [ item, setItem ] = useState('');
   const [ comments, setComments ] = useState([]);
   const [ newComment, setNewComment ] = useState('');
@@ -188,8 +193,18 @@ function DailyDogDetail(props) {
         const responseItem = await axios.get('http://localhost:8888/community/daily');
         const getItemById = responseItem.data.data.filter(item => item.id == id);
         setItem(getItemById);
+        setLikeCount(prev => ({ ...prev, upCount: getItemById[0].like.length }));
+        setLikeCount(prev => ({ ...prev, downCount: getItemById[0].dislike.length }));
+
+        if (getItemById[0].like.filter(id => id) == user._id) {
+          setLikeBtn(prev => ({ ...prev, upBtn: true }));
+        }
+
+        if (getItemById[0].dislike.filter(id => id) == user._id) {
+          setLikeBtn(prev => ({ ...prev, downBtn: true }));
+        }
+
         const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: getItemById[0]._id }});
-        console.log(responseComment);
         setComments(responseComment.data);
       } catch (err) {
         console.error(err);
@@ -204,13 +219,17 @@ function DailyDogDetail(props) {
 
   const handleCommentChange = (e) => {
     setNewComment(e.target.value)
-  }
+  };
 
   const handleSubmitComment = async () => {
 
+    if (!user) {
+      return needLogin();
+    }
+
     try {
       const date = new Date();
-      await axios.post('http://localhost:8888/community/daily/comment/insert', { postId: item[0]._id , newComment, date }); 
+      await axios.post('http://localhost:8888/community/daily/comment/insert', { postId: item[0]._id , comment: newComment, date, author: user.signUserNicname, authorId: user._id }); 
       const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: item[0]._id }}); 
       setComments(responseComment.data);
     } catch (err) {
@@ -219,41 +238,61 @@ function DailyDogDetail(props) {
     setNewComment('');
   }
 
-  const toggleLikeUpBtn = () => {
-    setLikeBtn(prev => ({ ...prev, upBtn: !upBtn, downBtn: false }));
-    
-    if (!upBtn) {
-      setLikeCount(prev => ({ ...prev, upCount: 1, downCount: 0 }))
-    } else {
-      setLikeCount(prev => ({ ...prev, upCount: 0 }))
-    }
-  }
-  
-  const toggleLikeDownBtn = () => {
-    setLikeBtn(prev => ({ ...prev, downBtn: !downBtn, upBtn: false }));
+  const toggleLikeUpBtn = async () => {
 
-    if (!downBtn) {
-      setLikeCount(prev => ({ ...prev, downCount: -1, upCount: 0 }))
+    if (!user) {
+      return alert('로그인 후 평가 할 수 있습니다.')
+    } else if (user.signUserNicname === item[0].author) {
+      return alert('자신의 글은 평가 할 수 없습니다.');
     } else {
-      setLikeCount(prev => ({ ...prev, downCount: 0 }))
+      if (!upBtn) {
+        const res = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item[0]._id, authorId: user._id });
+        const response = await axios.patch('http://localhost:8888/community/daily/likeup/up', { postId: item[0]._id, authorId: user._id });
+        setLikeBtn(prev => ({ ...prev, upBtn: !upBtn, downBtn: false }));
+        setLikeCount(prev => ({ ...prev, upCount: response.data.count, downCount: res.data.count }));
+      } else {
+        const response = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item[0]._id, authorId: user._id });
+        setLikeBtn(prev => ({ ...prev, upBtn: !upBtn }));
+        setLikeCount(prev => ({ ...prev, upCount: response.data.count}));
+      }
     }
-  }
+  };
+  
+  const toggleLikeDownBtn = async () => {
+
+    if (!user) {
+      return alert('로그인 후 평가 할 수 있습니다.')
+    } else if (user.signUserNicname === item[0].author) {
+      return alert('자신의 글은 평가 할 수 없습니다.');
+    } else {
+      if (!downBtn) {
+        const res = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item[0]._id, authorId: user._id });
+        const response = await axios.patch('http://localhost:8888/community/daily/likedown/up', { postId: item[0]._id, authorId: user._id });
+        setLikeBtn(prev => ({ ...prev, downBtn: !downBtn, upBtn: false }));
+        setLikeCount(prev => ({ ...prev, downCount: response.data.count, upCount: res.data.count }));
+      } else {
+        const response = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item[0]._id, authorId: user._id });
+        setLikeBtn(prev => ({ ...prev, downBtn: !downBtn }));
+        setLikeCount(prev => ({ ...prev, downCount: `${response.data.count}`}));
+      }
+    }
+  };
 
   return (
     <DailyDogDetailContainer>
       <div className='title-box'>
         <h1>{item[0].title}</h1>
         <div className='subtitle-box'>
-          <p>작성자</p>
-          <p>작성일</p>
-          <p>조회 1</p>
+          <p>{item[0].author}</p>
+          <p>{dateFormat(item[0].date)}</p>
+          <p>조회 {item[0].view}</p>
         </div>
       </div>
       <div className='content-box'>
         {Parser(item[0].content)}
       </div>
       <div className='like-box'>
-        <p>{downCount}</p>
+        <p>{downCount == 0 ? 0 : `-${downCount}`}</p>
         <button 
           className={`like-btn ${downBtn && 'down-btn-acitve'}`} 
           onClick={toggleLikeDownBtn}
@@ -282,7 +321,7 @@ function DailyDogDetail(props) {
           </div>
           <div className='comment-list-box'>
             {comments &&
-              comments.map((comment, index) => <DailyDogComment key={index} comment={comment} />)
+              comments.map((comment, index) => <DailyDogComment key={index} comment={comment} user={user} />)
             }
           </div>
         </div>

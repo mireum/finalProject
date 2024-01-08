@@ -3,6 +3,7 @@ import nophoto from '../../../images/nophoto.jpg'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const StyledCol = styled(Col)`
   cursor: pointer;
@@ -17,8 +18,13 @@ const StyledCol = styled(Col)`
     font-size: 16px;
     font-weight: bold;
     text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
-`; 
+`;
 
 const ItemImage = styled.img`
   width: 100%;
@@ -29,13 +35,18 @@ const ItemImage = styled.img`
 `;
 
 function DailyDogItem(props) {
-  const { item: { id, title, imgUrl } } = props;
+  const { item: { _id, id, title, imgUrl } } = props;
 
   const navigate = useNavigate();
 
+  const handleItemClick = async () => {
+    await axios.patch(`http://localhost:8888/community/daily/view/${_id}`);
+    navigate(`/community/dailyDog/${id}`)
+  }
+
   return (
     <>
-      <StyledCol md={4} onClick={() => navigate(`/community/dailyDog/${id}`)}>
+      <StyledCol md={4} onClick={handleItemClick}>
         {imgUrl[0] 
           ? <ItemImage src={imgUrl[0]} />
           : <ItemImage src={nophoto} /> 
