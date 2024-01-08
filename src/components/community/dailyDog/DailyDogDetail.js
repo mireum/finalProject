@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Parser from 'html-react-parser'
 import styled from 'styled-components';
 import axios from 'axios';
@@ -18,6 +18,8 @@ const DailyDogDetailContainer = styled.div`
   h1 {
     font-size: 20px;
     font-weight: bold;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
   }
 
   img {
@@ -26,24 +28,19 @@ const DailyDogDetailContainer = styled.div`
     margin: 16px 0;
   }
 
-  .title-box {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+  .subtitle-box {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
 
-    .subtitle-box {
-      margin-top: 20px;
-      display: flex;
-      justify-content: flex-end;
-
-      p {
-        margin-left: 16px;
-        font-size: 14px;
-        color: #222;
-        opacity: 0.7;
-      }
+    p {
+      margin-left: 14px;
+      font-size: 14px;
+      color: #222;
+      opacity: 0.7;
     }
   }
-
+  
   .content-box {
     margin: 40px auto;
     max-width: 460px;
@@ -62,18 +59,37 @@ const DailyDogDetailContainer = styled.div`
     .like-btn {
       margin: 40px 10px;
       padding: 5px 10px;
-      font-size: 50px;
+      font-size: 40px;
       border: 1px solid #ccc;
       border-radius: 50%;
       background: none;
+      position: relative;
+
+      &:active {
+        transform: rotate(-45deg);
+      }
     }
 
     .up-btn-acitve {
-      background-color: #B22222;
+      background-color: #DC143C;
     }
 
     .down-btn-acitve {
       background-color: #4169E1;
+    }
+  }
+
+  .listbtn-box {
+    display: flex;
+    justify-content: flex-end;
+    
+    button {
+      margin-bottom: 12px;
+      border: none;
+      background: none;
+      font-size: 15px;
+      color: #222;
+      opacity: 0.7;
     }
   }
 
@@ -162,15 +178,14 @@ const DailyDogDetailContainer = styled.div`
           padding: 10px 0;
           margin-right: 10px;
         }
-
       }
     }
-    
   }
 `;
 
 function DailyDogDetail(props) {
   const { id } = useParams();
+  const navigate = useNavigate();
   const user = useSelector(getLoginUser);
   const [ item, setItem ] = useState('');
   const [ comments, setComments ] = useState([]);
@@ -196,11 +211,11 @@ function DailyDogDetail(props) {
         setLikeCount(prev => ({ ...prev, upCount: getItemById[0].like.length }));
         setLikeCount(prev => ({ ...prev, downCount: getItemById[0].dislike.length }));
 
-        if (getItemById[0].like.filter(id => id) == user._id) {
+        if (getItemById[0].like.filter(id => id == user._id) == user._id) {
           setLikeBtn(prev => ({ ...prev, upBtn: true }));
         }
 
-        if (getItemById[0].dislike.filter(id => id) == user._id) {
+        if (getItemById[0].dislike.filter(id => id == user._id) == user._id) {
           setLikeBtn(prev => ({ ...prev, downBtn: true }));
         }
 
@@ -241,9 +256,9 @@ function DailyDogDetail(props) {
   const toggleLikeUpBtn = async () => {
 
     if (!user) {
-      return alert('로그인 후 평가 할 수 있습니다.')
+      return alert('로그인 후 추천 할 수 있습니다.')
     } else if (user.signUserNicname === item[0].author) {
-      return alert('자신의 글은 평가 할 수 없습니다.');
+      return alert('내가 남긴 글을 추천 할 수 없습니다.');
     } else {
       if (!upBtn) {
         const res = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item[0]._id, authorId: user._id });
@@ -261,9 +276,9 @@ function DailyDogDetail(props) {
   const toggleLikeDownBtn = async () => {
 
     if (!user) {
-      return alert('로그인 후 평가 할 수 있습니다.')
+      return alert('로그인 후 비추천 할 수 있습니다.')
     } else if (user.signUserNicname === item[0].author) {
-      return alert('자신의 글은 평가 할 수 없습니다.');
+      return alert('내가 남긴 글을 비추천 할 수 없습니다.');
     } else {
       if (!downBtn) {
         const res = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item[0]._id, authorId: user._id });
@@ -306,6 +321,9 @@ function DailyDogDetail(props) {
           <BiLike />
         </button>
         <p>{upCount}</p>
+      </div>
+      <div className='listbtn-box'>
+        <button onClick={() => navigate(-1)}>목록</button>
       </div>
       <div className='comment-box'>
         <div className='comment-detail-box'>
