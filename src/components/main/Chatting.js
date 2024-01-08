@@ -158,6 +158,7 @@ function Chatting(props) {
   const [ chats, setChats ] = useState([]);
   const [ chatDetail, setChatDetail ] = useState([]);
   const [ value, setValue ] = useState('');
+  const [sendId, setSendId] = useState('');
   const [ room, setRoom ] = useState('');
   const [ userId, setUserId ] = useState(isLogin?.userId);
   
@@ -167,17 +168,7 @@ function Chatting(props) {
     setValue(e.target.value);
   };
   
-  const handleSubmitMessage = () => {
-    // setChats(prevChat => [...prevChat, value]);
-    const data = {
-      msg: value,
-      id: '천지민',
-      // id: userId,
-      room: '천지민',
-    }
-    socket.emit('userSend', data);
-    setValue('');
-  };
+
 
   useEffect(() => {
     scrollToBottom();
@@ -188,24 +179,74 @@ function Chatting(props) {
   //     setChats([...chats, data.msg]);
   //   });
   // }, [chats]);
+  // useEffect(() => {
+  //   const getChatListHandler = async () => {
+      
+  //     const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
+  //     setChats(getChatList.data.chatData);
+  //   };
+  //   // 임시
+  //   const server = '디디'
+  //   socket.emit('login', server);
+  //   getChatListHandler();
+  // }, []);
   useEffect(() => {
-    const getChatListHandler = async () => {
-      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
-      setChats(getChatList.data.chatData);
-    };
-    // 임시
-    const server = '천지민'
+    const server = '디디'
     socket.emit('login', server);
-    getChatListHandler();
+
+
+    socket.on('throwData', (chatData) => {
+      if (setChats) {
+        let copyChat = [...chats];
+        console.log(copyChat);
+        copyChat = [chatData]
+        console.log(copyChat);
+        setChats(...copyChat);
+      }
+    });
+    // 임시
+    // getChatListHandler();
   }, []);
 
 
+
   const handleToChatroom = async (id) => {
+    setSendId(id);
     console.log(id);
-    const chatting = await axios.post(`http://localhost:8888/getChatting`, { id }, {withCredentials: true});
-    setChatDetail(chatting.data.resulte[0].chatList)
+    // const chatting = await axios.post(`http://localhost:8888/getChatting`, { id }, {withCredentials: true});
+    // setChatDetail(chatting.data.resulte[0].chatList)
+
+    socket.emit('getChatting', id);
+
+    socket.on('throwChatData', (chatData) => {
+      console.log(chatData);
+      if (setChatDetail) {
+        let copyChatDetail = [...chatDetail];
+        console.log(copyChatDetail);
+        copyChatDetail = [...chatData.chatList]
+        console.log(copyChatDetail);
+        setChatDetail(copyChatDetail);
+      } else {
+        setChatDetail(chatData);
+      }
+      console.log(setChatDetail);
+    });
   };
 
+  const handleSubmitMessage = () => {
+    console.log(sendId);
+    // setChats(prevChat => [...prevChat, value]);
+    // 디디는 더미 로그인 유져
+    const data = {
+      msg: value,
+      user2: sendId,
+      // id: userId,
+      id: '디디',
+      room: '디디',
+    }
+    socket.emit('answer', data);
+    setValue('');
+  };
 
 
   // io.on("connection", socket => {
@@ -270,7 +311,7 @@ function Chatting(props) {
               <p>대화내용</p>
             </div>
           </div>
-          { chats.map(chat => {
+          { chats?.map(chat => {
             return (
               <div className='chattinglist-inner-box' key={chat.user} onClick={() => {handleToChatroom(chat.user)}}>
                 <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
@@ -295,9 +336,19 @@ function Chatting(props) {
             return (
               <>
                 {index === 0 && <p className='day'>{today}</p>}
-                <p className='message-notme-box'>{chat.msg}</p>
-                {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
-                {chat.user2 && <p className='message-box'>{chat.msg}</p>}
+                { chat.user !== '디디' &&
+                  <>
+                    <p key={index} className='message-notme-box'>{chat.user}:</p>
+                    <p key={index} className='message-notme-box'>{chat.msg}</p>
+                  </>
+                }
+                    {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
+                { chat.user == '디디' &&
+                  <>
+                    <p key={index} className='message-box'>{chat.user}:</p>
+                    <p key={index} className='message-box'>{chat.msg}</p>
+                  </>
+                }
               </>
             )
           })}

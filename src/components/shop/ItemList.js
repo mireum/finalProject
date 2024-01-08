@@ -133,7 +133,7 @@ function ItemList(props) {
   useEffect(() => {
     try {
       const getList = async () => {
-        const result =  await axios.get('http://localhost:8888/shop/');
+        const result =  await axios.get('http://localhost:8888/shop/', {withCredentials: true});
         dispatch(getProducts(result.data.posts));
       }
       getList();
