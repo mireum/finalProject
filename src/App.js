@@ -53,7 +53,7 @@ function App() {
         <Route path='/' element={<Main />} >
           <Route path='/personaldog' element={<PersonalDog />} />
           <Route path='/' element={<Community />} />
-          <Route path='/mypage' element={<Mypage />}/>
+          <Route path='/mypage' element={<Mypage />} />
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop/:nextId?' element={<Shop />} />
           <Route path='/cart' element={<Cart />} />
