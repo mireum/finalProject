@@ -7,8 +7,7 @@ import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { addListToDailyDog, selectDailyDogList } from '../../../features/dailyDogSlice';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { getLoginUser } from '../../../features/userInfoSlice';
 

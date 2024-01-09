@@ -256,9 +256,9 @@ function DailyDogDetail(props) {
   const toggleLikeUpBtn = async () => {
 
     if (!user) {
-      return alert('로그인 후 추천 할 수 있습니다.')
+      return alert('로그인 후 좋아요 할 수 있습니다.')
     } else if (user.signUserNicname === item[0].author) {
-      return alert('내가 남긴 글을 추천 할 수 없습니다.');
+      return alert('내가 남긴 글을 좋아요 할 수 없습니다.');
     } else {
       if (!upBtn) {
         const res = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item[0]._id, authorId: user._id });
@@ -276,9 +276,9 @@ function DailyDogDetail(props) {
   const toggleLikeDownBtn = async () => {
 
     if (!user) {
-      return alert('로그인 후 비추천 할 수 있습니다.')
+      return alert('로그인 후 싫어요 할 수 있습니다.')
     } else if (user.signUserNicname === item[0].author) {
-      return alert('내가 남긴 글을 비추천 할 수 없습니다.');
+      return alert('내가 남긴 글을 싫어요 할 수 없습니다.');
     } else {
       if (!downBtn) {
         const res = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item[0]._id, authorId: user._id });
