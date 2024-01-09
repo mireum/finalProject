@@ -125,6 +125,7 @@ function Login(props) {
       }
       const result = await axios.post('http://localhost:8888/user/login', { userId: id, passwd: pw }, { withCredentials: true });
       dispatch(getLoginUserInfo(result.data.user));
+      localStorage.setItem('user', JSON.stringify(result.data.user)); // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
       alert(`환영합니다! ${result.data.user.signUserNicname} 님!`);
 
       if (result.data.user.userId && state) {
