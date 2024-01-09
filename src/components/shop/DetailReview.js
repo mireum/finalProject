@@ -336,10 +336,6 @@ function DetailReview(props) {
     }
   };
 
-  const handleChangeList = (e) => {
-    const value = e.target.value;
-  };
-
   return (
     <>
       <ReviewContainer>
@@ -370,6 +366,7 @@ function DetailReview(props) {
                   <p>{item.content}</p>
                 </div>
                 <div>
+                  {}
                   <button className='delete-btn cursor-pointer' onClick={() => {handleReviewDelete(item._id)}}><MdDelete /></button>
                 </div>
               </div>
@@ -404,6 +401,7 @@ function DetailReview(props) {
               <div className='filebox'>
                 <input type='file' name="img" id='file_upload' />
               </div>
+
               
               <div className='btn-wrap'>
                 <button type='submit' className='cursor-pointer' onClick={handleSubmit} >리뷰 등록</button>

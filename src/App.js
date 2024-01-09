@@ -59,7 +59,7 @@ function App() {
           <Route path='/cart' element={<Cart />} />
           <Route path='/shop/detail/:postId' element={<ShopDetail />} />
           {/* <Route path='/shop/detail/:productId?/quest' element={<Question />} /> */}
-          <Route path='/shop/detail/quest' element={<Question />} />
+          <Route path='/shop/detail/quest/:postId' element={<Question />} />
           <Route path='/community/Toktok' element={<Toktok />} />   {/* toktok 메인화면 */}
           <Route path='/community/Toktok/:_id' element={<ToktokDetail />} />   {/* todtod 디테일 */}
           <Route path='/community/fleamarket' element={<Fleamarket />} />

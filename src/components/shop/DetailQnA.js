@@ -74,7 +74,7 @@ const QnABox = styled.div`
 function DetailQnA(props) {
   const { postId } = props;
   const navigate = useNavigate();
-  const [ qna, setQna ] = useState();
+  const [ qna, setQna ] = useState([]);
   const [ text, setText ] = useState(false);
 
 
@@ -82,7 +82,8 @@ function DetailQnA(props) {
     const getQnA = async () => {
       try {
         const result = await axios.get(`http://localhost:8888/shop/qna/${postId}`);
-        setQna(result.data);
+        console.log(result.data.itemQna);
+        setQna(result.data.itemQna);
       } catch (err) {
         console.error(err);
       }
@@ -95,7 +96,7 @@ function DetailQnA(props) {
       <div className='btnBox'>
         <h1>상품 문의📞</h1>
         {/* <button onClick={() => {navigate(`/shop/detail/${productId}/quest`)}}>문의하기</button> */}
-        <button className='cursor-pointer' onClick={() => {navigate(`/shop/detail/quest`)}}>문의하기</button>
+        <button className='cursor-pointer' onClick={() => {navigate(`/shop/detail/quest/${postId}`)}}>문의하기</button>
       </div>
       <p>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</p>
       <p>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</p>

@@ -61,20 +61,28 @@ const QuestionContainer = styled.div`
 
 function Question(props) {
   // const { productId } = useParams();
+  const { postId } = useParams();
+  console.log(postId);
   const navigate = useNavigate();
   const [ title, setTitle ] = useState('');
   const [ content, setContent ] = useState('');
   
   const handleSubmit = async () => {
-    // try {
-    //   const result = await axios.post('', { title, content, productId, 유저id });
-    //   if (result.data) alert('문의가 등록되었습니다!');
-    //   navigate(`/shop/detail/${productId}`);
-    // } catch (err) {
-    //   console.error(err);
-    // }
-    // setTitle('');
-    // setContent('');
+    try {
+      if (!title) {
+        alert('제목을 입력해주세요');
+      }
+      if (!content) {
+        alert('내용을 입력해주세요');
+      }
+      const result = await axios.post(`http://localhost:8888/shop/qna/${postId}`, { title, content });
+      if (result.data) alert('문의가 등록되었습니다!');
+      navigate(`/shop/detail/${postId}`);
+    } catch (err) {
+      console.error(err);
+    }
+    setTitle('');
+    setContent('');
   };
 
   return (
