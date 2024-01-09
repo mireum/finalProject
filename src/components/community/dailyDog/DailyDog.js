@@ -56,6 +56,7 @@ function DailyDog(props) {
   const numberOfButtons = 3;
 
   console.log([...Array(numberOfButtons)]);
+  console.log([...Array(numberOfButtons)]);
 
   return (
     <DailyDogContainer>
