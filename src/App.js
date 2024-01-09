@@ -25,6 +25,7 @@ import Mypage from './components/main/Mypage';
 
 import PersonalDog from './components/personalDog/PersonalDog';
 import Chatting from './components/main/Chatting';
+import RequireAuth from './auth/RequireAuth';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -64,10 +65,24 @@ function App() {
           <Route path='/community/Toktok/:_id' element={<ToktokDetail />} />   {/* todtod 디테일 */}
           <Route path='/community/fleamarket' element={<Fleamarket />} />
           <Route path='/community/fleamarket/:id' element={<FleamarketDetail />} />
-          <Route path='/community/fleamarket/write' element={<FleamarketWrite />} />
+          <Route 
+            path='/community/fleamarket/write' 
+            element={
+              <RequireAuth>
+                <FleamarketWrite />
+              </RequireAuth>
+            } 
+          />
           <Route path='/community/dailyDog' element={<DailyDog />} />
           <Route path='/community/dailyDog/:id' element={<DailyDogDetail />} />
-          <Route path='/community/dailyDog/write' element={<DailyDogWrite />} />
+          <Route 
+            path='/community/dailyDog/write' 
+            element={
+              <RequireAuth>
+                <DailyDogWrite />
+              </RequireAuth>
+            } 
+          />
           <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
           <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}
           <Route path='/community/Insert/:insertPage' element={<CommunityInsert />} />    {/* 커뮤니티 글등록 페이지 */}

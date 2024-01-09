@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getLoginUser, getLoginUserInfo, pushUserInfo, selectUserList } from '../../features/userInfoSlice';
 import axios from 'axios';
@@ -100,6 +100,8 @@ function Login(props) {
   const 로그인중 = useSelector(getLoginUser);
   sessionStorage.setItem('userttt', JSON.stringify(로그인중));
 
+  const { state } = useLocation();
+
   // useEffect(() => {
   //   const userInfo = async () => {
   //     try {
@@ -124,8 +126,12 @@ function Login(props) {
       const result = await axios.post('http://localhost:8888/user/login', { userId: id, passwd: pw }, { withCredentials: true });
       dispatch(getLoginUserInfo(result.data.user));
       alert(`환영합니다! ${result.data.user.signUserNicname} 님!`);
-      console.log(result);
-      navigate('/');
+
+      if (result.data.user.userId && state) {
+        navigate(`${state.from.pathname}`);
+      } else {
+        navigate(-1);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -147,7 +153,7 @@ function Login(props) {
         <div class="bottom"></div>
         <div class="center">
           <h2>로그인 하십셔~~</h2>
-          <h2 onClick={() => { navigate('/') }}>홈홈홈홈홈홈홈</h2>
+          <h2 onClick={() => navigate('/')}>홈홈홈홈홈홈홈</h2>
           <label htmlFor='id' />
           <input
             id='id'
@@ -166,8 +172,8 @@ function Login(props) {
             value={pw}
             onChange={changePw}
           />
-          <button onClick={() => { handleLogin(); }}>로그인</button>
-          <button onClick={() => { navigate('/signup'); }}>회원가입</button>
+          <button onClick={() => handleLogin()}>로그인</button>
+          <button onClick={() => navigate('/signup')}>회원가입</button>
           <h2>&nbsp;</h2>
         </div>
       </div>
