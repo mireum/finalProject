@@ -205,22 +205,20 @@ function DailyDogDetail(props) {
   useEffect(() => {
     const dailyDogData = async () => {
       try {
-        const responseItem = await axios.get('http://localhost:8888/community/daily');
-        const getItemById = responseItem.data.data.filter(item => item.id == id);
-        setItem(getItemById);
-        setLikeCount(prev => ({ ...prev, upCount: getItemById[0].like.length }));
-        setLikeCount(prev => ({ ...prev, downCount: getItemById[0].dislike.length }));
+        const responseItem = await axios.get(`http://localhost:8888/community/daily/detail/${id}`);
+        setItem(responseItem.data.postData);
 
-        if (getItemById[0].like.filter(id => id == user._id) == user._id) {
+        const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: responseItem.data.postData._id }});
+        setComments(responseComment.data);
+
+        setLikeCount(prev => ({ ...prev, upCount: responseItem.data.postData.like.length, downCount: responseItem.data.postData.dislike.length }));
+
+        if (responseItem.data.postData.like.filter(id => id == user._id) == user._id) {
           setLikeBtn(prev => ({ ...prev, upBtn: true }));
-        }
-
-        if (getItemById[0].dislike.filter(id => id == user._id) == user._id) {
+        } 
+        if (responseItem.data.postData.dislike.filter(id => id == user._id) == user._id) {
           setLikeBtn(prev => ({ ...prev, downBtn: true }));
         }
-
-        const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: getItemById[0]._id }});
-        setComments(responseComment.data);
       } catch (err) {
         console.error(err);
       }
@@ -244,8 +242,8 @@ function DailyDogDetail(props) {
 
     try {
       const date = new Date();
-      await axios.post('http://localhost:8888/community/daily/comment/insert', { postId: item[0]._id , comment: newComment, date, author: user.signUserNicname, authorId: user._id }); 
-      const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: item[0]._id }}); 
+      await axios.post('http://localhost:8888/community/daily/comment/insert', { postId: item._id , comment: newComment, date, author: user.signUserNicname, authorId: user._id }); 
+      const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: item._id }}); 
       setComments(responseComment.data);
     } catch (err) {
       console.error(err);
@@ -257,16 +255,16 @@ function DailyDogDetail(props) {
 
     if (!user) {
       return alert('로그인 후 좋아요 할 수 있습니다.')
-    } else if (user.signUserNicname === item[0].author) {
+    } else if (user.signUserNicname === item.author) {
       return alert('내가 남긴 글을 좋아요 할 수 없습니다.');
     } else {
       if (!upBtn) {
-        const res = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item[0]._id, authorId: user._id });
-        const response = await axios.patch('http://localhost:8888/community/daily/likeup/up', { postId: item[0]._id, authorId: user._id });
+        const res = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item._id, authorId: user._id });
+        const response = await axios.patch('http://localhost:8888/community/daily/likeup/up', { postId: item._id, authorId: user._id });
         setLikeBtn(prev => ({ ...prev, upBtn: !upBtn, downBtn: false }));
         setLikeCount(prev => ({ ...prev, upCount: response.data.count, downCount: res.data.count }));
       } else {
-        const response = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item[0]._id, authorId: user._id });
+        const response = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item._id, authorId: user._id });
         setLikeBtn(prev => ({ ...prev, upBtn: !upBtn }));
         setLikeCount(prev => ({ ...prev, upCount: response.data.count}));
       }
@@ -277,16 +275,16 @@ function DailyDogDetail(props) {
 
     if (!user) {
       return alert('로그인 후 싫어요 할 수 있습니다.')
-    } else if (user.signUserNicname === item[0].author) {
+    } else if (user.signUserNicname === item.author) {
       return alert('내가 남긴 글을 싫어요 할 수 없습니다.');
     } else {
       if (!downBtn) {
-        const res = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item[0]._id, authorId: user._id });
-        const response = await axios.patch('http://localhost:8888/community/daily/likedown/up', { postId: item[0]._id, authorId: user._id });
+        const res = await axios.patch('http://localhost:8888/community/daily/likeup/down', { postId: item._id, authorId: user._id });
+        const response = await axios.patch('http://localhost:8888/community/daily/likedown/up', { postId: item._id, authorId: user._id });
         setLikeBtn(prev => ({ ...prev, downBtn: !downBtn, upBtn: false }));
         setLikeCount(prev => ({ ...prev, downCount: response.data.count, upCount: res.data.count }));
       } else {
-        const response = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item[0]._id, authorId: user._id });
+        const response = await axios.patch('http://localhost:8888/community/daily/likedown/down', { postId: item._id, authorId: user._id });
         setLikeBtn(prev => ({ ...prev, downBtn: !downBtn }));
         setLikeCount(prev => ({ ...prev, downCount: `${response.data.count}`}));
       }
@@ -296,15 +294,15 @@ function DailyDogDetail(props) {
   return (
     <DailyDogDetailContainer>
       <div className='title-box'>
-        <h1>{item[0].title}</h1>
+        <h1>{item.title}</h1>
         <div className='subtitle-box'>
-          <p>{item[0].author}</p>
-          <p>{dateFormat(item[0].date)}</p>
-          <p>조회 {item[0].view}</p>
+          <p>{item.author}</p>
+          <p>{dateFormat(item.date)}</p>
+          <p>조회 {item.view}</p>
         </div>
       </div>
       <div className='content-box'>
-        {Parser(item[0].content)}
+        {Parser(item.content)}
       </div>
       <div className='like-box'>
         <p>{downCount == 0 ? 0 : `-${downCount}`}</p>
