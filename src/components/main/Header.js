@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from "styled-components";
 import { getLoginUser } from '../../features/userInfoSlice';
+import axios from 'axios';
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -117,9 +118,13 @@ const NavContainer = styled.nav`
 function Header(props) {
   const navigate = useNavigate();
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
-  const [ logdrop, setLogdrop ] = useState(false);
-  console.log(로그인중);
+  const handleLogOut = async () => {
+    const result = await axios.get('http://localhost:8888/user/logout', {withCredentials:true});
+    console.log(result.data);
+    window.location.reload();
+  }
 
+  const [logdrop, setLogdrop] = useState(false);
   const [isHover, setIsHover] = useState({
     communityTap: false,
     shopTap: false,
@@ -190,11 +195,14 @@ function Header(props) {
                 <span className='cursor-pointer' onClick={handleDrop}>환영합니다 {로그인중.signUserNicname}</span> :
                 <span></span>
               }
-              {logdrop && 
+              {/* {로그인중 ?
+                <a onClick={() => handleLogOut()}>로그아웃</a> :
+                <a onClick={() => navigate('/login')}>로그인</a> */}
+              {logdrop &&
                 <ul className='dropmenu'>
                   <li onClick={handleMypage}>마이페이지</li>
                   <li onClick={handleCart}>장바구니</li>
-                  <li onClick={() => navigate('/login')}>로그아웃</li>
+                  <li onClick={() => handleLogOut()}>로그아웃</li>
                 </ul>
               }
               {!로그인중 && <a onClick={() => navigate('/login')}>로그인</a>}

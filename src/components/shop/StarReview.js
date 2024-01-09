@@ -2,9 +2,11 @@ import React from 'react';
 import { FaStar } from "react-icons/fa";
 
 function StarReview({ star }) {
-  const arr = [  ];
+  const arr = [ ];
+
+  const num = Math.round(star);
   for (let i=0; i<5; i++) {
-    if (i < star) arr.push(1);
+    if (i < num) arr.push(1);
     else arr.push(0);
   }
   
