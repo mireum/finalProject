@@ -37,6 +37,10 @@ const ToktokItemWrapper = styled.div`
   color: red;
   font-weight: bold;
   }
+  img {
+    width: 200px;
+    height: 100px;
+  }
 `;
 
 function ToktokItem(props) {
@@ -68,7 +72,7 @@ function ToktokItem(props) {
       </div>
       <div className='toktokColumn'>
         <span>작성자: {props.author}</span>
-        <img src={props.img} />
+        <img src={props.imgUrl} />
       </div>
     </ToktokItemWrapper>
   );

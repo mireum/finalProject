@@ -58,7 +58,6 @@ function ToktokDetail(props) {
   // 타입은 커뮤 너네 머 자랑 / 육아 있다길래 나눠놓은거임   파람스로 요청시 같이ㄱㄱ 
 
   const { _id } = useParams();
-  console.log(_id);
 
   const [commentValue, setCommentValue] = useState();
 
@@ -75,7 +74,7 @@ function ToktokDetail(props) {
 
   return (
     <ToktokDetailWrapper>
-      {_id}의 디테일 페이지지임임임임
+      {_id}
       <div className='a'>
         사진 게시글 등등
       </div>

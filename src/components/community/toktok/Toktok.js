@@ -2,7 +2,8 @@ import ToktokItem from './ToktokItem';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Pagination from 'react-js-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const ToktokWrapper = styled.div`
   margin: 0 auto;
@@ -88,6 +89,20 @@ function Toktok(props) {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(1);
+  const [getList, setGetList] = useState();
+
+  useEffect(() => {
+    const toktokListGet = async () => {
+      try {
+        const response = await axios.get('/community/toktok');
+        await setGetList(response.data.data);
+        // console.log(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    toktokListGet();
+  }, [])
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -95,62 +110,13 @@ function Toktok(props) {
     // navigate(`/community/Toktok/p/${page}`)
   };
 
-  const test = [
-    {
-      _id: '001',
-      title: '1111',
-      content: '2222',
-      author: '준우강아지', // 로그인 정보
-      img: 'https://picsum.photos/100/100',
-      like: 1,
-      view: 2,
-      comment: 3, // 나중에 댓글 컬렉션에서 따로 보내줌 commentList.length 로 하면 될듯??
-    }, {
-      _id: '002',
-      title: '3333',
-      content: '4444',
-      author: '지민강아지',
-      img: 'https://picsum.photos/100/100',
-      like: 4,
-      view: 5,
-      comment: 6,
-    }, {
-      _id: '003',
-      title: '5555',
-      content: '6666',
-      author: '지우강아지',
-      img: 'https://picsum.photos/100/100',
-      like: 7,
-      view: 8,
-      comment: 9,
-    }, {
-      _id: '004',
-      title: '5555',
-      content: '6666',
-      author: '하은강아지',
-      img: 'https://picsum.photos/100/100',
-      like: 0,
-      view: 0,
-      comment: 0,
-    }, {
-      _id: '005',
-      title: '5555',
-      content: '6666',
-      author: '민수강아지',
-      img: 'https://picsum.photos/100/100',
-      like: 0,
-      view: 0,
-      comment: 0,
-    },
-  ];
-
   return (
     <ToktokWrapper>
       <PagWrapper>
         <Pagination
           activePage={page}
           itemsCountPerPage={3}
-          totalItemsCount={test.length}
+          totalItemsCount={getList?.length}
           pageRangeDisplayed={5}
           prevPageText={"‹"}
           nextPageText={"›"}
@@ -164,16 +130,16 @@ function Toktok(props) {
       </div>
       <br /><hr />
       <div>
-        {test.map((testMap) => { // 게시글들 맵
+        {getList?.map((getListMap) => { // 게시글들 맵
           return <ToktokItem
-            _id={testMap._id}
-            title={testMap.title}
-            content={testMap.content}
-            author={testMap.author}
-            img={testMap.img}
-            like={testMap.like}
-            view={testMap.view}
-            comment={testMap.comment}
+            _id={getListMap._id}
+            title={getListMap.title}
+            content={getListMap.content}
+            author={getListMap.author}
+            imgUrl={getListMap.imgUrl}
+            like={getListMap.like}
+            view={getListMap.view}
+            comment={getListMap.comment}
           />
         }).slice(((page + page + page) - 3), (page + page + page))}
       </div>

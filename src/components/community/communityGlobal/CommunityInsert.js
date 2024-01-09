@@ -25,6 +25,9 @@ function CommunityInsert(props) {
   const [insertTitle, setInsertTitle] = useState();
   const [insertContent, setInsertContent] = useState();
   const [insertImg, setInsertImg] = useState();
+  const date = new Date();
+  const like = ['']
+  const view = ['']
 
   const { insertPage } = useParams();
 
@@ -34,16 +37,19 @@ function CommunityInsert(props) {
   const changeContent = (e) => {
     setInsertContent(e.target.value)
   }
-  const changeImg = async (e) => {
-    setInsertImg(e.target.file)
-    console.log(insertImg);
-  }
+  // const changeImg = async (e) => {
+  //   setInsertImg(e.target.files[0])
+  // }
   const formDataList = async () => {
     try {
       const formData = new FormData();
       formData.append('title', insertTitle);
       formData.append('content', insertContent);
-      formData.append('imgUrl', insertImg);
+      const a = (document.querySelector('#imgUrl').files[0]);
+      formData.append('imgUrl', a);
+      formData.append('imgUrl', like);
+      formData.append('imgUrl', view);
+      formData.append('imgUrl', date);
       const result = await axios.post(`/community/${insertPage}/insert`, formData);
       console.log(result.data);
       if (!result.data.flag) {
@@ -84,8 +90,8 @@ function CommunityInsert(props) {
           accept='image/*'
           id='imgUrl'
           name='imgUrl'
-          value={insertImg}
-          onChange={changeImg}
+        // value={insertImg}
+        // onChange={changeImg}
         />
 
         <button
