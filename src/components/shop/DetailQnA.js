@@ -74,7 +74,7 @@ const QnABox = styled.div`
 function DetailQnA(props) {
   const { postId } = props;
   const navigate = useNavigate();
-  const [ qna, setQna ] = useState();
+  const [ qna, setQna ] = useState([]);
   const [ text, setText ] = useState(false);
 
 

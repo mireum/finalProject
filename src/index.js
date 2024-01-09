@@ -15,6 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const loginUserInfo = async () => {
   const result = await axios.get(`http://localhost:8888/user/login`, {withCredentials: true});
   if (result.data.flag) store.dispatch(getLoginUserInfo(result.data.data));
+  
 }
 loginUserInfo();
 
