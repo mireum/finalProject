@@ -7,15 +7,23 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "./app/store";
 import ScrollToTop from "./components/ScrollToTop";
-import { getLoginUserInfo } from './features/userInfoSlice';
+import { clearLoginUserInfo, getLoginUserInfo } from './features/userInfoSlice';
 import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+// * thunk 이용해서 비동기 처리 수정 필요
 const loginUserInfo = async () => {
-  const result = await axios.get(`http://localhost:8888/user/login`, {withCredentials: true});
-  if (result.data.flag) store.dispatch(getLoginUserInfo(result.data.data));
+  const user = localStorage.getItem('user');
+  if (!user) return;
   
+  store.dispatch(getLoginUserInfo(JSON.parse(user)));
+
+  const result = await axios.get(`http://localhost:8888/user/login`, {withCredentials: true});
+  if (!result.data.flag) {
+    store.dispatch(clearLoginUserInfo());
+    localStorage.removeItem('user');
+  }
 }
 loginUserInfo();
 
