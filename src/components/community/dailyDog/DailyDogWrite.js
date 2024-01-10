@@ -7,9 +7,9 @@ import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { addListToDailyDog, selectDailyDogList } from '../../../features/dailyDogSlice';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { getLoginUser } from '../../../features/userInfoSlice';
 
 const DailyDogWriteContainer = styled.div`
   max-width: 1200px;
@@ -64,8 +64,7 @@ const DailyDogWriteContainer = styled.div`
 
 function DailyDogWrite(props) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const testList = useSelector(selectDailyDogList);
+  const user = useSelector(getLoginUser);
 
   const [ values, setValues ] = useState({
     id: '',
@@ -135,7 +134,9 @@ function DailyDogWrite(props) {
 
     if (title && content) {
       try {
-        await axios.post('http://localhost:8888/community/daily/insert', { id, title, content, imgUrl: images, imgKey: imagesKey })
+        const date = new Date();
+
+        await axios.post('http://localhost:8888/community/daily/insert', { id, title, content, imgUrl: images, imgKey: imagesKey, author: user.signUserNicname, authorId: user._id, date })
         alert('게시글이 등록되었습니다.');
         navigate('/community/dailyDog');
       } catch (err) {

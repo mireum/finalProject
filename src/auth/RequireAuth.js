@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
-// import { selectUsername } from "../features/userSlice";
+import { getLoginUser } from "../features/userInfoSlice";
 
 function RequireAuth({ children }) {
-  const user = useSelector(selectUsername);
+  const user = useSelector(getLoginUser);
   const location = useLocation();
 
   if (!user) {

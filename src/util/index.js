@@ -24,7 +24,7 @@ export const dateFormat = (date) => {
     theMinutes = `0${theMinutes}`
   }
 
-  return theYear + '-' + theMonth + '-' + theDate + ' ' + theHours + ':' + theMinutes;
+  return theYear + '.' + theMonth + '.' + theDate + ' ' + theHours + ':' + theMinutes;
 }
 
 export const needLogin = () => {

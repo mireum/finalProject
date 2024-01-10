@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import feed from "../../image/feed.jpg";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Modal, Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../features/productSlice';
@@ -13,7 +12,7 @@ import DetailExchange from './DetailExchange';
 import ShopModal from './ShopModal';
 import Cart from './Cart';
 import { pay } from './Pay';
-import { getLoginUser, getLoginUserInfo } from '../../features/userInfoSlice';
+import { getLoginUser } from '../../features/userInfoSlice';
 import { needLogin } from '../../util';
 import StarReview from './StarReview';
 
@@ -183,6 +182,7 @@ function ShopDetail(props) {
     setProductCount(productCount+1);
   };
 
+  // 장바구니
   const handleCart = async (title, price) => {
     if (!user) {
       const result = needLogin();
@@ -190,20 +190,19 @@ function ShopDetail(props) {
     }
     try {
       const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount }, {withCredentials:true});
-      console.log(result);
-      
-    } catch (error) {
-      console.error(error);
+      console.log(result);  
+    } catch (err) {
+      console.error(err);
     }
     setShowModal(true);
   }
 
-  
+  // 구매하기
   const handlePay = async() => {
     const result = await pay(product, productCount, productCount * product.price);
     console.log(result);
     if (result.event == 'done' || result.event == 'issued') {
-      // const result = await axios.post('http://localhost:8888/purchase/add', { user, postId, productCount, date });
+      // const result = await axios.post('http://localhost:8888/purchase/add', { postId, productCount, date });
       // if (result.data.flag) {
         alert('결제가 완료되었습니다!');
         navigate('/shop');
@@ -223,7 +222,6 @@ function ShopDetail(props) {
     return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
   } 
     
-  console.log(product);
   const { brand, title, price, imgUrl, rate } = product;
 
   return (
