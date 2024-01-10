@@ -178,7 +178,7 @@ function ShopDetail(props) {
   }, []);
 
   const handleMinus = () => {
-    if (productCount != 1) setProductCount(productCount-1);
+    if (productCount !== 1) setProductCount(productCount-1);
   };
 
   const handlePlus = () => {
@@ -202,14 +202,20 @@ function ShopDetail(props) {
 
   // 구매하기
   const handlePay = async() => {
+    if (!user) {
+      const result = needLogin();
+      if (result) navigate('/login');
+    }
     const result = await pay(product, productCount, productCount * product.price);
-    console.log(result);
-    if (result.event == 'done' || result.event == 'issued') {
-      // const result = await axios.post('http://localhost:8888/purchase/add', { postId, productCount, date });
-      // if (result.data.flag) {
+    console.log('구매결과::', result);
+    if (result.event === 'done' || result.event === 'issued') {
+      const result = await axios.post('http://localhost:8888/shop/purchaseAdd', { postId, title, productCount }, {withCredentials: true});
+      if (result.data.flag) {
+        setShowBuyModal(false);
         alert('결제가 완료되었습니다!');
-        navigate('/shop');
-        // }
+        // 구매목록으로
+        // navigate('/shop');
+        }
     }
     else if (result.event == 'cancel') {
       setShowBuyModal(false);
@@ -273,7 +279,7 @@ function ShopDetail(props) {
               <Button variant="secondary" onClick={() => setShowBuyModal(false)}>
                 취소
               </Button>
-              <Button variant="primary" onClick={handlePay}>
+              <Button variant="primary" onClick={() => {handlePay(title)}}>
                 확인
               </Button>
             </Modal.Footer>
@@ -300,7 +306,7 @@ function ShopDetail(props) {
       {
         {
           'detail': <div><DetailDetail product={product} /></div>,
-          'review': <div><DetailReview product={product} postId={postId} /></div>,
+          'review': <div><DetailReview product={product} postId={postId} user={user}/></div>,
           'qa': <div><DetailQnA postId={postId} /></div>,
           'exchange': <div><DetailExchange /></div>
         }[showTab]
