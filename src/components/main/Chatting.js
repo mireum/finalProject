@@ -152,9 +152,10 @@ const ChattingContainer = styled.div`
 
 function Chatting(props) {
   const scrollRef = useRef();
-  const { id } = useParams();
+  const { toChat } = useParams();
   const isLogin = useSelector(getLoginUser);
 
+  const [ update, setUpdate ] = useState('');
   const [ chats, setChats ] = useState([]);
   const [ chatDetail, setChatDetail ] = useState([]);
   const [ value, setValue ] = useState('');
@@ -174,6 +175,25 @@ function Chatting(props) {
     scrollToBottom();
   }, [chats]);
 
+
+  // 스테이트로 접근해보기
+  socket.on('update', (data) => {
+    setUpdate(prev => [...prev, data.message])
+  })
+
+  useEffect(() => {
+    // socket.emit('login', userId);
+    const getChatListHandler = async () => {
+      
+      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
+      setChats(getChatList.data.chatData);
+    };
+    getChatListHandler();
+
+  }, [update]);
+
+
+
   // useEffect(() => {
   //   socket.on("sendMsg", data => {
   //     setChats([...chats, data.msg]);
@@ -190,59 +210,95 @@ function Chatting(props) {
   //   socket.emit('login', server);
   //   getChatListHandler();
   // }, []);
-  useEffect(() => {
-    const server = '디디'
-    socket.emit('login', server);
+  // useEffect(() => {
+  //   console.log(isLogin.userId);
+  //   // const server = '디디'
+  //   const server = isLogin.userId;
+  //   socket.emit('login', server);
 
 
-    socket.on('throwData', (chatData) => {
-      if (setChats) {
-        let copyChat = [...chats];
-        console.log(copyChat);
-        copyChat = [chatData]
-        console.log(copyChat);
-        setChats(...copyChat);
-      }
-    });
-    // 임시
-    // getChatListHandler();
-  }, []);
+  //   socket.on('throwData', (chatData) => {
+  //     if (setChats) {
+  //       let copyChat = [...chats];
+  //       console.log(copyChat);
+  //       copyChat = [chatData]
+  //       console.log(copyChat);
+  //       setChats(...copyChat);
+  //     }
+  //   });
+
+  //   socket.on('throwChatData', (chatData) => {
+  //     console.log(chatData);
+  //     if (setChatDetail) {
+  //       let copyChatDetail = [...chatDetail];
+  //       console.log(copyChatDetail);
+  //       copyChatDetail = [...chatData?.chatList]
+  //       console.log(copyChatDetail);
+  //       setChatDetail(copyChatDetail);
+  //     } else {
+  //       setChatDetail(chatData);
+  //     }
+  //     console.log(setChatDetail);
+  //   });
+  //   // 임시.
+  //   const getChatListHandler = async () => {
+      
+  //     const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
+  //     setChats(getChatList.data.chatData);
+  //   };
+  //   // 임시
+  // //   const server = '디디'
+  // //   socket.emit('login', server);
+  //   getChatListHandler();
+  // }, []);
 
 
 
   const handleToChatroom = async (id) => {
     setSendId(id);
     console.log(id);
-    // const chatting = await axios.post(`http://localhost:8888/getChatting`, { id }, {withCredentials: true});
-    // setChatDetail(chatting.data.resulte[0].chatList)
+    const chatting = await axios.post(`http://localhost:8888/getChatting`, { id }, {withCredentials: true});
+    console.log(chatting);
+    if (chatting.data.resulte?.chatList) {
+      setChatDetail(chatting.data.resulte.chatList);
+      console.log('1리절트 실행');
+      
+    } else {
+      setChatDetail(chatting.data.resulte2.chatList)
+      console.log('2리절트 실행');
 
-    socket.emit('getChatting', id);
-
-    socket.on('throwChatData', (chatData) => {
-      console.log(chatData);
-      if (setChatDetail) {
-        let copyChatDetail = [...chatDetail];
-        console.log(copyChatDetail);
-        copyChatDetail = [...chatData.chatList]
-        console.log(copyChatDetail);
-        setChatDetail(copyChatDetail);
-      } else {
-        setChatDetail(chatData);
-      }
-      console.log(setChatDetail);
-    });
+    }
+    const loginUser = isLogin.userId;
+    const data = { id, loginUser }
+    socket.emit('getChatting', data);
   };
 
   const handleSubmitMessage = () => {
     console.log(sendId);
-    // setChats(prevChat => [...prevChat, value]);
-    // 디디는 더미 로그인 유져
+
+    const loginUser = isLogin.userId;
     const data = {
       msg: value,
       user2: sendId,
-      // id: userId,
-      id: '디디',
-      room: '디디',
+      id: loginUser,
+      // id: '디디',
+      room: loginUser,
+      // room: '디디',
+    }
+    socket.emit('answer', data);
+    setValue('');
+    
+  };
+  const handleSubmitMessageDirect = (toChat) => {
+
+    const loginUser = isLogin.userId;
+    const data = {
+      msg: value,
+      user2: toChat,
+      id: loginUser,
+      // id: '디디',
+      room: loginUser,
+      // room: '디디',
     }
     socket.emit('answer', data);
     setValue('');
@@ -276,6 +332,10 @@ function Chatting(props) {
   let today = new Date();
   today = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
+
+  const handleTest = () => {
+    console.log(toChat);
+  };
   
   return (
     <ChattingContainer>
@@ -291,7 +351,7 @@ function Chatting(props) {
           </div>
         </div>
         <div className='chattinglist-box'>
-          <div className='chattinglist-inner-box'>
+          <div onClick={handleTest()} className='chattinglist-inner-box'>
             <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
             <div className='chattinglist-userinfo-box'>
               <div className='sort'>
@@ -325,7 +385,7 @@ function Chatting(props) {
               </div>
             )
           })
-        }
+          }
         </div>
         <div className='chatting-box' >
           <div className='sellerinfo-box'>
@@ -336,14 +396,14 @@ function Chatting(props) {
             return (
               <>
                 {index === 0 && <p className='day'>{today}</p>}
-                { chat.user !== '디디' &&
+                { chat.user !== isLogin.userId &&
                   <>
                     <p key={index} className='message-notme-box'>{chat.user}:</p>
                     <p key={index} className='message-notme-box'>{chat.msg}</p>
                   </>
                 }
                     {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
-                { chat.user == '디디' &&
+                { chat.user == isLogin.userId &&
                   <>
                     <p key={index} className='message-box'>{chat.user}:</p>
                     <p key={index} className='message-box'>{chat.msg}</p>
@@ -370,15 +430,28 @@ function Chatting(props) {
             )
           })} */}
 
-          <div className='chatting-input-box' >
-            <textarea
-              value={value} 
-              onChange={valueOnChange} 
-              onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessage()} }}
-              placeholder='메시지를 입력해주세요'
-            />
-            <button onClick={handleSubmitMessage}>전송</button>
-          </div>
+          { sendId 
+            ?
+              <div className='chatting-input-box' >
+                <textarea
+                  value={value} 
+                  onChange={valueOnChange} 
+                  onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessage()} }}
+                  placeholder='메시지를 입력해주세요'
+                />
+                <button onClick={handleSubmitMessage}>전송</button>
+              </div>
+            :
+              <div className='chatting-input-box' >
+                <textarea
+                  value={value} 
+                  onChange={valueOnChange} 
+                  onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessageDirect(toChat)} }}
+                  placeholder='메시지를 입력해주세요'
+                />
+                <button onClick={handleSubmitMessage}>전송</button>
+              </div>
+          }
         </div>
       </div>
     </ChattingContainer>
