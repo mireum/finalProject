@@ -213,11 +213,13 @@ function DailyDogDetail(props) {
 
         setLikeCount(prev => ({ ...prev, upCount: responseItem.data.postData.like.length, downCount: responseItem.data.postData.dislike.length }));
 
-        if (responseItem.data.postData.like.filter(id => id == user._id) == user._id) {
-          setLikeBtn(prev => ({ ...prev, upBtn: true }));
-        } 
-        if (responseItem.data.postData.dislike.filter(id => id == user._id) == user._id) {
-          setLikeBtn(prev => ({ ...prev, downBtn: true }));
+        if (user) {
+          if (responseItem.data.postData.like.filter(id => id == user._id) == user._id) {
+            setLikeBtn(prev => ({ ...prev, upBtn: true }));
+          } 
+          if (responseItem.data.postData.dislike.filter(id => id == user._id) == user._id) {
+            setLikeBtn(prev => ({ ...prev, downBtn: true }));
+          }
         }
       } catch (err) {
         console.error(err);

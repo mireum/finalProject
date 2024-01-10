@@ -73,7 +73,7 @@ function App() {
               </RequireAuth>
             } 
           />
-          <Route path='/community/dailydog' element={<DailyDog />} />
+          <Route path='/community/dailydog?' element={<DailyDog />} />
           <Route path='/community/dailydog/detail/:id' element={<DailyDogDetail />} />
           <Route 
             path='/community/dailydog/write' 

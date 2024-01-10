@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import DailyDogItem from './DailyDogItem';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Pagination from 'react-bootstrap/Pagination';
 
@@ -55,15 +55,18 @@ const StyledPagination = styled(Pagination)`
 
 function DailyDog(props) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const rememberPage = searchParams.get('page');
   const [ data, setData ] = useState([]);
   const [ page, setPage ] = useState({
     numOfPage: null,
     selectPage: 1,
     passPage: 1
   });
-
-  const { numOfPage, selectPage, passPage } = page;
   
+  const { numOfPage, selectPage, passPage } = page;
+
   useEffect(() => {
     const dailyDogData = async () => {
       try {
@@ -77,16 +80,24 @@ function DailyDog(props) {
     }
     dailyDogData();
   }, [selectPage])
+
+  useEffect(() => {
+    if (rememberPage) {
+      setPage(prev => ({ ...prev, selectPage: Number(rememberPage) }));
+    }
+  }, [rememberPage])
   
   const handlePage = (index) => {
     window.scrollTo(0, 0);
     setPage(prev => ({ ...prev, selectPage: index + 1 }));
+    navigate(`/community/dailydog?page=${index+1}`)
   }
 
   const handlePageFirst = () => {
     if (selectPage > 1) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, passPage: 1, selectPage: 1 }));
+      navigate('/community/dailydog?page=1');
     }
   }
 
@@ -94,9 +105,11 @@ function DailyDog(props) {
     if (selectPage > 10) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, passPage: passPage - 10, selectPage: passPage - 1 }));
+      navigate(`/community/dailydog?page=${selectPage-1}`)
     } else if (selectPage > 1) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, selectPage: selectPage - 1 }));
+      navigate(`/community/dailydog?page=${selectPage-1}`)
     } else {
       return null;
     }
@@ -106,9 +119,11 @@ function DailyDog(props) {
     if (passPage + 9 < numOfPage) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, passPage: passPage + 10, selectPage: passPage + 10 }));
+      navigate(`/community/dailydog?page=${selectPage+1}`)
     } else if (selectPage < numOfPage) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, selectPage: selectPage + 1 }));
+      navigate(`/community/dailydog?page=${selectPage+1}`)
     } else {
       return null;
     }
@@ -120,6 +135,7 @@ function DailyDog(props) {
 
     window.scrollTo(0, 0);
     setPage(prev => ({ ...prev, passPage: Number(result), selectPage: numOfPage }));
+    navigate(`/community/dailydog?page=${numOfPage}`)
   }
 
   return (

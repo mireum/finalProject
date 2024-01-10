@@ -216,7 +216,7 @@ function Header(props) {
             <div className='navInner'>
               <a onClick={() => navigate('/')}>커뮤니티홈</a>
               <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
-              <a onClick={() => navigate('/community/dailydog')}>데일리독</a>
+              <a onClick={() => navigate('/community/dailydog?page=1')}>데일리독</a>
               <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
             </div>
           </NavContainer>
