@@ -62,12 +62,14 @@ const QuestionContainer = styled.div`
 function Question(props) {
   // const { productId } = useParams();
   const { postId } = useParams();
-  console.log(postId);
+  // console.log(postId);
   const navigate = useNavigate();
   const [ title, setTitle ] = useState('');
   const [ content, setContent ] = useState('');
+
+  const date = new Date();
   
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     try {
       if (!title) {
         alert('제목을 입력해주세요');
@@ -75,7 +77,7 @@ function Question(props) {
       if (!content) {
         alert('내용을 입력해주세요');
       }
-      const result = await axios.post(`http://localhost:8888/shop/qna/${postId}`, { title, content });
+      const result = await axios.post(`http://localhost:8888/shop/qna/${postId}`, { title, content, date });
       if (result.data) alert('문의가 등록되었습니다!');
       navigate(`/shop/detail/${postId}`);
     } catch (err) {
@@ -88,6 +90,7 @@ function Question(props) {
   return (
     <QuestionContainer>
       <h1>문의하기</h1>
+
       <input className='title' type='text' placeholder='제목을 입력하세요' value={title}
       onChange={(e) => {setTitle(e.target.value)}} />
 
