@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { getLoginUser } from '../../../features/userInfoSlice';
 
 const CommunityInsertWrapper = styled.div`
   background-color: #ccc;
@@ -24,12 +26,12 @@ function CommunityInsert(props) {
 
   const [insertTitle, setInsertTitle] = useState();
   const [insertContent, setInsertContent] = useState();
-  const [insertImg, setInsertImg] = useState();
-  const date = new Date();
-  const like = ['']
-  const view = ['']
+  const [insertImg, setInsertImg] = useState(); // 상태관리..? 하기
+  const [like, setLike] = useState([]);
+  const [view, setView] = useState([]);
 
   const { insertPage } = useParams();
+  const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
 
   const changeTitle = (e) => {
     setInsertTitle(e.target.value)
@@ -37,6 +39,7 @@ function CommunityInsert(props) {
   const changeContent = (e) => {
     setInsertContent(e.target.value)
   }
+  console.log(로그인중);
   // const changeImg = async (e) => {
   //   setInsertImg(e.target.files[0])
   // }
@@ -45,12 +48,12 @@ function CommunityInsert(props) {
       const formData = new FormData();
       formData.append('title', insertTitle);
       formData.append('content', insertContent);
-      const a = (document.querySelector('#imgUrl').files[0]);
-      formData.append('imgUrl', a);
-      formData.append('imgUrl', like);
-      formData.append('imgUrl', view);
-      formData.append('imgUrl', date);
-      const result = await axios.post(`/community/${insertPage}/insert`, formData);
+      const img = (document.querySelector('#imgUrl').files[0]);
+      formData.append('imgUrl', img);
+      formData.append('like', like);
+      formData.append('view', view);
+      // formData.append('user', 로그인중);
+      const result = await axios.post(`/community/${insertPage}/insert`, { formData, user: 로그인중 });
       console.log(result.data);
       if (!result.data.flag) {
         return alert(result.data.message);

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -48,13 +49,43 @@ function ToktokItem(props) {
 
   const [likeRed, setLikeRed] = useState(false);
 
+  const { like, view, comment } = props;
+
   const handleLikeRed = () => {
     setLikeRed(!likeRed)
   }
+  console.log(props.user);
+
+  function elapsedTime(date) {
+    const start = new Date(date);
+    const end = new Date();
+    const diff = (end - start) / 1000;
+    const times = [
+      { name: '년', milliSeconds: 60 * 60 * 24 * 365 },
+      { name: '개월', milliSeconds: 60 * 60 * 24 * 30 },
+      { name: '일', milliSeconds: 60 * 60 * 24 },
+      { name: '시간', milliSeconds: 60 * 60 },
+      { name: '분', milliSeconds: 60 },
+    ];
+    for (const value of times) {
+      const betweenTime = Math.floor(diff / value.milliSeconds);
+
+      if (betweenTime > 0) {
+        return `${betweenTime}${value.name} 전`;
+      }
+    }
+    return '방금 전';
+  }
+  const 경과일 = elapsedTime(props.date);
+  const addView = async () => {
+    await axios.post('/community/toktok/view', props.view);
+  }
+  console.log(props.view);
+
   return (
     <ToktokItemWrapper>
       <div className='toktokColumn'>
-        <div onClick={() => { navigate(`/community/Toktok/${props._id}`) }}>
+        <div onClick={() => { addView(); navigate(`/community/Toktok/${props._id}`) }}>
           <h5 className='title'>{props.title}</h5>
           <span className='content'>{props.content}</span>
         </div>
@@ -63,15 +94,16 @@ function ToktokItem(props) {
             className={`${likeRed ? "material-symbols-outlined googlered" : "material-symbols-outlined"}`}
             onClick={handleLikeRed}
           > favorite</button>
-          <span>{props.like}</span>
+          <span>{like ? like?.length : 0}</span>
           <span className='material-symbols-outlined'>mode_comment</span>
-          <span>{props.comment}</span>
+          <span>{comment ? comment.length : 0}</span>
           <span class="material-symbols-outlined">visibility</span>
-          <span>{props.view}</span>
+          <span>{view ? view?.length : 0}</span>
+          <span>{경과일}</span>
         </div>
       </div>
       <div className='toktokColumn'>
-        <span>작성자: {props.author}</span>
+        <span>작성자: {props?.user?.signUserNicname}</span>
         <img src={props.imgUrl} />
       </div>
     </ToktokItemWrapper>

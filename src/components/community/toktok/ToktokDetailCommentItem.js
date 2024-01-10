@@ -15,9 +15,10 @@ const ToktokDetailCommentItemWrapper = styled.div`
 function ToktokDetailCommentItem(props) {
   return (
     <ToktokDetailCommentItemWrapper>
-      <p className='b'>작성자: {props.name}</p> <br />
+      <p className='b'>작성자: {props.user.signUserNicname}</p> <br />
       <div>
-        <span className='b'>내용: {props.content}</span>
+        <span className='b'>내용: {props.comment}</span>
+        <span>{props.date}</span>
         <span>🗑삭제</span> <hr />
       </div>
     </ToktokDetailCommentItemWrapper>

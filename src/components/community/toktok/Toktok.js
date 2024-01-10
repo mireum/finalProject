@@ -135,10 +135,11 @@ function Toktok(props) {
             _id={getListMap._id}
             title={getListMap.title}
             content={getListMap.content}
-            author={getListMap.author}
+            user={getListMap.user}
             imgUrl={getListMap.imgUrl}
             like={getListMap.like}
             view={getListMap.view}
+            date={getListMap.date}
             comment={getListMap.comment}
           />
         }).slice(((page + page + page) - 3), (page + page + page))}
