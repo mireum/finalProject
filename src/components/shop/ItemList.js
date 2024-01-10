@@ -172,11 +172,14 @@ function ItemList(props) {
   }
 
   const handleMore = async () => {
-    const result = await axios.get(`http://localhost:8888/shop/${selectedCategory}/?nextId=${productList[productList.length - 1]._id}`);
-    console.log(result.data.posts);
-    dispatch(addMoreProducts(result.data.posts));
-    // 서버코드에서 끝났다는 신호
-    if (result.data.end) {setMoreBtn(false)}
+    console.log(selectedCategory);
+    if (!selectedCategory) {
+      const result = await axios.get(`http://localhost:8888/shop/?nextId=${productList[productList.length - 1]._id}`);
+      dispatch(addMoreProducts(result.data.posts));
+    } else {
+      const result = await axios.get(`http://localhost:8888/shop/category/${selectedCategory}?nextId=${productList[productList.length - 1]._id}`);
+      dispatch(addMoreProducts(result.data.posts));
+    }
   };
 
   return (

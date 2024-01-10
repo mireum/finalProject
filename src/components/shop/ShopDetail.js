@@ -34,6 +34,9 @@ const ShopContainer = styled.div`
     font-size: 20px;
     padding-bottom: 10px;
   }
+  .detail .detail-text {
+    width: 451px;
+  }
   .detail .detail-text p,
   .detail .detail-text h3,
   .detail .detail-text h4 {
