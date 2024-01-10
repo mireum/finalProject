@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import DailyDogItem from './DailyDogItem';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Pagination from 'react-bootstrap/Pagination';
 
 const DailyDogContainer = styled.div`
   max-width: 1200px;
@@ -29,34 +30,97 @@ const DailyDogContainer = styled.div`
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
   }
+
+  .pagination > li > a:focus {
+    background: none;
+    box-shadow: none;
+  }
 `;
 
 const DailyDogItemContainer = styled(Container)`
   margin-top: 20px;
 `;
 
+const StyledPagination = styled(Pagination)`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+
+  span.page-link {
+    cursor: pointer;
+    background-color: #68a6fe;
+    border: none;
+  }
+`;
+
 function DailyDog(props) {
   const navigate = useNavigate();
   const [ data, setData ] = useState([]);
-  const [ page, setPage ] = useState(null);
+  const [ page, setPage ] = useState({
+    numOfPage: null,
+    selectPage: 1,
+    passPage: 1
+  });
 
+  const { numOfPage, selectPage, passPage } = page;
+  
   useEffect(() => {
     const dailyDogData = async () => {
       try {
-        const response = await axios.get('http://localhost:8888/community/daily');
+        const perPage = 9;
+        const response = await axios.get('http://localhost:8888/community/daily', { params: { perPage, selectPage }});
         setData(response.data.data);
-        setPage(response.data.numOfPage);
+        setPage(prev => ({ ...prev, numOfPage: response.data.numOfPage }));
       } catch (err) {
         console.error(err);
       }
     }
     dailyDogData();
-  }, [])
+  }, [selectPage])
+  
+  const handlePage = (index) => {
+    window.scrollTo(0, 0);
+    setPage(prev => ({ ...prev, selectPage: index + 1 }));
+  }
 
-  const numberOfButtons = 3;
+  const handlePageFirst = () => {
+    if (selectPage > 1) {
+      window.scrollTo(0, 0);
+      setPage(prev => ({ ...prev, passPage: 1, selectPage: 1 }));
+    }
+  }
 
-  console.log([...Array(numberOfButtons)]);
-  console.log([...Array(numberOfButtons)]);
+  const handlePagePrev = () => {
+    if (selectPage > 10) {
+      window.scrollTo(0, 0);
+      setPage(prev => ({ ...prev, passPage: passPage - 10, selectPage: passPage - 1 }));
+    } else if (selectPage > 1) {
+      window.scrollTo(0, 0);
+      setPage(prev => ({ ...prev, selectPage: selectPage - 1 }));
+    } else {
+      return null;
+    }
+  }
+  
+  const handlePageNext = () => {
+    if (passPage + 9 < numOfPage) {
+      window.scrollTo(0, 0);
+      setPage(prev => ({ ...prev, passPage: passPage + 10, selectPage: passPage + 10 }));
+    } else if (selectPage < numOfPage) {
+      window.scrollTo(0, 0);
+      setPage(prev => ({ ...prev, selectPage: selectPage + 1 }));
+    } else {
+      return null;
+    }
+  }
+
+  const handlePageLast = () => {
+    const stringOfPage = numOfPage.toString();
+    const result = stringOfPage.slice(0, stringOfPage.length - 1).concat('1');
+
+    window.scrollTo(0, 0);
+    setPage(prev => ({ ...prev, passPage: Number(result), selectPage: numOfPage }));
+  }
 
   return (
     <DailyDogContainer>
@@ -70,8 +134,15 @@ function DailyDog(props) {
           {data.map((item, index) => <DailyDogItem key={index} item={item}/>)}
         </Row>
       </DailyDogItemContainer>
-      {page 
-        ? [...Array(page)].map((item, index) => <button key={index} onClick={index}>{index + 1}</button>) 
+      {numOfPage 
+        ? 
+        <StyledPagination>
+          <Pagination.First onClick={handlePageFirst}/>
+          <Pagination.Prev onClick={handlePagePrev} />
+          {[...Array(numOfPage)].map((num, index) => <Pagination.Item active={index + 1 === selectPage} key={index} onClick={() => handlePage(index)}>{index + 1}</Pagination.Item>).slice(passPage - 1, passPage === 1 ? 10 : passPage + 9)}
+          <Pagination.Next onClick={handlePageNext}/>
+          <Pagination.Last onClick={handlePageLast}/>
+        </StyledPagination>
         : null
       }
     </DailyDogContainer>
