@@ -67,6 +67,7 @@ function DailyDog(props) {
       <DailyDogItemContainer>
         <Row>
           {data.map((item, index) => <DailyDogItem key={index} item={item}/>)}
+
         </Row>
       </DailyDogItemContainer>
       {page 

@@ -242,6 +242,7 @@ const Modal = styled.div`
 
 function DetailReview(props) {
   const navigate = useNavigate();
+  const [upDown, setUpDown] = useState('등록순');
   const [review, setReview] = useState(true);
   const [content, setContent] = useState('');
   const [reviewList, setReviewList] = useState([]);
@@ -368,6 +369,7 @@ function DetailReview(props) {
                 </div>
                 {(item.user === loginUser?._id) && 
                 <div>
+                  {}
                   <button className='delete-btn cursor-pointer' onClick={() => {handleReviewDelete(item._id)}}><MdDelete /></button>
                 </div>}
               </div>
@@ -402,6 +404,7 @@ function DetailReview(props) {
               <div className='filebox'>
                 <input type='file' name="img" id='file_upload' />
               </div>
+
               
               <div className='btn-wrap'>
                 <button type='submit' className='cursor-pointer' onClick={handleSubmit} >리뷰 등록</button>

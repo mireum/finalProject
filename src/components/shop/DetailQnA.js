@@ -2,6 +2,9 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { dateFormat } from '../../util';
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../features/userInfoSlice';
 
 const QnABox = styled.div`
   margin: 0 auto;
@@ -76,13 +79,15 @@ function DetailQnA(props) {
   const navigate = useNavigate();
   const [ qna, setQna ] = useState([]);
   const [ text, setText ] = useState(false);
+  const loginUser = useSelector(getLoginUser);
 
 
   useEffect(() => {
     const getQnA = async () => {
       try {
         const result = await axios.get(`http://localhost:8888/shop/qna/${postId}`);
-        setQna(result.data);
+        console.log(result.data.itemQna);
+        setQna(result.data.itemQna);
       } catch (err) {
         console.error(err);
       }
@@ -90,12 +95,16 @@ function DetailQnA(props) {
     getQnA();
   }, []);
 
+  const handleChange = () => {
+    setText(true);
+  };
+
   return (
     <QnABox>
       <div className='btnBox'>
         <h1>상품 문의📞</h1>
         {/* <button onClick={() => {navigate(`/shop/detail/${productId}/quest`)}}>문의하기</button> */}
-        <button className='cursor-pointer' onClick={() => {navigate(`/shop/detail/quest`)}}>문의하기</button>
+        <button className='cursor-pointer' onClick={() => {navigate(`/shop/detail/quest/${postId}`)}}>문의하기</button>
       </div>
       <p>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</p>
       <p>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</p>
@@ -118,29 +127,26 @@ function DetailQnA(props) {
             <th scope='col' className='date'>작성일</th>
           </tr>
           <tbody>
-            {/* <tr className={text ? 'borderBottom active' : 'borderBottom'}>
-              <td className='status'>답변대기</td>
-              <td className='title cursor-pointer' onClick={() => {setText(prev=>!prev)}}>맛없어요</td>
-              <td className='author'>qwer</td>
-              <td className='date'>2020-20-20 20:20</td>
-            </tr>
-            {text && <tr className='contentTr'>
-              <td></td>
-              <td className='title'>게으른빠가들은나가난천재로태어나가가가가가가가가한국에서나보다랩만은랩있으면난와</td>
-            </tr>} */}
-
-            {qna ? qna.map((item) => {
-              const { status, title, content, author, date } = item;
-              <tr className={text ? 'borderBottom active' : 'borderBottom'}>
-                <td className='status'>{status}</td>
-                <td className='title cursor-pointer' onClick={() => {setText(prev=>!prev)}}>{title}</td>
-                <td className='author'>{author}</td>
-                <td className='date'>{date}</td>
-              </tr>
-              {text && <tr className='contentTr'>
-                <td></td>
-                <td className='title'>{content}</td>
-              </tr>}
+            { qna.length > 0 ? 
+            qna.map((item, index) => {
+              const { status, title, content, author, date, _id } = item;
+              return (
+                <>
+                  <tr key={index} className={text ? 'borderBottom active' : 'borderBottom'} >
+                    <input type='hidden' value={_id}/>
+                    <td className='status'>{status}</td>
+                    <td className='title cursor-pointer' onClick={handleChange}>{title}</td>
+                    <td className='author'>{loginUser.signUserNicname}</td>
+                    <td className='date'>{dateFormat(date)}</td>
+                  </tr>
+                  { text &&
+                      <tr className='contentTr'>
+                        <td><input type='hidden' value={_id}/></td>
+                        <td className='title'>{content}</td>
+                      </tr>
+                  }
+                </>
+              )
             }) 
             :
             <tr>

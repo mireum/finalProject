@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ToktokDetailCommentItem from './ToktokDetailCommentItem';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../../features/userInfoSlice';
 
 const ToktokDetailWrapper = styled.div`
   background-color: #ccc;
@@ -58,38 +60,54 @@ function ToktokDetail(props) {
   // 타입은 커뮤 너네 머 자랑 / 육아 있다길래 나눠놓은거임   파람스로 요청시 같이ㄱㄱ 
 
   const { _id } = useParams();
-  console.log(_id);
 
   const [commentValue, setCommentValue] = useState();
+  const [getDetailCommentList, setGetDetailCommentList] = useState();
+  const [getDetailList, setGetDetailList] = useState();
+
+  const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
+  useEffect(() => {
+    const commentListGet = async () => {
+      const response = await axios.get(`/community/toktok/detail/${_id}`)
+      setGetDetailCommentList(response.data.commentData)
+      setGetDetailList(response.data.postData)
+    };
+    commentListGet();
+  }, []);
+  console.log(getDetailList);
 
   const changeComment = (e) => {
     setCommentValue(e.target.value)
   }
   const handleComment = async () => {
-    await axios.post('/댓글입력DB로 슈슈슛규슈슈슈슈윳')
+    await axios.post(`/community/toktok/comment/${_id}`, { comment: commentValue, postId: _id, user: 로그인중 })
+    window.location.reload()
   }
 
   const commentFilter = commentTest.filter((id) => { // 게시글 _id 댓글 postId 필터링
-    return (id.postId == _id)
+    return (id.postId === _id)
   })
 
   return (
     <ToktokDetailWrapper>
-      {_id}의 디테일 페이지지임임임임
+      {_id}
       <div className='a'>
-        사진 게시글 등등
+        {getDetailList?.title}
+        <hr />
+        {getDetailList?.content}
       </div>
       <hr /><br />
 
-      {commentFilter.map((testlistMap) => {
+      {getDetailCommentList?.map((testlistMap) => {
         return <ToktokDetailCommentItem
-          name={testlistMap.name}
-          content={testlistMap.content}
+          comment={testlistMap.comment}
+          user={testlistMap.user}
+          date={testlistMap.date}
         />
       })}
       <div>
-        <label />
-        <input className='c' value={commentValue} onChange={changeComment} />
+        <label htmlFor='commentInput' />
+        <input name='commentInput' className='c' value={commentValue} onChange={changeComment} />
         <button onClick={handleComment}>댓글입력</button>
       </div>
     </ToktokDetailWrapper>
