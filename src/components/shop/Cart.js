@@ -86,15 +86,19 @@ function Cart(props) {
     list();
   }, []);
 
-  // const handleMinus = async (id) => {
-  //   const result = await axios.post('/minusCart', {id, userId});
-  //   setCartList(result);
-  // };
+  const handleMinus = async (postId, count) => {
+    if (count === 1) {
+      alert('1 미만으로 내려갈 수 없습니다!\n삭제 버튼을 눌러주세요.');
+      return ;
+    }
+    const result = await axios.post('http://localhost:8888/shop/minusCount', {postId}, {withCredentials: true});
+    setCartList(result.data.result.list);
+  };
 
-  // const handlePlus = async (id) => {
-  //   const result = await axios.post('/plusCart', {id, userId});
-  //   setCartList(result);
-  // };
+  const handlePlus = async (postId) => {
+    const result = await axios.post('http://localhost:8888/shop/plusCount', {postId}, {withCredentials: true});
+    setCartList(result.data.result.list);
+  };
   
   const handleDelete = async (postId) => {
     const result = await axios.post('http://localhost:8888/shop/deleteCart', {postId}, {withCredentials: true});
@@ -143,14 +147,14 @@ function Cart(props) {
               <td>
                 <button
                   className='count'
-                  onClick={() => { undefined(item.id) }}
+                  onClick={() => { handleMinus(item.postId, item.count) }}
                 >
                   -
                 </button>
                 {item.count}
                 <button 
                   className='count'
-                  onClick={() => { undefined(item.id) }}>
+                  onClick={() => { handlePlus(item.postId) }}>
                   +
                 </button>
               </td>
