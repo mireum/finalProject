@@ -149,7 +149,7 @@ function Header(props) {
     setLogdrop(!logdrop);
   };
   const handleMypage = () => {
-    navigate('/mypage');
+    navigate('/user');
     handleDrop();
   }
   const handleCart = () => {
