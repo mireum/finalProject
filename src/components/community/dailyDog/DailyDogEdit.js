@@ -70,7 +70,6 @@ function DailyDogEdit(props) {
   const user = useSelector(getLoginUser);
   const { postId } = useParams();
 
-  const [ prevContent, setPrevContent ] = useState('');
   const [ values, setValues ] = useState({
     title: '',
     content: '',
@@ -87,7 +86,7 @@ function DailyDogEdit(props) {
       try {
         const response = await axios.get(`http://localhost:8888/community/daily/edit/${postId}`);
         setValues(prev => ({ ...prev, title: response.data.data.title, author: response.data.data.author }));
-        setPrevContent(response.data.data.content);
+        editorRef.current?.getInstance().setHTML(response.data.data.content)
 
         setImages(image => [ ...image, ...response.data.data.imgUrl ]);
         setImagesKey(image => [ ...image, ...response.data.data.imgKey ]);
@@ -105,16 +104,6 @@ function DailyDogEdit(props) {
     dailyDogEditData();
   }, []);
 
-  const titleOnChange = (e) => {
-   const title = e.target.value
-   setValues(value => ({ ...value, title }));
-  };
-
-  const contentOnChange = () => {
-    const content = editorRef.current?.getInstance().getHTML();
-    setValues(value => ({ ...value, content }));
-  };
-
   // 이미지 첨부를 위한 코드
   // https://kim-hasa.tistory.com/133
   useEffect(() => {
@@ -125,14 +114,10 @@ function DailyDogEdit(props) {
           let formData = new FormData();
           formData.append('img', blob);
 
-          console.log(blob);
-
           const response = await axios.post('http://localhost:8888/community/daily/insert/image', formData, {
             header: { 'content-type': 'multipart/formdata' },
             withCredentials: true,
           });
-
-          console.log(response);
 
           const imageUrl = `${response.data.fileName}`;
           const imageKey = `${response.data.fileKey}`;
@@ -149,8 +134,17 @@ function DailyDogEdit(props) {
     return () => {};
   }, [editorRef]);
 
-  // console.log(editorRef);
-  // console.log(editorRef.current?.getInstance().getHTML());
+  const titleOnChange = (e) => {
+   const title = e.target.value
+   setValues(value => ({ ...value, title }));
+  };
+
+  const contentOnChange = () => {
+    const content = editorRef.current?.getInstance().getHTML();
+    setValues(value => ({ ...value, content }));
+  };
+
+
   console.log(images);
 
   const handleSubmitValue = async () => {
@@ -170,7 +164,6 @@ function DailyDogEdit(props) {
     }
   };
 
-  // console.log(prevContent);
 
   return (
     <DailyDogEditContainer>
@@ -191,7 +184,6 @@ function DailyDogEdit(props) {
         plugins={[colorSyntax]}
         hideModeSwitch={true}
         onChange={contentOnChange}
-        initialValue={prevContent}
       />  
       <div className='btn-box'>
         <button onClick={() => navigate(-1)}>취소</button>
