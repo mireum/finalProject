@@ -60,10 +60,8 @@ const QuestionContainer = styled.div`
 
 
 function Question(props) {
-  // const { productId } = useParams();
-  const { postId } = useParams();
-  // console.log(postId);
   const navigate = useNavigate();
+  const { postId } = useParams();
   const [ title, setTitle ] = useState('');
   const [ content, setContent ] = useState('');
 
