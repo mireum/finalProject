@@ -63,29 +63,29 @@ function ShopCategory(props) {
 
   // 카테고리 별 페이지 요청 할 axios
   const axiosAll = async () => {
+    dispatch(getSelectedCategory(''));
     const result = await axios.get(`http://localhost:8888/shop/`);
     dispatch(getProducts(result.data.posts));
-    dispatch(getSelectedCategory(''));
   };
   const axiosFeed = async () => {
-    const result = await axios.get(`http://localhost:8888/shop/feed`);
-    dispatch(getProducts(result.data.posts));
     dispatch(getSelectedCategory('feed'));
+    const result = await axios.get(`http://localhost:8888/shop/category/feed`);
+    dispatch(getProducts(result.data.posts));
   };
   const axiosSnack = async () => {
-    // const result = await axios.get();
-    // dispatch(getProducts(result.data.posts));
-    // dispatch(getSelectedCategory('snack'));
+    dispatch(getSelectedCategory('snack'));
+    const result = await axios.get(`http://localhost:8888/shop/category/snack`);
+    dispatch(getProducts(result.data.posts));
   };
-  const axiosBeauty = async () => {
-    // const result = await axios.get();
-    // dispatch(getProducts(result.data.posts));
-    // dispatch(getSelectedCategory('beauty'));
+  const axiosPlay = async () => {
+    dispatch(getSelectedCategory('play'));
+    const result = await axios.get(`http://localhost:8888/shop/category/play`);
+    dispatch(getProducts(result.data.posts));
   };
-  const axiosAccessory = async () => {
-    // const result = await axios.get();
-    // dispatch(getProducts(result.data.posts));
-    // dispatch(getSelectedCategory('accessory'));
+  const axiosHygiene = async () => {
+    dispatch(getSelectedCategory('hygiene'));
+    const result = await axios.get(`http://localhost:8888/shop/category/hygiene`);
+    dispatch(getProducts(result.data.posts));
   };
   
   return (
@@ -102,11 +102,11 @@ function ShopCategory(props) {
         <img className='cate-4 cate-st cursor-pointer'/>
         <p>간식/영양제</p>
       </li>
-      <li onClick={axiosBeauty}>
+      <li onClick={axiosPlay}>
         <img className='cate-5 cate-st cursor-pointer'/>
         <p>산책/놀이</p>
       </li>
-      <li onClick={axiosAccessory}>
+      <li onClick={axiosHygiene}>
         <img className='cate-6 cate-st cursor-pointer'/>
         <p>배변/위생</p>
       </li>

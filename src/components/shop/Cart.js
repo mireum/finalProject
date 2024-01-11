@@ -74,17 +74,18 @@ const CartWrapper = styled.div`
 `;
 
 function Cart(props) {
-  // const [ cartList, setCartList ] = useState([]);
+  const [ cartList, setCartList ] = useState([]);
   const formatter = new Intl.NumberFormat('ko-KR');
   const navigate = useNavigate();
   // 유저정보 = useSelector();
 
-  // useEffect(() => {
-  //   const list = async () => {
-  //     await axios.get('/cart', { _id: userId } });
-  //   }
-  //   setCartList(list);
-  // }, []);
+  useEffect(() => {
+    const list = async () => {
+      const result = await axios.post('http://localhost:8888/shop/getCart', {}, { withCredentials: true });
+      setCartList(result.data.result.list);
+    }
+    list();
+  }, []);
 
   // const handleMinus = async (id) => {
   //   const result = await axios.post('/minusCart', {id, userId});
@@ -116,21 +117,6 @@ function Cart(props) {
     }
   };
 
-  const cartList = [
-    {
-      id: 1,
-      title: '퍼펙션 패드 소형 베이비파우더향 30매', 
-      price: 18000,
-      count: 3,
-    },
-    {
-      id: 2,
-      title: '퍼펙션 패드 중형 베이비파우더향 30매', 
-      price: 24000,
-      count: 1,
-    },
-  ]
-
   return (
     <CartWrapper>
       <h2>장바구니🛒</h2>
@@ -145,9 +131,10 @@ function Cart(props) {
           </tr>
         </thead>
         <tbody>
-          {cartList.map((item, index) => {
+          {cartList ?
+          cartList.map((item, index) => {
             return (
-            <tr key={item.id}>
+            <tr key={item.postId}>
               <td>{index + 1}</td>
               <td>{item.title}</td>
               <td>
@@ -167,14 +154,19 @@ function Cart(props) {
               <td>{formatter.format(item.price * item.count)}원</td>
               <td><button type='button' className='delete-btn' onClick={() => { undefined(item.id); }}>삭제</button></td>
             </tr>
-          )})}
+          )})
+          :
+          <tr>
+            <td colSpan={5}>물품이 없습니다.</td>
+          </tr>
+          }
 
           <tr className='total'>
             <th>합계</th>
             <td></td>
             <td></td>
             <th>
-              {formatter.format(
+              {cartList && formatter.format(
                 cartList.reduce((prev, cart) => {
                   return prev + (cart.price * cart.count);
                 }, 0))}원

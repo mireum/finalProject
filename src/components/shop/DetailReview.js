@@ -2,10 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MdDelete } from "react-icons/md";
-import { dateFormat } from '../../util';
+import { dateFormat, needLogin } from '../../util';
 import { useNavigate } from 'react-router-dom';
 import Star from './Star';
 import StarReview from './StarReview';
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../features/userInfoSlice';
 
 const ReviewContainer = styled.div`
   margin: 0 auto;
@@ -246,7 +248,8 @@ function DetailReview(props) {
   const [ selected, setSelected ] = useState('latest');
   const [modalOpen, setModalOpen] = useState(false);
   const [star, setStar] = useState('');
-  const { product: { brand, title }, postId } = props;
+  const { product: { brand, title }, postId, user } = props;
+  const loginUser = useSelector(getLoginUser);
   
   useEffect(() => {
     const list = async () => {
@@ -306,22 +309,13 @@ function DetailReview(props) {
     setContent('');
     setModalOpen(false);
   };
-  
-  const handleReviewDelete = async (_id) => {
-    try {
-      await axios.post('http://localhost:8888/shop/reviewDelete', { _id }, {withCredentials: true});
-      setReview(prev => !prev);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const openModal = () => {
-    // if (!result.data.user) {
-    //   alert('로그인이 필요합니다!');
-    // navigate('/login');
-    // }
-    setModalOpen(true);
+    if (!user) {
+      const result = needLogin();
+      if (result) navigate('/login');
+    }
+    else setModalOpen(true);
     if (modalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -334,6 +328,14 @@ function DetailReview(props) {
   };
   const handleStar = (rate) => {
     setStar(rate);
+  };
+  const handleReviewDelete = async (_id) => {
+    try {
+      await axios.post('http://localhost:8888/shop/reviewDelete', { _id, postId }, {withCredentials: true});
+      setReview(prev => !prev);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -361,13 +363,13 @@ function DetailReview(props) {
                 <div className='titlewrap'>
                   <p className='starwrap'><StarReview star={item.star}/></p>
                   <p className='title'>{item.title}</p>
-                  {/* 추후에 유저아이디도 저장해서 출력 */}
                   <p className='userId'>{item.id}<span className='date'>{dateFormat(item.date)}</span></p>
                   <p>{item.content}</p>
                 </div>
+                {(item.user === loginUser._id) && 
                 <div>
                   <button className='delete-btn cursor-pointer' onClick={() => {handleReviewDelete(item._id)}}><MdDelete /></button>
-                </div>
+                </div>}
               </div>
             )
           })

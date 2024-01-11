@@ -72,23 +72,23 @@ const QnABox = styled.div`
 `;
 
 function DetailQnA(props) {
-  // const { productId } = props;
+  const { postId } = props;
   const navigate = useNavigate();
-  const [ qna, setQna ] = useState();
+  const [ qna, setQna ] = useState([]);
   const [ text, setText ] = useState(false);
 
 
-  // useEffect(() => {
-  //   const getQnA = async () => {
-  //     try {
-  //       const result = await axios.get('');
-  //       setQna(result.data);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-  //   getQnA();
-  // });
+  useEffect(() => {
+    const getQnA = async () => {
+      try {
+        const result = await axios.get(`http://localhost:8888/shop/qna/${postId}`);
+        setQna(result.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getQnA();
+  }, []);
 
   return (
     <QnABox>
@@ -118,7 +118,7 @@ function DetailQnA(props) {
             <th scope='col' className='date'>작성일</th>
           </tr>
           <tbody>
-            <tr className={text ? 'borderBottom active' : 'borderBottom'}>
+            {/* <tr className={text ? 'borderBottom active' : 'borderBottom'}>
               <td className='status'>답변대기</td>
               <td className='title cursor-pointer' onClick={() => {setText(prev=>!prev)}}>맛없어요</td>
               <td className='author'>qwer</td>
@@ -127,26 +127,26 @@ function DetailQnA(props) {
             {text && <tr className='contentTr'>
               <td></td>
               <td className='title'>게으른빠가들은나가난천재로태어나가가가가가가가가한국에서나보다랩만은랩있으면난와</td>
-            </tr>}
+            </tr>} */}
 
-            {/* {qna ? qna.map((item) => {
+            {qna ? qna.map((item) => {
               const { status, title, content, author, date } = item;
-              <tr className='borderBottom'>
+              <tr className={text ? 'borderBottom active' : 'borderBottom'}>
                 <td className='status'>{status}</td>
                 <td className='title cursor-pointer' onClick={() => {setText(prev=>!prev)}}>{title}</td>
                 <td className='author'>{author}</td>
                 <td className='date'>{date}</td>
               </tr>
-              {text && <tr className={text ? 'contentTr active' : 'contentTr'}>
+              {text && <tr className='contentTr'>
                 <td></td>
-                <td className='title contentTd'>{content}</td>
+                <td className='title'>{content}</td>
               </tr>}
             }) 
             :
             <tr>
               <td colSpan={4}>문의가 없습니다.</td>
             </tr>
-            } */}
+            }
           </tbody>
         </table>
       </div>

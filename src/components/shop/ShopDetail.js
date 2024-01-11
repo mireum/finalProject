@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import feed from "../../image/feed.jpg";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Modal, Nav } from 'react-bootstrap';
 import { clearSelectedProduct, getSelectedProduct, selectSelectedProduct } from '../../features/productSlice';
@@ -13,8 +12,9 @@ import DetailExchange from './DetailExchange';
 import ShopModal from './ShopModal';
 import Cart from './Cart';
 import { pay } from './Pay';
-import { getLoginUser, getLoginUserInfo } from '../../features/userInfoSlice';
+import { getLoginUser } from '../../features/userInfoSlice';
 import { needLogin } from '../../util';
+import StarReview from './StarReview';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -30,7 +30,13 @@ const ShopContainer = styled.div`
     width: 400px;
     height: 400px;
   }
- 
+  .rate {
+    font-size: 20px;
+    padding-bottom: 10px;
+  }
+  .detail .detail-text {
+    width: 451px;
+  }
   .detail .detail-text p,
   .detail .detail-text h3,
   .detail .detail-text h4 {
@@ -154,63 +160,11 @@ function ShopDetail(props) {
   const user = useSelector(getLoginUser);
   const product = useSelector(selectSelectedProduct);
 
-  const handleMinus = () => {
-    if (productCount != 1) setProductCount(productCount-1);
-  };
-
-  const handlePlus = () => {
-    setProductCount(productCount+1);
-  };
-
-  const handleCart = async (title, price) => {
-    // if (!user) {
-    //   const result = needLogin();
-    //   if (result) navigate('/login');
-    //   else return
-    // }
-    try {
-      // 로그인 연동 후에 다시
-      const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount });
-      console.log(result);
-      
-    } catch (error) {
-      console.error(error);
-    }
-    setShowModal(true);
-  }
-
-  const openModal = () => {
-    setShowModal(true)
-  }
-  const closeModal = () => {
-    setShowModal(false)
-  }
-
-  const handleBuy = () => {
-    setShowBuyModal(true);
-  };
-
-  const handlePay = async() => {
-    const result = await pay(product, productCount, productCount * product.price);
-    console.log(result);
-    if (result.event == 'done' || result.event == 'issued') {
-      // const result = await axios.post('http://localhost:8888/purchase/add', { user, postId, productCount, date });
-      // if (result.data.flag) {
-        alert('결제가 완료되었습니다!');
-        navigate('/shop');
-      // }
-    }
-    else if (result.event == 'cancel') {
-      setShowBuyModal(false);
-      alert('결제 취소');
-    }
-  };
- 
   useEffect(() => {
     // 서버에 특정 상품의 데이터 요청
     const fetchProductById = async () => {
       try {
-        const response = await axios.get(`http://localhost:8888/shop/detail/${postId}`);
+        const response = await axios.get(`http://localhost:8888/shop/detail/${postId}`, {withCredentials: true});
         dispatch(getSelectedProduct(response.data.itemDetail))
       } catch (error) {
         console.error(error);
@@ -223,22 +177,61 @@ function ShopDetail(props) {
     };
   }, []);
 
+  const handleMinus = () => {
+    if (productCount !== 1) setProductCount(productCount-1);
+  };
 
+  const handlePlus = () => {
+    setProductCount(productCount+1);
+  };
+
+  // 장바구니
+  const handleCart = async (title, price) => {
+    if (!user) {
+      const result = needLogin();
+      if (result) navigate('/login');
+    }
+    try {
+      const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount }, {withCredentials:true});
+      console.log(result);  
+    } catch (err) {
+      console.error(err);
+    }
+    setShowModal(true);
+  }
+
+  // 구매하기
+  const handlePay = async() => {
+    if (!user) {
+      const result = needLogin();
+      if (result) navigate('/login');
+    }
+    const result = await pay(product, productCount, productCount * product.price);
+    console.log('구매결과::', result);
+    if (result.event === 'done' || result.event === 'issued') {
+      const result = await axios.post('http://localhost:8888/shop/purchaseAdd', { postId, title, productCount }, {withCredentials: true});
+      if (result.data.flag) {
+        setShowBuyModal(false);
+        alert('결제가 완료되었습니다!');
+        // 구매목록으로
+        // navigate('/shop');
+        }
+    }
+    else if (result.event == 'cancel') {
+      setShowBuyModal(false);
+      alert('결제 취소');
+    }
+  };
+    
+  const openModal = () => {setShowModal(true)};
+  const closeModal = () => {setShowModal(false)};
+  const handleBuy = () => {setShowBuyModal(true)};
+    
   if (!product) {
     return null; // store에 상품 없을 때 아무것도 렌더링하지 않음
   } 
-
-  // const product = {
-  //   id: 1,
-  //   title: '퍼펙션 패드 소형 베이비파우더향 30매',
-  //   price: 180,
-  //   rate: 3.6,
-  //   content: '맛있는 사료에요',
-  //   age: 5,
-  //   size: 'middle',
-  // };
-  console.log(product);
-  const { brand, title, price, imgUrl } = product;
+    
+  const { brand, title, price, imgUrl, rate } = product;
 
   return (
     <ShopContainer>
@@ -248,7 +241,9 @@ function ShopDetail(props) {
         </div>
         <div className='detail-text'>
           <p>{brand}</p>
-          <div>별점</div>
+          {rate ?
+          <div className='rate'><StarReview star={rate} />{rate}점</div>
+          : <div className='rate'>평점없음</div>}
           <h3>{title}</h3>
           <h4>{price * productCount}원</h4>
           <span className='text1'>수량</span>
@@ -284,7 +279,7 @@ function ShopDetail(props) {
               <Button variant="secondary" onClick={() => setShowBuyModal(false)}>
                 취소
               </Button>
-              <Button variant="primary" onClick={handlePay}>
+              <Button variant="primary" onClick={() => {handlePay(title)}}>
                 확인
               </Button>
             </Modal.Footer>
@@ -311,7 +306,7 @@ function ShopDetail(props) {
       {
         {
           'detail': <div><DetailDetail product={product} /></div>,
-          'review': <div><DetailReview product={product} postId={postId} /></div>,
+          'review': <div><DetailReview product={product} postId={postId} user={user}/></div>,
           'qa': <div><DetailQnA postId={postId} /></div>,
           'exchange': <div><DetailExchange /></div>
         }[showTab]

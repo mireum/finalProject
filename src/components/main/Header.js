@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from "styled-components";
 import { getLoginUser } from '../../features/userInfoSlice';
+import axios from 'axios';
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -117,12 +118,13 @@ const NavContainer = styled.nav`
 function Header(props) {
   const navigate = useNavigate();
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
-  const handleLogOut = () => {
-    sessionStorage.clear();
+  const handleLogOut = async () => {
+    const result = await axios.get('http://localhost:8888/user/logout', {withCredentials:true});
+    console.log(result.data);
     window.location.reload();
   }
-  const [logdrop, setLogdrop] = useState(false);
 
+  const [logdrop, setLogdrop] = useState(false);
   const [isHover, setIsHover] = useState({
     communityTap: false,
     shopTap: false,
@@ -214,7 +216,7 @@ function Header(props) {
             <div className='navInner'>
               <a onClick={() => navigate('/')}>커뮤니티홈</a>
               <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
-              <a onClick={() => navigate('/community/dailyDog')}>데일리독</a>
+              <a onClick={() => navigate('/community/dailydog')}>데일리독</a>
               <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
             </div>
           </NavContainer>
