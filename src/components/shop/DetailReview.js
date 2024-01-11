@@ -367,7 +367,7 @@ function DetailReview(props) {
                   <p className='userId'>{item.id}<span className='date'>{dateFormat(item.date)}</span></p>
                   <p>{item.content}</p>
                 </div>
-                {(item.user === loginUser._id) && 
+                {(item.user === loginUser?._id) && 
                 <div>
                   {}
                   <button className='delete-btn cursor-pointer' onClick={() => {handleReviewDelete(item._id)}}><MdDelete /></button>

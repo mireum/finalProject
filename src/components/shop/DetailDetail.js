@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import dog from "../../image/dog.png";
 import { useNavigate } from 'react-router';
+import { getLoginUser } from '../../features/userInfoSlice';
+import { useSelector } from 'react-redux';
 
 
 const DetailBox = styled.div`
@@ -135,31 +137,29 @@ const DetailBox = styled.div`
 function DetailDetail(props) {
   const { title, price, rate, content, age, size, brand } = props.product;
   const navigate = useNavigate();
+  const loginUser = useSelector(getLoginUser);
+  console.log(loginUser);
 
-  const mypage =  {
-    useId: '주인',
-    name: '가을',
-    age: 2,
-    weight: 3.8,
-    dogType: '말티푸'
-  };
+  // const mypage =  {
+  //   useId: '주인',
+  //   name: '가을',
+  //   age: 2,
+  //   weight: 3.8,
+  //   dogType: '말티푸'
+  // };
 
   return (
     <DetailBox>
       <h1>강아지 정보🔎</h1>
         {
-          mypage.useId ? (
+          loginUser ? (
             <div className='top-wrap'>
               <img src={dog} alt='강아지 프로필 사진'/>
               <div className='top-text'>
-                <p className='name'>{mypage.name}</p>
-                <span>{mypage.age}살</span>
-                <span className='weight'>{mypage.weight}kg</span>
-                <p className='type'>{mypage.dogType}</p>
-                {/* {
-                age === mypage.age ? <p>해당 제품은 {mypage.name}이와 맞는 상품이에요 :)</p>
-                : <p>해당 제품은 {mypage.name}이와 맞지 않는 상품이에요 :(</p>
-                } */}
+                <p className='name'>{loginUser.signUserNicname}</p>
+                <span>{loginUser.signDogAge}살</span>
+                <span className='weight'>{loginUser.weight}kg</span>
+                <p className='type'>{loginUser.signDogType}</p>
               </div>
               <div className='top-myPage cursor-pointer' onClick={() => {navigate('/mypage')}}>
                 <span className='more'>더보기</span>

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { dateFormat } from '../../util';
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../features/userInfoSlice';
 
 const QnABox = styled.div`
   margin: 0 auto;
@@ -76,7 +78,8 @@ function DetailQnA(props) {
   const { postId } = props;
   const navigate = useNavigate();
   const [ qna, setQna ] = useState([]);
-  const [ text, setText ] = useState([]);
+  const [ text, setText ] = useState(false);
+  const loginUser = useSelector(getLoginUser);
 
 
   useEffect(() => {
@@ -92,11 +95,9 @@ function DetailQnA(props) {
     getQnA();
   }, []);
 
-  // const handleChange = () => {
-  //   for (let i = 0; i < text.length; i++) {
-  //    text[i] = true;
-  //   }
-  // };
+  const handleChange = () => {
+    setText(true);
+  };
 
   return (
     <QnABox>
@@ -129,21 +130,20 @@ function DetailQnA(props) {
             { qna.length > 0 ? 
             qna.map((item, index) => {
               const { status, title, content, author, date, _id } = item;
-              // console.log(item._id);
               return (
                 <>
                   <tr key={index} className={text ? 'borderBottom active' : 'borderBottom'} >
                     <input type='hidden' value={_id}/>
                     <td className='status'>{status}</td>
-                    <td className='title cursor-pointer' onClick={() => {setText(prev=>!prev)}}>{title}</td>
-                    <td className='author'>{author}</td>
+                    <td className='title cursor-pointer' onClick={handleChange}>{title}</td>
+                    <td className='author'>{loginUser.signUserNicname}</td>
                     <td className='date'>{dateFormat(date)}</td>
                   </tr>
-                  { 
-                    <tr className='contentTr'>
-                      <td><input type='hidden' value={_id}/></td>
-                      <td className='title'>{content}</td>
-                    </tr>
+                  { text &&
+                      <tr className='contentTr'>
+                        <td><input type='hidden' value={_id}/></td>
+                        <td className='title'>{content}</td>
+                      </tr>
                   }
                 </>
               )
@@ -153,7 +153,6 @@ function DetailQnA(props) {
               <td colSpan={4}>문의가 없습니다.</td>
             </tr>
             }
-            
           </tbody>
         </table>
       </div>
