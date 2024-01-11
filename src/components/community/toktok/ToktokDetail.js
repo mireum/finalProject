@@ -73,6 +73,9 @@ function ToktokDetail(props) {
       setGetDetailList(response.data.postData)
     };
     commentListGet();
+    const addView = () => {
+
+    }
   }, []);
   console.log(getDetailList);
 

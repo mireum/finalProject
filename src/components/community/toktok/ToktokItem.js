@@ -53,10 +53,18 @@ function ToktokItem(props) {
 
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
 
-  const { like, view, comment } = props;
+  const { like, view, comment, _id } = props;
 
-  const handleLikeRed = () => {
+  const 좋아요중복제거 = like?.filter((a) => {
+    return (a === 로그인중?._id);
+  });
+
+  const handleLikeRed = async () => {
     setLikeRed(!likeRed)
+    await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
+  }
+  const addView = async () => {
+    await axios.post('/community/toktok/view', { user: 로그인중, postId: _id });
   }
 
   function elapsedTime(date) {
@@ -81,10 +89,7 @@ function ToktokItem(props) {
   }
   const 경과일 = elapsedTime(props.date);
 
-  const addView = async () => {
-    await axios.post('/community/toktok/view', 로그인중);
-  }
-  console.log(로그인중);
+
 
   return (
     <ToktokItemWrapper>
@@ -95,7 +100,7 @@ function ToktokItem(props) {
         </div>
         <div className='likeCommentView'>
           <button
-            className={`${likeRed ? "material-symbols-outlined googlered" : "material-symbols-outlined"}`}
+            className={`${좋아요중복제거 ? "material-symbols-outlined googlered" : (likeRed ? "material-symbols-outlined googlered" : "material-symbols-outlined")}`}
             onClick={handleLikeRed}
           > favorite</button>
           <span>{like ? like?.length : 0}</span>
