@@ -159,16 +159,21 @@ function Chatting(props) {
   const [ chats, setChats ] = useState([]);
   const [ chatDetail, setChatDetail ] = useState([]);
   const [ value, setValue ] = useState('');
-  const [sendId, setSendId] = useState('');
+  const [ sendId, setSendId ] = useState('');
   const [ room, setRoom ] = useState('');
   const [ userId, setUserId ] = useState(isLogin?.userId);
   
-  const socket = io.connect("http://localhost:8888");
-
+  // const socket = io.connect("http://localhost:8888");
+  
   const valueOnChange = (e) => {
     setValue(e.target.value);
   };
   
+  
+  const socket = io.connect("http://localhost:8888");
+  useEffect(() => {
+    
+  }, []);
 
 
   useEffect(() => {
@@ -177,12 +182,22 @@ function Chatting(props) {
 
 
   // 스테이트로 접근해보기
-  socket.on('update', (data) => {
-    setUpdate(prev => [...prev, data.message])
-  })
+  useEffect(() => {
+    socket.on('updateChatDetail', (lastChat) => {
+      console.log('디테일챗실행');
+      setChatDetail(prev => [...prev, lastChat])
+    })
+  }, []);
 
   useEffect(() => {
-    // socket.emit('login', userId);
+    socket.on('update', (data) => {
+      console.log('업데이트챗 실행');
+      setUpdate(prev => [...prev, data.message])
+    })
+  }, []);
+
+  useEffect(() => {
+    console.log('유즈이펙트 실행');
     const getChatListHandler = async () => {
       
       const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
@@ -194,87 +209,23 @@ function Chatting(props) {
 
 
 
-  // useEffect(() => {
-  //   socket.on("sendMsg", data => {
-  //     setChats([...chats, data.msg]);
-  //   });
-  // }, [chats]);
-  // useEffect(() => {
-  //   const getChatListHandler = async () => {
-      
-  //     const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
-  //     setChats(getChatList.data.chatData);
-  //   };
-  //   // 임시
-  //   const server = '디디'
-  //   socket.emit('login', server);
-  //   getChatListHandler();
-  // }, []);
-  // useEffect(() => {
-  //   console.log(isLogin.userId);
-  //   // const server = '디디'
-  //   const server = isLogin.userId;
-  //   socket.emit('login', server);
-
-
-  //   socket.on('throwData', (chatData) => {
-  //     if (setChats) {
-  //       let copyChat = [...chats];
-  //       console.log(copyChat);
-  //       copyChat = [chatData]
-  //       console.log(copyChat);
-  //       setChats(...copyChat);
-  //     }
-  //   });
-
-  //   socket.on('throwChatData', (chatData) => {
-  //     console.log(chatData);
-  //     if (setChatDetail) {
-  //       let copyChatDetail = [...chatDetail];
-  //       console.log(copyChatDetail);
-  //       copyChatDetail = [...chatData?.chatList]
-  //       console.log(copyChatDetail);
-  //       setChatDetail(copyChatDetail);
-  //     } else {
-  //       setChatDetail(chatData);
-  //     }
-  //     console.log(setChatDetail);
-  //   });
-  //   // 임시.
-  //   const getChatListHandler = async () => {
-      
-  //     const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
-  //     setChats(getChatList.data.chatData);
-  //   };
-  //   // 임시
-  // //   const server = '디디'
-  // //   socket.emit('login', server);
-  //   getChatListHandler();
-  // }, []);
-
-
-
   const handleToChatroom = async (id) => {
+
+    setChatDetail([]);
     setSendId(id);
     console.log(id);
-    const chatting = await axios.post(`http://localhost:8888/getChatting`, { id }, {withCredentials: true});
+    const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
     console.log(chatting);
     if (chatting.data.resulte?.chatList) {
       setChatDetail(chatting.data.resulte.chatList);
       console.log('1리절트 실행');
-      
     } else {
       setChatDetail(chatting.data.resulte2.chatList)
       console.log('2리절트 실행');
-
     }
-    const loginUser = isLogin.userId;
-    const data = { id, loginUser }
-    socket.emit('getChatting', data);
   };
 
   const handleSubmitMessage = () => {
-    console.log(sendId);
 
     const loginUser = isLogin.userId;
     const data = {
@@ -304,25 +255,6 @@ function Chatting(props) {
     setValue('');
   };
 
-
-  // io.on("connection", socket => {
-  //   console.log(`User Connected: ${socket.id}`);
-  //   socket.on("join_room", data => {
-  //     socket.join(data);
-  //   });
-  //   socket.on("send_message", data => {
-  //     console.log(data);
-  //     socket.to(data.room).emit("receive_message", data);
-  //   });
-  // });
-  
-  // 전송 버튼에 넣고 조회 시 작성 자 정보의 아이디와 내 아이디를 합쳐서 뭔가를 만들면 될듯
-  // const JoinRoom = (e) => {
-  //   if (room !== "") {
-  //     socket.emit("join_room", room);
-  //   }
-  // };
-
   const scrollToBottom = () => {
     if ((scrollRef.current)) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -332,10 +264,6 @@ function Chatting(props) {
   let today = new Date();
   today = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
-
-  const handleTest = () => {
-    console.log(toChat);
-  };
   
   return (
     <ChattingContainer>
@@ -351,7 +279,7 @@ function Chatting(props) {
           </div>
         </div>
         <div className='chattinglist-box'>
-          <div onClick={handleTest()} className='chattinglist-inner-box'>
+          <div className='chattinglist-inner-box'>
             <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
             <div className='chattinglist-userinfo-box'>
               <div className='sort'>
@@ -371,9 +299,9 @@ function Chatting(props) {
               <p>대화내용</p>
             </div>
           </div>
-          { chats?.map(chat => {
+          { chats?.map((chat, index) => {
             return (
-              <div className='chattinglist-inner-box' key={chat.user} onClick={() => {handleToChatroom(chat.user)}}>
+              <div className='chattinglist-inner-box' key={index} onClick={() => {handleToChatroom(chat.user)}}>
                 <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
                 <div className='chattinglist-userinfo-box'>
                   <div className='sort'>
@@ -399,36 +327,20 @@ function Chatting(props) {
                 { chat.user !== isLogin.userId &&
                   <>
                     <p key={index} className='message-notme-box'>{chat.user}:</p>
-                    <p key={index} className='message-notme-box'>{chat.msg}</p>
+                    <p className='message-notme-box'>{chat.msg}</p>
                   </>
                 }
                     {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
                 { chat.user == isLogin.userId &&
                   <>
                     <p key={index} className='message-box'>{chat.user}:</p>
-                    <p key={index} className='message-box'>{chat.msg}</p>
+                    <p className='message-box'>{chat.msg}</p>
                   </>
                 }
               </>
             )
           })}
           </div>
-
-
-          {/* { chatDetail.map((chat, index) => {
-            return (
-              <>
-                <div className='sellerinfo-box'>
-                  <p><span>{chat.user}</span></p>
-                </div>
-                <div ref={scrollRef} className='chatting-detail-box'>
-                  {index === 0 && <p className='day'>{today}</p>}
-                  <p className='message-box'></p>
-                  <p className='message-notme-box'>{chat.msg}</p>
-                </div>
-              </>
-            )
-          })} */}
 
           { sendId 
             ?
