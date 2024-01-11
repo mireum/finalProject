@@ -71,7 +71,7 @@ function DailyDog(props) {
     const dailyDogData = async () => {
       try {
         const perPage = 9;
-        const response = await axios.get('http://localhost:8888/community/daily', { params: { perPage, selectPage }});
+        const response = await axios.get(`http://localhost:8888/community/daily?page=${rememberPage}`, { params: { perPage }});
         setData(response.data.data);
         setPage(prev => ({ ...prev, numOfPage: response.data.numOfPage }));
       } catch (err) {
@@ -105,7 +105,7 @@ function DailyDog(props) {
     if (selectPage > 10) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, passPage: passPage - 10, selectPage: passPage - 1 }));
-      navigate(`/community/dailydog?page=${selectPage-1}`)
+      navigate(`/community/dailydog?page=${passPage-10}`)
     } else if (selectPage > 1) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, selectPage: selectPage - 1 }));
@@ -119,7 +119,7 @@ function DailyDog(props) {
     if (passPage + 9 < numOfPage) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, passPage: passPage + 10, selectPage: passPage + 10 }));
-      navigate(`/community/dailydog?page=${selectPage+1}`)
+      navigate(`/community/dailydog?page=${passPage+10}`)
     } else if (selectPage < numOfPage) {
       window.scrollTo(0, 0);
       setPage(prev => ({ ...prev, selectPage: selectPage + 1 }));

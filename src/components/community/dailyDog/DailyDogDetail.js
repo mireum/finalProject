@@ -15,11 +15,27 @@ const DailyDogDetailContainer = styled.div`
   margin: 70px auto;
   text-align: center;
   
-  h1 {
-    font-size: 20px;
-    font-weight: bold;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+  .title-box {
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+      padding-bottom: 20px;
+    }
+
+    .edit-box {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        margin-left: 14px;
+        background: none;
+        border: none;
+        font-size: 15px;
+        color: #222;
+        opacity: 0.7;
+      }
+    }
   }
 
   img {
@@ -29,9 +45,10 @@ const DailyDogDetailContainer = styled.div`
   }
 
   .subtitle-box {
-    margin-top: 14px;
+    padding-top: 14px;
     display: flex;
     justify-content: flex-end;
+    border-top: 1px solid #ccc;
 
     p {
       margin-left: 14px;
@@ -158,7 +175,6 @@ const DailyDogDetailContainer = styled.div`
             line-height: 24px;
           }
 
-          
           .comment-expanded {
             
             p {
@@ -297,6 +313,15 @@ function DailyDogDetail(props) {
     <DailyDogDetailContainer>
       <div className='title-box'>
         <h1>{item.title}</h1>
+          {user && user._id === item.authorId
+            ?
+            <div className='edit-box'>
+              <button onClick={() => navigate(`/community/dailydog/edit/${item._id}`)}>수정</button>
+              <button>삭제</button>
+            </div>
+            : null
+          } 
+          
         <div className='subtitle-box'>
           <p>{item.author}</p>
           <p>{dateFormat(item.date)}</p>

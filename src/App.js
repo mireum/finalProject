@@ -26,6 +26,7 @@ import Mypage from './components/main/Mypage';
 import PersonalDog from './components/personalDog/PersonalDog';
 import Chatting from './components/main/Chatting';
 import RequireAuth from './auth/RequireAuth';
+import DailyDogEdit from './components/community/dailyDog/DailyDogEdit';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -73,8 +74,17 @@ function App() {
               </RequireAuth>
             } 
           />
-          <Route path='/community/dailydog?' element={<DailyDog />} />
+          <Route path='/community/dailydog' element={<DailyDog />} />
           <Route path='/community/dailydog/detail/:id' element={<DailyDogDetail />} />
+          <Route 
+            path='/community/dailydog/edit/:postId' 
+            element={
+              <RequireAuth>
+                <DailyDogEdit />
+              </RequireAuth>
+            } 
+            />
+
           <Route 
             path='/community/dailydog/write' 
             element={
