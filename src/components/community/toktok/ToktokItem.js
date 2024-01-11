@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { getLoginUser } from '../../../features/userInfoSlice';
 
 const ToktokItemWrapper = styled.div`
   height: 180px;
@@ -49,12 +51,13 @@ function ToktokItem(props) {
 
   const [likeRed, setLikeRed] = useState(false);
 
+  const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
+
   const { like, view, comment } = props;
 
   const handleLikeRed = () => {
     setLikeRed(!likeRed)
   }
-  console.log(props.user);
 
   function elapsedTime(date) {
     const start = new Date(date);
@@ -77,10 +80,11 @@ function ToktokItem(props) {
     return '방금 전';
   }
   const 경과일 = elapsedTime(props.date);
+
   const addView = async () => {
-    await axios.post('/community/toktok/view', props.view);
+    await axios.post('/community/toktok/view', 로그인중);
   }
-  console.log(props.view);
+  console.log(로그인중);
 
   return (
     <ToktokItemWrapper>

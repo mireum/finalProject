@@ -140,14 +140,14 @@ function Signup(props) {
   const changeDogAge = (e) => { setSignDogAge(e.target.value) }
   const changeDogWeigth = (e) => { setSignDogWeight(e.target.value); }
   const changeDogName = (e) => { setSignDogName(e.target.value) }
-  const userInput = { userId: signId, passwd: signPw, signEmail, signUserNicname, signDogType, signDogAge, signDogName }
+  const userInput = { userId: signId, passwd: signPw, signEmail, signUserNicname, signDogType, signDogAge, signDogWeight, signDogName }
 
 
   const handleSignUp = async () => {
     try {
       if (signId.length < 5 || signId.length > 15) {
         alert('아이디는 4자 이상 14자 이하로 기입');
-      } if (signId == '') {
+      } /* if (signId == '') {
         alert('아이디를 입력해 주세요.');
       } if (signPw == '') {
         alert('비밀번호를 입력해 주세요.')
@@ -163,7 +163,7 @@ function Signup(props) {
         alert('반려견의 몸무게를 입력해 주세요.');
       } if (signDogName == '') {
         alert('반려견의 이름을 입력해 주세요.')
-      }
+      } */
       await axios.post('http://localhost:8888/user/register', userInput);
       navigate('/login');
     } catch (error) {
