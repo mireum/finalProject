@@ -144,9 +144,6 @@ function DailyDogEdit(props) {
     setValues(value => ({ ...value, content }));
   };
 
-
-  console.log(images);
-
   const handleSubmitValue = async () => {
 
     if (!title) {
@@ -163,7 +160,6 @@ function DailyDogEdit(props) {
       }
     }
   };
-
 
   return (
     <DailyDogEditContainer>
