@@ -171,9 +171,6 @@ function Chatting(props) {
   
   
   const socket = io.connect("http://localhost:8888");
-  useEffect(() => {
-    
-  }, []);
 
 
   useEffect(() => {
@@ -182,17 +179,15 @@ function Chatting(props) {
 
 
   // 스테이트로 접근해보기
+
   useEffect(() => {
-    socket.on('updateChatDetail', (lastChat) => {
-      console.log('디테일챗실행');
-      setChatDetail(prev => [...prev, lastChat])
-    })
+    socket.emit('login', userId);
   }, []);
 
   useEffect(() => {
     socket.on('update', (data) => {
       console.log('업데이트챗 실행');
-      setUpdate(prev => [...prev, data.message])
+      setUpdate(prev => [...prev, data.message]);
     })
   }, []);
 
@@ -206,24 +201,46 @@ function Chatting(props) {
     getChatListHandler();
 
   }, [update]);
-
+  
+  // 각자 다른방에서 따로 채팅은 가능함
+  // 하지만 유저1 - 유저2 대화중이다가 유저2가 유저3이랑 대화방가고 유저1이 유저2한테 채팅보내면
+  // 2와 3 방에 1의 말이 뿌려짐 그냥 화면상 랜더링되는거 같은데 막아야함
+  // 물론 3이 1의 채팅을 볼 순 없지만 2의 화면에 그냥 뿌려져서 혼잡
+  useEffect(() => {
+    socket.on('updateChatDetail', (lastChat) => {
+      console.log('디테일챗실행');
+      setChatDetail(prev => [...prev, lastChat]);
+    })
+    // console.log('필터');
+    // let copyChatDetail = [...chatDetail];
+    // let filterChatDetail = copyChatDetail.filter(chat => chat.user === sendId && chat.user === userId);
+    // setChatDetail(filterChatDetail)
+  }, []);
 
 
   const handleToChatroom = async (id) => {
-
+    console.log(room);
+    socket.emit('leaveRoom', room);
+    setRoom('')
     setChatDetail([]);
     setSendId(id);
     console.log(id);
     const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
     console.log(chatting);
     if (chatting.data.resulte?.chatList) {
+      console.log(chatting.data.resulte.room);
+      socket.emit('joinRoom', chatting.data.resulte.room);
+      setRoom(chatting.data.resulte.room)
       setChatDetail(chatting.data.resulte.chatList);
       console.log('1리절트 실행');
     } else {
+      socket.emit('joinRoom', chatting.data.resulte2.room );  
+      setRoom(chatting.data.resulte2.room)
       setChatDetail(chatting.data.resulte2.chatList)
       console.log('2리절트 실행');
     }
   };
+
 
   const handleSubmitMessage = () => {
 
