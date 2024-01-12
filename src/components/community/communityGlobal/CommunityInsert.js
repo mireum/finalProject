@@ -52,7 +52,22 @@ function CommunityInsert(props) {
       formData.append('imgUrl', img);
       // formData.append('like', like);
       // formData.append('view', view);
-      const result = await axios.post(`/community/${insertPage}/insert`, { formData, user: 로그인중 });
+
+
+      /* key 확인하기 */
+      for (let key of formData.keys()) {
+        console.log(key);
+      }
+
+      /* value 확인하기 */
+      for (let value of formData.values()) {
+        console.log(value);
+      }
+
+      // const aa = await axios.post(`/community/${insertPage}/insert`, formData, 로그인중);
+      // console.log(aa);
+
+      const result = await axios.post(`/community/${insertPage}/insert`, formData, 로그인중);
       console.log(result.data);
       if (!result.data.flag) {
         return alert(result.data.message);
@@ -61,6 +76,9 @@ function CommunityInsert(props) {
       console.error(err);
     }
   }
+
+
+
 
 
 

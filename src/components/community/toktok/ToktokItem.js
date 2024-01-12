@@ -50,6 +50,7 @@ function ToktokItem(props) {
   const navigate = useNavigate()
 
   const [likeRed, setLikeRed] = useState(false);
+  const [likeSt, setLikeSt] = useState();
 
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
 
@@ -62,9 +63,10 @@ function ToktokItem(props) {
   const handleLikeRed = async () => {
     setLikeRed(!likeRed)
     await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
+    setLikeSt(like.length)
   }
-  const addView = async () => {
-    await axios.post('/community/toktok/view', { user: 로그인중, postId: _id });
+  const addView = () => {
+    axios.post('/community/toktok/view', { postId: _id })
   }
 
   function elapsedTime(date) {
@@ -89,18 +91,19 @@ function ToktokItem(props) {
   }
   const 경과일 = elapsedTime(props.date);
 
+  console.log(좋아요중복제거);
 
 
   return (
     <ToktokItemWrapper>
       <div className='toktokColumn'>
-        <div onClick={() => { addView(); navigate(`/community/Toktok/${props._id}`) }}>
+        <div onClick={() => { addView(); navigate(`/community/Toktok/${props._id}`); }}>
           <h5 className='title'>{props.title}</h5>
           <span className='content'>{props.content}</span>
         </div>
         <div className='likeCommentView'>
           <button
-            className={`${좋아요중복제거 ? "material-symbols-outlined googlered" : (likeRed ? "material-symbols-outlined googlered" : "material-symbols-outlined")}`}
+            className={`${좋아요중복제거.length ? "material-symbols-outlined googlered" : (likeRed ? "material-symbols-outlined googlered" : "material-symbols-outlined")}`}
             onClick={handleLikeRed}
           > favorite</button>
           <span>{like ? like?.length : 0}</span>
@@ -112,7 +115,7 @@ function ToktokItem(props) {
         </div>
       </div>
       <div className='toktokColumn'>
-        <span>작성자: {props?.user?.signUserNicname}</span>
+        <span>작성자: {props.user.signUserNicname}</span>
         <img src={props.imgUrl} />
       </div>
     </ToktokItemWrapper>
