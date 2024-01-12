@@ -121,6 +121,7 @@ function Header(props) {
   const handleLogOut = async () => {
     const result = await axios.get('http://localhost:8888/user/logout', {withCredentials:true});
     console.log(result.data);
+    navigate('/');
     window.location.reload();
   }
 
