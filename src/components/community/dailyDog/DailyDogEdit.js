@@ -10,8 +10,9 @@ import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { getLoginUser } from '../../../features/userInfoSlice';
+import { useParams } from 'react-router-dom';
 
-const DailyDogWriteContainer = styled.div`
+const DailyDogEditContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
   margin: 70px auto;
@@ -62,43 +63,46 @@ const DailyDogWriteContainer = styled.div`
   }
 `;
 
-function DailyDogWrite(props) {
+function DailyDogEdit(props) {
+  // 이미지 첨부 시 바로 s3에 저장 됨
+  // 해결: 백에서 images와 content와 비교하여 값이 없으면 s3의 image를 삭제해라 
   const navigate = useNavigate();
   const user = useSelector(getLoginUser);
+  const { postId } = useParams();
 
   const [ values, setValues ] = useState({
-    id: '',
     title: '',
     content: '',
   });
   const [ images, setImages ] = useState([]);
   const [ imagesKey, setImagesKey ] = useState([]);
 
-  const { id, title, content } = values;
+  const { title, content } = values;
+
+  const editorRef = useRef();
 
   useEffect(() => {
-    const dailyDogData = async () => {
+    const dailyDogEditData = async () => {
       try {
-        const response = await axios.get('http://localhost:8888/community/daily/number');
-        setValues(prevValue => ({ ...prevValue, id: response.data.id ? response.data.id + 1 : 1 }));
+        const response = await axios.get(`http://localhost:8888/community/daily/edit/${postId}`);
+        setValues(prev => ({ ...prev, title: response.data.data.title, author: response.data.data.author }));
+        editorRef.current?.getInstance().setHTML(response.data.data.content)
+
+        setImages(image => [ ...image, ...response.data.data.imgUrl ]);
+        setImagesKey(image => [ ...image, ...response.data.data.imgKey ]);
+        
+        if (user) {
+          if (!(user.signUserNicname === response.data.data.author)) {
+            alert('수정 권한이 없습니다.')
+            return navigate(-1);
+          }
+        }
       } catch (err) {
         console.error(err);
       }
     }
-    dailyDogData();
-  }, [])
-
-  const editorRef = useRef();
-
-  const titleOnChange = (e) => {
-   const title = e.target.value
-   setValues(value => ({ ...value, title }));
-  };
-
-  const contentOnChange = () => {
-    const content = editorRef.current?.getInstance().getHTML();
-    setValues(value => ({ ...value, content }));
-  };
+    dailyDogEditData();
+  }, []);
 
   // 이미지 첨부를 위한 코드
   // https://kim-hasa.tistory.com/133
@@ -130,7 +134,15 @@ function DailyDogWrite(props) {
     return () => {};
   }, [editorRef]);
 
-  console.log(content);
+  const titleOnChange = (e) => {
+   const title = e.target.value
+   setValues(value => ({ ...value, title }));
+  };
+
+  const contentOnChange = () => {
+    const content = editorRef.current?.getInstance().getHTML();
+    setValues(value => ({ ...value, content }));
+  };
 
   const handleSubmitValue = async () => {
 
@@ -140,10 +152,8 @@ function DailyDogWrite(props) {
       return alert('내용을 입력해주세요.');
     } else {
       try {
-        const date = new Date();
-
-        await axios.post('http://localhost:8888/community/daily/insert', { id, title, content, imgUrl: images, imgKey: imagesKey, author: user.signUserNicname, authorId: user._id, date })
-        alert('게시글이 등록되었습니다.');
+        await axios.patch(`http://localhost:8888/community/daily/edit/${postId}`, { title, content, imgUrl: images, imgKey: imagesKey })
+        alert('게시글이 수정되었습니다.');
         navigate('/community/dailyDog');
       } catch (err) {
         console.error(err);
@@ -152,13 +162,13 @@ function DailyDogWrite(props) {
   };
 
   return (
-    <DailyDogWriteContainer>
-      <h1>데일리독</h1>
+    <DailyDogEditContainer>
+      <h1>데일리독 글수정</h1>
       <div className='tip-box'>
         <p>* 첫번째로 삽입한 이미지가 대표 이미지가 되며 업로드 시 이미지의 크기는 460*360으로 고정 됩니다.</p>
         <p>* 작성하신 글은 자동으로 가운데 정렬 됩니다.</p>
       </div>
-      <input type='text' value={title} onChange={titleOnChange} placeholder='제목을 입력해주세요' />
+      <input type='text' defaultValue={title} onChange={titleOnChange} placeholder='제목을 입력해주세요' />
       <Editor
         ref={editorRef}
         placeholder="내용을 입력해주세요."
@@ -173,10 +183,10 @@ function DailyDogWrite(props) {
       />  
       <div className='btn-box'>
         <button onClick={() => navigate(-1)}>취소</button>
-        <button onClick={handleSubmitValue}>등록</button>
+        <button onClick={handleSubmitValue}>수정</button>
       </div>
-    </DailyDogWriteContainer>
+    </DailyDogEditContainer>
   );
 }
 
-export default DailyDogWrite;
+export default DailyDogEdit;
