@@ -152,79 +152,125 @@ const ChattingContainer = styled.div`
 
 function Chatting(props) {
   const scrollRef = useRef();
-  const { id } = useParams();
-  const 로그인중 = useSelector(getLoginUser);
+  const { toChat } = useParams();
+  const isLogin = useSelector(getLoginUser);
 
+  const [ update, setUpdate ] = useState('');
   const [ chats, setChats ] = useState([]);
   const [ chatDetail, setChatDetail ] = useState([]);
   const [ value, setValue ] = useState('');
+  const [ sendId, setSendId ] = useState('');
   const [ room, setRoom ] = useState('');
-  // const [ userId, setUserId ] = useState(로그인중.signId);
+  const [ userId, setUserId ] = useState(isLogin?.userId);
   
-  const socket = io.connect("http://localhost:8888");
-
+  // const socket = io.connect("http://localhost:8888");
+  
   const valueOnChange = (e) => {
     setValue(e.target.value);
   };
   
-  const handleSubmitMessage = () => {
-    // setChats(prevChat => [...prevChat, value]);
-    const data = {
-      msg: value,
-      id: '천지민',
-      // id: userId,
-      room: '천지민',
-    }
-    socket.emit('userSend', data);
-    setValue('');
-  };
+  
+  const socket = io.connect("http://localhost:8888");
+
 
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
 
-  // useEffect(() => {
-  //   socket.on("sendMsg", data => {
-  //     setChats([...chats, data.msg]);
-  //   });
-  // }, [chats]);
+
+  // 스테이트로 접근해보기
+
   useEffect(() => {
+    socket.emit('login', userId);
+  }, []);
+
+  useEffect(() => {
+    socket.on('update', (data) => {
+      console.log('업데이트챗 실행');
+      setUpdate(prev => [...prev, data.message]);
+    })
+  }, []);
+
+  useEffect(() => {
+    console.log('유즈이펙트 실행');
     const getChatListHandler = async () => {
-      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList');
+      
+      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
       setChats(getChatList.data.chatData);
     };
-    // 임시
-    const server = '천지민'
-    socket.emit('login', server);
     getChatListHandler();
+
+  }, [update]);
+  
+  // 각자 다른방에서 따로 채팅은 가능함
+  // 하지만 유저1 - 유저2 대화중이다가 유저2가 유저3이랑 대화방가고 유저1이 유저2한테 채팅보내면
+  // 2와 3 방에 1의 말이 뿌려짐 그냥 화면상 랜더링되는거 같은데 막아야함
+  // 물론 3이 1의 채팅을 볼 순 없지만 2의 화면에 그냥 뿌려져서 혼잡
+  useEffect(() => {
+    socket.on('updateChatDetail', (lastChat) => {
+      console.log('디테일챗실행');
+      setChatDetail(prev => [...prev, lastChat]);
+    })
+    // console.log('필터');
+    // let copyChatDetail = [...chatDetail];
+    // let filterChatDetail = copyChatDetail.filter(chat => chat.user === sendId && chat.user === userId);
+    // setChatDetail(filterChatDetail)
   }, []);
 
 
   const handleToChatroom = async (id) => {
+    console.log(room);
+    socket.emit('leaveRoom', room);
+    setRoom('')
+    setChatDetail([]);
+    setSendId(id);
     console.log(id);
-    const chatting = await axios.post(`http://localhost:8888/getChatting`, { id });
-    setChatDetail(chatting.data.resulte[0].chatList)
+    const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
+    console.log(chatting);
+    if (chatting.data.resulte?.chatList) {
+      console.log(chatting.data.resulte.room);
+      socket.emit('joinRoom', chatting.data.resulte.room);
+      setRoom(chatting.data.resulte.room)
+      setChatDetail(chatting.data.resulte.chatList);
+      console.log('1리절트 실행');
+    } else {
+      socket.emit('joinRoom', chatting.data.resulte2.room );  
+      setRoom(chatting.data.resulte2.room)
+      setChatDetail(chatting.data.resulte2.chatList)
+      console.log('2리절트 실행');
+    }
   };
 
 
+  const handleSubmitMessage = () => {
 
-  // io.on("connection", socket => {
-  //   console.log(`User Connected: ${socket.id}`);
-  //   socket.on("join_room", data => {
-  //     socket.join(data);
-  //   });
-  //   socket.on("send_message", data => {
-  //     console.log(data);
-  //     socket.to(data.room).emit("receive_message", data);
-  //   });
-  // });
-  
-  // 전송 버튼에 넣고 조회 시 작성 자 정보의 아이디와 내 아이디를 합쳐서 뭔가를 만들면 될듯
-  // const JoinRoom = (e) => {
-  //   if (room !== "") {
-  //     socket.emit("join_room", room);
-  //   }
-  // };
+    const loginUser = isLogin.userId;
+    const data = {
+      msg: value,
+      user2: sendId,
+      id: loginUser,
+      // id: '디디',
+      room: loginUser,
+      // room: '디디',
+    }
+    socket.emit('answer', data);
+    setValue('');
+    
+  };
+  const handleSubmitMessageDirect = (toChat) => {
+
+    const loginUser = isLogin.userId;
+    const data = {
+      msg: value,
+      user2: toChat,
+      id: loginUser,
+      // id: '디디',
+      room: loginUser,
+      // room: '디디',
+    }
+    socket.emit('answer', data);
+    setValue('');
+  };
 
   const scrollToBottom = () => {
     if ((scrollRef.current)) {
@@ -270,9 +316,9 @@ function Chatting(props) {
               <p>대화내용</p>
             </div>
           </div>
-          { chats.map(chat => {
+          { chats?.map((chat, index) => {
             return (
-              <div className='chattinglist-inner-box' key={chat.user} onClick={() => {handleToChatroom(chat.user)}}>
+              <div className='chattinglist-inner-box' key={index} onClick={() => {handleToChatroom(chat.user)}}>
                 <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
                 <div className='chattinglist-userinfo-box'>
                   <div className='sort'>
@@ -284,7 +330,7 @@ function Chatting(props) {
               </div>
             )
           })
-        }
+          }
         </div>
         <div className='chatting-box' >
           <div className='sellerinfo-box'>
@@ -295,39 +341,46 @@ function Chatting(props) {
             return (
               <>
                 {index === 0 && <p className='day'>{today}</p>}
-                <p className='message-notme-box'>{chat.msg}</p>
-                {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
-                {chat.user2 && <p className='message-box'>{chat.msg}</p>}
+                { chat.user !== isLogin.userId &&
+                  <>
+                    <p key={index} className='message-notme-box'>{chat.user}:</p>
+                    <p className='message-notme-box'>{chat.msg}</p>
+                  </>
+                }
+                    {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
+                { chat.user == isLogin.userId &&
+                  <>
+                    <p key={index} className='message-box'>{chat.user}:</p>
+                    <p className='message-box'>{chat.msg}</p>
+                  </>
+                }
               </>
             )
           })}
           </div>
 
-
-          {/* { chatDetail.map((chat, index) => {
-            return (
-              <>
-                <div className='sellerinfo-box'>
-                  <p><span>{chat.user}</span></p>
-                </div>
-                <div ref={scrollRef} className='chatting-detail-box'>
-                  {index === 0 && <p className='day'>{today}</p>}
-                  <p className='message-box'></p>
-                  <p className='message-notme-box'>{chat.msg}</p>
-                </div>
-              </>
-            )
-          })} */}
-
-          <div className='chatting-input-box' >
-            <textarea
-              value={value} 
-              onChange={valueOnChange} 
-              onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessage()} }}
-              placeholder='메시지를 입력해주세요'
-            />
-            <button onClick={handleSubmitMessage}>전송</button>
-          </div>
+          { sendId 
+            ?
+              <div className='chatting-input-box' >
+                <textarea
+                  value={value} 
+                  onChange={valueOnChange} 
+                  onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessage()} }}
+                  placeholder='메시지를 입력해주세요'
+                />
+                <button onClick={handleSubmitMessage}>전송</button>
+              </div>
+            :
+              <div className='chatting-input-box' >
+                <textarea
+                  value={value} 
+                  onChange={valueOnChange} 
+                  onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessageDirect(toChat)} }}
+                  placeholder='메시지를 입력해주세요'
+                />
+                <button onClick={handleSubmitMessage}>전송</button>
+              </div>
+          }
         </div>
       </div>
     </ChattingContainer>

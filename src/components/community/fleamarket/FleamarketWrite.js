@@ -210,7 +210,7 @@ function FleamarketWrite(props) {
 
     if (title && price && category && place && content && images[0]) {
       try {
-        axios.post('http://localhost:8888/vintage/insert', formData)
+        axios.post('http://localhost:8888/vintage/insert', formData, {withCredentials: true})
         alert('게시글이 등록되었습니다.');
         navigate('/community/Fleamarket');
       } catch (err) {
