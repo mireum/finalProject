@@ -77,7 +77,6 @@ function Cart(props) {
   const [ cartList, setCartList ] = useState([]);
   const formatter = new Intl.NumberFormat('ko-KR');
   const navigate = useNavigate();
-  // 유저정보 = useSelector();
 
   useEffect(() => {
     const list = async () => {
@@ -87,30 +86,38 @@ function Cart(props) {
     list();
   }, []);
 
-  // const handleMinus = async (id) => {
-  //   const result = await axios.post('/minusCart', {id, userId});
-  //   setCartList(result);
-  // };
+  const handleMinus = async (postId, count) => {
+    if (count === 1) {
+      alert('1 미만으로 내려갈 수 없습니다!\n삭제 버튼을 눌러주세요.');
+      return ;
+    }
+    const result = await axios.post('http://localhost:8888/shop/minusCount', {postId}, {withCredentials: true});
+    setCartList(result.data.result.list);
+  };
 
-  // const handlePlus = async (id) => {
-  //   const result = await axios.post('/plusCart', {id, userId});
-  //   setCartList(result);
-  // };
+  const handlePlus = async (postId) => {
+    const result = await axios.post('http://localhost:8888/shop/plusCount', {postId}, {withCredentials: true});
+    setCartList(result.data.result.list);
+  };
   
-  // const handleDelete = async (id) => {
-  //   const result = await axios.post('/deleteCart', {id, userId});
-  //   setCartList(result);
-  // };
+  const handleDelete = async (postId) => {
+    const result = await axios.post('http://localhost:8888/shop/deleteCart', {postId}, {withCredentials: true});
+    setCartList(result.data.result.list);
+  };
   
-  const handlePay = () => {
+  const handlePay = async () => {
     const totalPrice = cartList.reduce((prev, cart) => {
       return prev + (cart.price * cart.count);
     }, 0);
     const result = pay(cartList[0], cartList[0].count, totalPrice, cartList.length - 1);
     console.log(result);
     if (result.event == 'done' || result.event == 'issued') {
-      alert('결제가 완료되었습니다!');
-      navigate('/shop');
+      const result = await axios.get('http://localhost:8888/shop/purchaseAdds', {withCredentials: true});
+      if (result.data.flag) {
+        alert('결제가 완료되었습니다!');
+        // 구매목록으로
+        navigate('/shop');
+        }
     }
     else if (result.event == 'cancel') {
       alert('결제 취소');
@@ -140,19 +147,19 @@ function Cart(props) {
               <td>
                 <button
                   className='count'
-                  onClick={() => { undefined(item.id) }}
+                  onClick={() => { handleMinus(item.postId, item.count) }}
                 >
                   -
                 </button>
                 {item.count}
                 <button 
                   className='count'
-                  onClick={() => { undefined(item.id) }}>
+                  onClick={() => { handlePlus(item.postId) }}>
                   +
                 </button>
               </td>
               <td>{formatter.format(item.price * item.count)}원</td>
-              <td><button type='button' className='delete-btn' onClick={() => { undefined(item.id); }}>삭제</button></td>
+              <td><button type='button' className='delete-btn' onClick={() => {handleDelete(item.postId)}}>삭제</button></td>
             </tr>
           )})
           :

@@ -156,7 +156,7 @@ function DetailDetail(props) {
             <div className='top-wrap'>
               <img src={dog} alt='강아지 프로필 사진'/>
               <div className='top-text'>
-                <p className='name'>{loginUser.signUserNicname}</p>
+                <p className='name'>{loginUser.signDogName}</p>
                 <span>{loginUser.signDogAge}살</span>
                 <span className='weight'>{loginUser.weight}kg</span>
                 <p className='type'>{loginUser.signDogType}</p>

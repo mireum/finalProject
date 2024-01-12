@@ -193,7 +193,6 @@ function ShopDetail(props) {
     }
     try {
       const result = await axios.post(`http://localhost:8888/shop/plusCart`, { title, price, postId, productCount }, {withCredentials:true});
-      console.log(result);  
     } catch (err) {
       console.error(err);
     }

@@ -1,6 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { getLoginUser } from '../../../features/userInfoSlice';
 
 const CommunityInsertWrapper = styled.div`
   background-color: #ccc;
@@ -23,7 +26,12 @@ function CommunityInsert(props) {
 
   const [insertTitle, setInsertTitle] = useState();
   const [insertContent, setInsertContent] = useState();
-  const [insertImg, setInsertImg] = useState();
+  const [insertImg, setInsertImg] = useState(); // 상태관리..? 하기
+  const [like, setLike] = useState([]);
+  const [view, setView] = useState([]);
+
+  const { insertPage } = useParams();
+  const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
 
   const changeTitle = (e) => {
     setInsertTitle(e.target.value)
@@ -31,17 +39,22 @@ function CommunityInsert(props) {
   const changeContent = (e) => {
     setInsertContent(e.target.value)
   }
-  const changeImg = async (e) => {
-    setInsertImg(e.target.value)
-  }
+  console.log(로그인중);
+  // const changeImg = async (e) => {
+  //   setInsertImg(e.target.files[0])
+  // }
   const formDataList = async () => {
     try {
       const formData = new FormData();
       formData.append('title', insertTitle);
       formData.append('content', insertContent);
-      formData.append('img', insertImg[0]);
-
-      const result = await axios.post('/주소솟소소소소소소솟솟', formData);
+      const img = (document.querySelector('#imgUrl').files[0]);
+      formData.append('imgUrl', img);
+      formData.append('like', like);
+      formData.append('view', view);
+      // formData.append('user', 로그인중);
+      const result = await axios.post(`/community/${insertPage}/insert`, { formData, user: 로그인중 });
+      console.log(result.data);
       if (!result.data.flag) {
         return alert(result.data.message);
       }
@@ -74,17 +87,20 @@ function CommunityInsert(props) {
           onChange={changeContent}
           placeholder='내용 입력' />
 
-        <label htmlFor='img' />
+        <label htmlFor='imgUrl' />
         <input
           type='file'
           accept='image/*'
-          id='img'
-          name='img'
-          value={insertImg}
-          onChange={changeImg} />
+          id='imgUrl'
+          name='imgUrl'
+        // value={insertImg}
+        // onChange={changeImg}
+        />
 
         <button
-          onClick={formDataList}
+          onClick={() => {
+            formDataList();
+          }}
         >글등록</button>
       </div>
     </CommunityInsertWrapper>
