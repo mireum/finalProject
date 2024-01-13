@@ -77,7 +77,6 @@ function ToktokDetail(props) {
 
     }
   }, []);
-  console.log(getDetailList);
 
   const changeComment = (e) => {
     setCommentValue(e.target.value)
@@ -90,7 +89,7 @@ function ToktokDetail(props) {
   const commentFilter = commentTest.filter((id) => { // 게시글 _id 댓글 postId 필터링
     return (id.postId === _id)
   })
-
+console.log(getDetailList);
   return (
     <ToktokDetailWrapper>
       {_id}
@@ -98,7 +97,10 @@ function ToktokDetail(props) {
         {getDetailList?.title}
         <hr />
         {getDetailList?.content}
+        <hr/>
+        {getDetailList?.img} {/* ???? */}
       </div>
+      
       <hr /><br />
 
       {getDetailCommentList?.map((testlistMap) => {

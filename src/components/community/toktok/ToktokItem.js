@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -49,21 +49,33 @@ const ToktokItemWrapper = styled.div`
 function ToktokItem(props) {
   const navigate = useNavigate()
 
-  const [likeRed, setLikeRed] = useState(false);
-  const [likeSt, setLikeSt] = useState();
+  const [likeNum, setLikeNum] = useState();
+  const [likeCol, setLikeCol] = useState();
 
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
 
   const { like, view, comment, _id } = props;
 
+  console.log(comment);
+  useEffect(()=>{
+    const likeState = async() => {
+      await setLikeNum(like)
+      await setLikeCol(좋아요중복제거)
+    }
+    likeState();
+    
+    const commentGet = async () => {
+      await axios.get('/community/toktok/comment')
+    }
+    
+  }, [])
+
   const 좋아요중복제거 = like?.filter((a) => {
     return (a === 로그인중?._id);
   });
 
-  const handleLikeRed = async () => {
-    setLikeRed(!likeRed)
-    await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
-    setLikeSt(like.length)
+  const handleLike = async () => {
+    const a = await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
   }
   const addView = () => {
     axios.post('/community/toktok/view', { postId: _id })
@@ -91,7 +103,6 @@ function ToktokItem(props) {
   }
   const 경과일 = elapsedTime(props.date);
 
-  console.log(좋아요중복제거);
 
 
   return (
@@ -103,10 +114,10 @@ function ToktokItem(props) {
         </div>
         <div className='likeCommentView'>
           <button
-            className={`${좋아요중복제거.length ? "material-symbols-outlined googlered" : (likeRed ? "material-symbols-outlined googlered" : "material-symbols-outlined")}`}
-            onClick={handleLikeRed}
+            className={`${좋아요중복제거.length ? "material-symbols-outlined googlered" : "material-symbols-outlined"}`}
+            onClick={handleLike}
           > favorite</button>
-          <span>{like ? like?.length : 0}</span>
+          <span>{likeNum ? likeNum?.length : 0}</span>
           <span className='material-symbols-outlined'>mode_comment</span>
           <span>{comment ? comment.length : 0}</span>
           <span class="material-symbols-outlined">visibility</span>
