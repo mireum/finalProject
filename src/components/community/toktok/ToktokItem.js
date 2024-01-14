@@ -50,32 +50,32 @@ function ToktokItem(props) {
   const navigate = useNavigate()
 
   const [likeNum, setLikeNum] = useState();
-  const [likeCol, setLikeCol] = useState();
+  const [test, setTest] = useState();
 
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
 
-  const { like, view, comment, _id } = props;
+  const { like, view, _id, comment } = props;
 
-  console.log(comment);
   useEffect(()=>{
     const likeState = async() => {
-      await setLikeNum(like)
-      await setLikeCol(좋아요중복제거)
+      await setLikeNum(like);
+      await setTest(like);
     }
     likeState();
-    
-    const commentGet = async () => {
-      await axios.get('/community/toktok/comment')
-    }
-    
-  }, [])
+  }, [like]);
 
-  const 좋아요중복제거 = like?.filter((a) => {
+  const likeFilter = test?.filter((a) => {
     return (a === 로그인중?._id);
   });
-
+  
+  const commentFilter = comment?.filter((commentFilter) => {
+    return (commentFilter?.postId === _id);
+  });
+  
   const handleLike = async () => {
     const a = await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
+    setLikeNum(a.data.data.like);
+    setTest(a.data.data.like);
   }
   const addView = () => {
     axios.post('/community/toktok/view', { postId: _id })
@@ -114,12 +114,12 @@ function ToktokItem(props) {
         </div>
         <div className='likeCommentView'>
           <button
-            className={`${좋아요중복제거.length ? "material-symbols-outlined googlered" : "material-symbols-outlined"}`}
+            className={`${likeFilter?.length ? "material-symbols-outlined googlered" : "material-symbols-outlined"}`}
             onClick={handleLike}
           > favorite</button>
-          <span>{likeNum ? likeNum?.length : 0}</span>
+          <span>{likeNum ? likeNum.length : 0}</span>
           <span className='material-symbols-outlined'>mode_comment</span>
-          <span>{comment ? comment.length : 0}</span>
+          <span>{commentFilter ? commentFilter.length : 0}</span>
           <span class="material-symbols-outlined">visibility</span>
           <span>{view ? view?.length : 0}</span>
           <span>{경과일}</span>

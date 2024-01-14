@@ -34,12 +34,10 @@ const PagWrapper = styled.div` // 페이지네이션
     justify-content: center;
     margin-top: 15px;
   }
-  
   ul {
     list-style: none;
     padding: 0;
   }
-  
   ul.pagination li {
     display: inline-block;
     width: 30px;
@@ -50,34 +48,27 @@ const PagWrapper = styled.div` // 페이지네이션
     align-items: center;
     font-size: 1rem;
   }
-
   ul.pagination li:first-child{
     border-radius: 5px 0 0 5px;
   }
-
   ul.pagination li:last-child{
     border-radius: 0 5px 5px 0;
   }
-  
   ul.pagination li a {
     text-decoration: none;
     color: #337ab7;
     font-size: 1rem;
   }
-  
   ul.pagination li.active a {
     color: white;
   }
-
   ul.pagination li.active {
     background-color: #337ab7;
   }
-  
   ul.pagination li a:hover,
   ul.pagination li a.active {
     color: blue;
   }
-  
   .page-selection {
     width: 48px;
     height: 30px;
@@ -90,24 +81,28 @@ function Toktok(props) {
 
   const [page, setPage] = useState(1);
   const [getList, setGetList] = useState();
+  const [comment, setComment] = useState();
 
   useEffect(() => {
     const toktokListGet = async () => {
       try {
         const response = await axios.get('/community/toktok');
         await setGetList(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error(error);
       }
     }
     toktokListGet();
-  }, [])
+
+      const commentGet = async () => {
+      const response = await axios.get('/community/toktok/comment');
+      setComment(response.data.commentData);
+    }
+    commentGet();
+  }, []);
 
   const handlePageChange = (page) => {
     setPage(page);
-    console.log(page);
-    // navigate(`/community/Toktok/p/${page}`)
   };
 
   return (
@@ -115,7 +110,7 @@ function Toktok(props) {
       <PagWrapper>
         <Pagination
           activePage={page}
-          itemsCountPerPage={3}
+          itemsCountPerPage={4}
           totalItemsCount={getList?.length}
           pageRangeDisplayed={5}
           prevPageText={"‹"}
@@ -140,10 +135,24 @@ function Toktok(props) {
             like={getListMap.like}
             view={getListMap.view}
             date={getListMap.date}
-            comment={getListMap.comment}
+            comment={comment}
           />
-        }).slice(((page + page + page) - 3), (page + page + page))}
+        }).slice(((page*4) - 4), (page*4))}
       </div>
+
+
+
+
+{/* 남은거..
+  1) 포스트 삭제시 이동
+  2) 댓글 삭제 실시간 반영
+  3) 각종 유효성 검사
+
+  4) 퍼스널독에 들어갈 데이터 추가요청
+  css?
+  ㅇㅋ
+*/}
+
 
 
     </ToktokWrapper>

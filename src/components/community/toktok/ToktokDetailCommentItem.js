@@ -3,26 +3,34 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ToktokDetailCommentItemWrapper = styled.div`
-  background-color: #ccc;
-  .a {
-    background-color: #f0f0f0;
-    height: 30px;
-  }
-  .b {
-    height: 50px;
+  .dateDel {
+    display: flex;
+    justify-content: end;
+    .date {
+      font-size: 12px;
+      color: #0f0f10;
+    }
   }
 `;
 
 function ToktokDetailCommentItem(props) {
+  const {commentId} = props;
+
+  const date = new Date(props.date)
+
+  const hendleDel = async () => {
+    await axios.post(`/community/toktok/ment/Del`, {commentId:commentId});
+  }
 
   return (
     <ToktokDetailCommentItemWrapper>
-      <p className='b'>작성자: {props.user.signUserNicname}</p> <br />
-      <div>
+      <p className='b'>작성자: {props.user?.signUserNicname}</p> <br />
         <span className='b'>내용: {props.comment}</span>
-        <span>{props.date}</span>
-        <span onClick={() => { }}>🗑삭제</span> <hr />
-      </div>
+        <div className='dateDel'>
+        <span onClick={() => {hendleDel();}}>🗑삭제</span>
+        <span className='date'>{date.toString()}</span>
+        </div>
+        <hr/>
     </ToktokDetailCommentItemWrapper>
   );
 }
