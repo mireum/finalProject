@@ -41,7 +41,7 @@ function Community(props) {
       <CommunityHomeContainer>
         <div className='communityHomeContent'>
           <h2>
-            땡땡이의 맞춤 이야기
+            데일리독 최근 게시글
             <button title='더보기'><FaChevronRight /></button>
           </h2>
         </div>

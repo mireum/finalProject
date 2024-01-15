@@ -25,11 +25,43 @@ const FleamarketContainer = styled.div`
     color: #fff;
   }
   
+  .reset-btn {
+    margin-left: 6px;
+    border-radius: 20px;
+  }
+
   .info {
     display: flex;
     justify-content: space-between;
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
+  }
+
+  .category-box {
+    margin-top: 20px;
+    padding: 0 12px;
+
+    select {
+      cursor: pointer;
+      margin: 0 6px;
+      border: none;
+      color: #222;
+      font-weight: bold;
+      font-size: 15px;
+      opacity: 0.7;
+      outline: none;
+
+      &:focus, &:active {
+        border-color: #4CAF50; 
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.7);
+      }
+
+      option {
+        font-size: 14px;
+      }
+  }
+
+
   }
 `;
 
@@ -41,27 +73,27 @@ function Fleamarket(props) {
   const navigate = useNavigate();
   const [ data, setData ] = useState([]);
   const [ select, setSelect ] = useState({
+    dogType: '',
     category: '',
     area: '',
     price: '',
     view: ''
   });
 
-  const { category, area, price, view } = select;
+  const { dogType, category, area, price, view } = select;
 
   // canva
   useEffect(() => {
     const fleamarketData = async () => {
       try {
-        
-        const response = await axios.get('http://localhost:8888/vintage');
-        setData(response.data);
+        const response = await axios.get('http://localhost:8888/vintage', { params: { select } });
+        setData(response.data.posts);
       } catch (err) {
         console.error(err);
       }
     }
     fleamarketData();
-  }, [])
+  }, [select])
 
   const onSelectChange = (e) => {
     const { name, value } = e.target;
@@ -70,6 +102,11 @@ function Fleamarket(props) {
       ...prev,
       [name]: value
     }))
+  }
+
+  const handleSelectReset = () => {
+    const resetSelect = Object.fromEntries(Object.keys(select).map(key => [key, '']))
+    setSelect(resetSelect);
   }
 
   console.log(category, area, price, view);
@@ -82,12 +119,20 @@ function Fleamarket(props) {
         <button onClick={() => navigate('/community/fleamarket/write')}>판매하기</button>
       </div>
       <div className='category-box'>
+        <select value={dogType} name='dogType' onChange={onSelectChange}>
+          <option value=''>견종</option>
+          <option value='허스키'>허스키</option>
+          <option value='푸들'>푸들</option>
+          <option value='리트리버'>리트리버</option>
+          <option value='포메라니안'>포메라니안</option>
+          <option value='스피츠'>스피츠</option>
+        </select>
         <select value={category} name='category' onChange={onSelectChange}>
           <option value=''>카테고리</option>
           <option value='feed'>사료</option>
-          <option value='snack/nutritional'>간식/영양제</option>
-          <option value='bowel/hygiene'>배변/위생</option>
-          <option value='walk/play'>산책/놀이</option>
+          <option value='snackNutritional'>간식/영양제</option>
+          <option value='bowelHygiene'>배변/위생</option>
+          <option value='walkPlay'>산책/놀이</option>
         </select>
         <select value={area} name='area' onChange={onSelectChange}>
           <option value=''>지역</option>
@@ -104,15 +149,15 @@ function Fleamarket(props) {
         </select>
         <select value={price} name='price' onChange={onSelectChange}>
           <option value=''>가격</option>
-          <option value='row'>낮은순</option>
-          <option value='high'>높은순</option>
+          <option value='min'>낮은순</option>
+          <option value='max'>높은순</option>
         </select>
         <select value={view} name='view' onChange={onSelectChange}>
           <option value=''>조회</option>
-          <option value='row'>낮은순</option>
-          <option value='high'>높은순</option>
+          <option value='min'>낮은순</option>
+          <option value='max'>높은순</option>
         </select>
-        <button><GrRefresh /></button>
+        <button className='reset-btn' onClick={handleSelectReset}><GrRefresh /></button>
       </div>
       <FleamarketItemContainer>
         <Row>
