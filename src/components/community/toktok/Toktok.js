@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Pagination from 'react-js-pagination';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../../features/userInfoSlice';
 
 const ToktokWrapper = styled.div`
   margin: 0 auto;
@@ -83,6 +85,8 @@ function Toktok(props) {
   const [getList, setGetList] = useState();
   const [comment, setComment] = useState();
 
+  const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
+
   useEffect(() => {
     const toktokListGet = async () => {
       try {
@@ -94,7 +98,7 @@ function Toktok(props) {
     }
     toktokListGet();
 
-      const commentGet = async () => {
+    const commentGet = async () => {
       const response = await axios.get('/community/toktok/comment');
       setComment(response.data.commentData);
     }
@@ -105,13 +109,21 @@ function Toktok(props) {
     setPage(page);
   };
 
+  const insertClick = () => {
+    if (로그인중) {
+      navigate(`/community/insert/toktok`);
+    } else {
+      alert('로그인 시 이용 가능합니다.')
+    }
+  }
+
   return (
     <ToktokWrapper>
       <PagWrapper>
         <Pagination
           activePage={page}
           itemsCountPerPage={4}
-          totalItemsCount={getList?.length}
+          totalItemsCount={getList?.length || 0}
           pageRangeDisplayed={5}
           prevPageText={"‹"}
           nextPageText={"›"}
@@ -121,12 +133,13 @@ function Toktok(props) {
       <br /><br />
       <div className='between'>
         <span>반려 생활 중 고민거리, 궁금증이 있으신가요? 지금 바로 질문해 보세요</span>
-        <button onClick={() => { navigate(`/community/insert/toktok`) }}>질문하러 가기</button>
+        <button className='click' onClick={() => insertClick()}>질문하러 가기</button>
       </div>
       <br /><hr />
       <div>
         {getList?.map((getListMap) => { // 게시글들 맵
           return <ToktokItem
+            key={getListMap._id}
             _id={getListMap._id}
             title={getListMap.title}
             content={getListMap.content}
@@ -137,18 +150,19 @@ function Toktok(props) {
             date={getListMap.date}
             comment={comment}
           />
-        }).slice(((page*4) - 4), (page*4))}
+        }).slice(((page * 4) - 4), (page * 4))}
       </div>
 
 
 
 
-{/* 남은거..
-  1) 포스트 삭제시 이동
-  2) 댓글 삭제 실시간 반영
-  3) 각종 유효성 검사
+      {/* 남은거..
+  1) 포스트 삭제시 이동 ㅇ
+  2) 워닝없애기 ㅇ
+  3) 각종 유효성 검사 진행중
+  4) 댓글 삭제 실시간 반영
 
-  4) 퍼스널독에 들어갈 데이터 추가요청
+  5) 퍼스널독에 들어갈 데이터 추가요청 ㅇ
   css?
   ㅇㅋ
 */}

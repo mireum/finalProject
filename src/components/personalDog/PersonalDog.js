@@ -39,6 +39,7 @@ function PersonalDog(props) {
   const 로그인중 = useSelector(getLoginUser); // 현재 로그인중 유저 정보
 
   const [getPersonalDog, setGetPersonalDog] = useState();
+  const [allPost, setAllPost] = useState();
 
   useEffect(() => {
     const commentListGet = async () => {
@@ -50,7 +51,7 @@ function PersonalDog(props) {
   console.log(getPersonalDog);
 
   const toktokFilter = getPersonalDog?.toktokPost.filter((toktokFilter) => { // 육아톡톡 로그인정보로 필터링
-    return (toktokFilter.user.signDogType === 로그인중.signDogType);
+    return (toktokFilter?.user.signDogType === 로그인중?.signDogType);
   });
   // const dailyFilter = getPersonalDog?.dailyPost.filter((dailyFilter) => { // 데일리독 로그인정보로 필터링
   //   return (dailyFilter.user.signDogType === 로그인중.signDogType);
@@ -59,44 +60,57 @@ function PersonalDog(props) {
   //   return (shopFilter.user.signDogType === 로그인중.signDogType);
   // })
 
+  // setAllPost(toktokFilter, 데일리배열, 샵배열)
+
   return (
     <PersonalDogWrapper>
-      <h1>{로그인중.signDogName}</h1>                       {/* 슬라이드 라이브러리 사용해서 게시글 박스 마다마다 적용 */}
+      <h1>{로그인중?.signDogName}</h1>                       {/* 슬라이드 라이브러리 사용해서 게시글 박스 마다마다 적용 */}
       <br /><br />
-      <h2>{로그인중.signDogName}과의 생활 중 고민거리, 궁금증이 있으신가요? 저희가 알려드릴게요!</h2>
+      <h2>{로그인중?.signDogName}과의 생활 중 고민거리, 궁금증이 있으신가요? 저희가 알려드릴게요!</h2>
       <br /><hr />
       <div className='ListBox'>
-        <div className='toktok'>
+
         <h4>육아톡톡</h4>
+        {/* <Slider {...settings}> */}
+        <div className='toktok'>
           {toktokFilter?.map((testMap) => {
-            return <PersonalDogListItem 
+            return <PersonalDogListItem
               tokTitle={testMap.title}
             />
           })}
         </div>
+
+        {/* </Slider> */}
         <div className='daily'>
           <h4>데일리독</h4>
           {getPersonalDog?.dailyPost.map((tt) => { // 게시글 쓸때 유저정보 혹은 유저의 강아지 나이 종 무게 담겨야함 민수한테 얘기 ㄱ
-            return <PersonalDogListItem 
+            return <PersonalDogListItem
               dailyTitle={tt.title}
             />
           })}
         </div>
         <div className='shop'>
-        <h4>샵</h4>
+          <h4>샵</h4>
           {getPersonalDog?.dailyPost.map((tt) => { // 샵은 무게, 나이 정도 필요할듯 지우하은 얘기 ㄱ
-            return <PersonalDogListItem 
+            return <PersonalDogListItem
               shopTitle={tt.title}
             />
           })}
         </div>
+
+      </div>
+
+      <hr />
+      <hr />
+      <div className='typeAgeInfo'>
+        강아지 나이별 종별 정보
       </div>
 
 
 
 
-        <hr /><hr />
-        {/* 견종, 나이별 맞춤제품/
+      <hr /><hr />
+      {/* 견종, 나이별 맞춤제품/
         각종 게시글 취합..?/
         산책로 추천/
         꺼무위키 정보..?/

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Slider from 'react-slick';
 
 const ToktokWrapper = styled.div`
   background-color: red;
@@ -18,11 +19,29 @@ const ShopWrapper = styled.div`
 `
 
 function PersonalDogListItem(props) {
+  const { tokTitle, dailyTitle } = props;
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  }
+
   return (
     <>
-      <ToktokWrapper>{props.tokTitle}</ToktokWrapper>
-      <DailyDogWrapper>{props.dailyTitle}</DailyDogWrapper>
-      <ShopWrapper>{props.shopTitle}</ShopWrapper>
+      <ToktokWrapper>
+        <Slider {...settings}>
+          <div>{tokTitle}</div>
+        </Slider>
+      </ToktokWrapper>
+      <DailyDogWrapper>
+        {props.dailyTitle}
+      </DailyDogWrapper>
+      <ShopWrapper>
+        {props.shopTitle}
+      </ShopWrapper>
     </>
   );
 }

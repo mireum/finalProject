@@ -69,7 +69,7 @@ const StyledTable = styled(Table)`
 function NewToktok(props) {
   const navigate = useNavigate();
   const testList = useSelector(selectToktokList);
-  
+
   // 육아톡톡의 최신글 5개 요청
   // const [ data, setData ] = useState([]);
 
@@ -98,18 +98,18 @@ function NewToktok(props) {
           </tr>
         </thead>
         <tbody>
-          {testList.slice(Math.max(testList.length - 5, 0)).reverse().map((item, index) => 
-            (
-              <>
-                <tr key={index} onClick={() => navigate(`/community/Toktok/${item.author}`)}>
-                  <td><img src='https://image.msbg.io/?p=mocoblob.blob.core.windows.net%2Fassets%2Fmagazine%2Fimg%2F14_1645407745856_0.png&w=285&h=285' /></td>
-                  <td>{item.title}</td>
-                  <td>{item.content}</td>
-                  <td>{item.author}</td>
-                  <td>{item.view}</td>
-                </tr>
-              </>
-            )
+          {testList.slice(Math.max(testList.length - 5, 0)).reverse().map((item, index) =>
+          (
+            <>
+              <tr key={index} onClick={() => navigate(`/community/Toktok/${item?.author}`)}>
+                <td><img src='https://image.msbg.io/?p=mocoblob.blob.core.windows.net%2Fassets%2Fmagazine%2Fimg%2F14_1645407745856_0.png&w=285&h=285' /></td>
+                <td>{item.title}</td>
+                <td>{item.content}</td>
+                <td>{item.author}</td>
+                <td>{item.view}</td>
+              </tr>
+            </>
+          )
           )}
         </tbody>
       </StyledTable>

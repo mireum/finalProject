@@ -6,20 +6,21 @@ import styled from 'styled-components';
 import { getLoginUser } from '../../../features/userInfoSlice';
 
 const ToktokItemWrapper = styled.div`
-  height: 180px;
+  height: 130px;
   padding: 10px;
-  margin:  10px 0;
+  margin:  30px 0;
   border: 1px solid #ccc;
   display: flex;
   justify-content: space-between;
   .title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     padding: 0 7px;
     margin-bottom: 15px;
   }
   .content {
     padding: 0 7px;
+    font-size: 14px;
   }
   .toktokColumn {
     display: flex;
@@ -28,6 +29,7 @@ const ToktokItemWrapper = styled.div`
   }
   .likeCommentView {
     font-size: 12px;
+    color: #8C8C8C;
     span {
       padding: 0 7px;
     }
@@ -35,15 +37,23 @@ const ToktokItemWrapper = styled.div`
   .material-symbols-outlined {  // 구글 머터리얼 아이콘
   background-color: #fff;
   border: none;
+  font-size: 18px;
+  color: #8C8C8C;
   }
 .googlered {
   color: red;
   font-weight: bold;
   }
-  img {
-    width: 200px;
-    height: 100px;
+.toktokColumn {
+  span {
+    font-size: 14px;
+    color: #8C8C8C;
   }
+  img {
+    width: 130px;
+    height: 80px;
+  }
+}
 `;
 
 function ToktokItem(props) {
@@ -56,8 +66,8 @@ function ToktokItem(props) {
 
   const { like, view, _id, comment } = props;
 
-  useEffect(()=>{
-    const likeState = async() => {
+  useEffect(() => {
+    const likeState = async () => {
       await setLikeNum(like);
       await setTest(like);
     }
@@ -67,11 +77,11 @@ function ToktokItem(props) {
   const likeFilter = test?.filter((a) => {
     return (a === 로그인중?._id);
   });
-  
+
   const commentFilter = comment?.filter((commentFilter) => {
     return (commentFilter?.postId === _id);
   });
-  
+
   const handleLike = async () => {
     const a = await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
     setLikeNum(a.data.data.like);
@@ -103,12 +113,18 @@ function ToktokItem(props) {
   }
   const 경과일 = elapsedTime(props.date);
 
-
+  const detailClick = () => {
+    if (로그인중) {
+      navigate(`/community/Toktok/${props._id}`);
+    } else {
+      alert('로그인 시 이용 가능합니다.');
+    }
+  }
 
   return (
     <ToktokItemWrapper>
       <div className='toktokColumn'>
-        <div onClick={() => { addView(); navigate(`/community/Toktok/${props._id}`); }}>
+        <div onClick={() => { addView(); detailClick(); }}>
           <h5 className='title'>{props.title}</h5>
           <span className='content'>{props.content}</span>
         </div>
@@ -120,13 +136,13 @@ function ToktokItem(props) {
           <span>{likeNum ? likeNum.length : 0}</span>
           <span className='material-symbols-outlined'>mode_comment</span>
           <span>{commentFilter ? commentFilter.length : 0}</span>
-          <span class="material-symbols-outlined">visibility</span>
+          <span className="material-symbols-outlined">visibility</span>
           <span>{view ? view?.length : 0}</span>
           <span>{경과일}</span>
         </div>
       </div>
       <div className='toktokColumn'>
-        <span>작성자: {props.user.signUserNicname}</span>
+        <span>{props.user.signUserNicname} Lv.1</span>
         <img src={props.imgUrl} />
       </div>
     </ToktokItemWrapper>

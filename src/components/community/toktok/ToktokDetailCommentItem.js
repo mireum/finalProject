@@ -14,23 +14,23 @@ const ToktokDetailCommentItemWrapper = styled.div`
 `;
 
 function ToktokDetailCommentItem(props) {
-  const {commentId} = props;
+  const { commentId } = props;
 
   const date = new Date(props.date)
 
   const hendleDel = async () => {
-    await axios.post(`/community/toktok/ment/Del`, {commentId:commentId});
+    await axios.post(`/community/toktok/ment/Del`, { commentId: commentId });
   }
 
   return (
     <ToktokDetailCommentItemWrapper>
       <p className='b'>작성자: {props.user?.signUserNicname}</p> <br />
-        <span className='b'>내용: {props.comment}</span>
-        <div className='dateDel'>
-        <span onClick={() => {hendleDel();}}>🗑삭제</span>
-        <span className='date'>{date.toString()}</span>
-        </div>
-        <hr/>
+      <span className='b'>내용: {props.comment}</span>
+      <div className='dateDel'>
+        <span onClick={() => { hendleDel(); }}>🗑삭제</span>
+        <span className='date'>{date?.toString().slice(0, 21)}  </span>
+      </div>
+      <hr />
     </ToktokDetailCommentItemWrapper>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ToktokDetailCommentItem from './ToktokDetailCommentItem';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -32,7 +32,7 @@ const ToktokDetailWrapper = styled.div`
 function ToktokDetail(props) {
 
   const { _id } = useParams();
-  console.log(_id);
+  const navigate = useNavigate();
 
   const [commentValue, setCommentValue] = useState();
   const [getDetailList, setGetDetailList] = useState();
@@ -56,39 +56,42 @@ function ToktokDetail(props) {
     await axios.post(`/community/toktok/comment/${_id}`, { comment: commentValue, postId: _id, user: 로그인중 })
     window.location.reload()
   }
-  const handleDel = async() => {
+  const handleDel = async () => {
     await axios.delete(`/community/toktok/delete/${_id}`)
+    navigate('/community/Toktok');
   }
 
   const date = new Date(getDetailList?.date);
 
-console.log(getDetailList);
   return (
     <ToktokDetailWrapper>
       <div className='titleContent'>
         <h4>{getDetailList?.title}</h4>
         <h5>{getDetailList?.user.signDogName} | {getDetailList?.user.signDogType}/{getDetailList?.user.signDogAge}살</h5>
-        <h5>{date?.toString()}</h5>
+        <h5>{date?.toString().slice(0, 21)}</h5>
         <p>{getDetailList?.content}</p>
-        {<img src={`${getDetailList?.imgUrl}`}/>}
+        {<img src={getDetailList ? `${getDetailList?.imgUrl}` : ''} />}
       </div>
-      
+
       <hr /><br />
 
       {getDetailCommentList?.map((testlistMap) => {
         return <ToktokDetailCommentItem
+          key={testlistMap._id}
           commentId={testlistMap._id}
           comment={testlistMap.comment}
           user={testlistMap.user}
           date={testlistMap.date}
         />
       })}
+      <button onClick={handleDel}>글삭제</button>
+      <br />
+      <br />
       <div>
         <label htmlFor='commentInput' />
         <input name='commentInput' className='c' value={commentValue} onChange={changeComment} />
         <button onClick={handleComment}>댓글입력</button>
       </div>
-      <button onClick={handleDel}>삭제</button>
     </ToktokDetailWrapper>
   );
 }
