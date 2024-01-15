@@ -204,6 +204,7 @@ function ShopDetail(props) {
     if (!user) {
       const result = needLogin();
       if (result) navigate('/login');
+      else return;
     }
     const result = await pay(product, productCount, productCount * product.price);
     console.log('구매결과::', result);

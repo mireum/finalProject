@@ -9,8 +9,8 @@ function QnAItem(props) {
 
   return (
     <Fragment key={_id}>
-      <tr key={_id} className={text ? 'borderBottom active' : 'borderBottom'} >
-        <td className='status'>{status}</td>
+      <tr className={text ? 'borderBottom active' : 'borderBottom'} >
+        <td className='status' style={{color: 'red'}}>{status}</td>
         <td className='title cursor-pointer' onClick={handleChange}>{title}</td>
         <td className='author'>{signUserNicname}</td>
         <td className='date'>{dateFormat(date)}</td>
