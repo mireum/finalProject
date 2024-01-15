@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { getLoginUser } from '../../features/userInfoSlice';
 import dog from "../../image/dog.png";
 import { Table } from 'react-bootstrap';
+import { dateFormat } from '../../util';
 
 const PurchaseWrap = styled.div`
   max-width: 1200px;
@@ -19,6 +20,9 @@ const PurchaseWrap = styled.div`
     font-weight: bold;
     margin: 25px 0px;
   }
+  .table thead {
+    border-bottom: 1px solid #999;
+  }
   .img {
     width: 150px;
     height: 150px;
@@ -28,7 +32,7 @@ const PurchaseWrap = styled.div`
     /* background-color: #ececec; */
   }
 
-  .total .total-price {
+  .total-price {
     font-weight: bold;
   }
 
@@ -68,6 +72,7 @@ function Purchase(props) {
   const [purchaseList, setPurchaseList] = useState([]);
   const loginUser = useSelector(getLoginUser);
   const formatter = new Intl.NumberFormat('ko-KR');
+  // const date = new Date();
 
 
   useEffect(() => {
@@ -75,9 +80,9 @@ function Purchase(props) {
       // { params: { userId: loginUser._id }}
       // console.log(loginUser._id);
       const result = await axios.get(`http://localhost:8888/shop/purchase/${loginUser._id}` );
-      // console.log(result.data.list[0].list);
-      if (result.data.list[0]?.list) {
-        setPurchaseList(result.data.list[0].list);
+      // console.log(result.data);
+      if (result.data) {
+        setPurchaseList(result.data);
       }
     }
     purchaseList();
@@ -86,48 +91,55 @@ function Purchase(props) {
   console.log(purchaseList);
   return (
     <PurchaseWrap>
+      <h2>주문 내역</h2>
+      <Table className='table' hover>
+        <thead>
+          <tr>
+            <th>주문 날짜</th>
+            <th>주문 상품</th>
+            <th>수량</th>
+            <th>총 금액</th>
+          </tr>
+        </thead>
       {
-        loginUser._id && 
-        <>
-          <h2>주문 내역</h2>
-          <Table className='table' hover>
-            <thead>
-              <tr>
-                <th></th>
-                <th>주문 상품</th>
-                <th>수량</th>
-                <th>총 금액</th>
-              </tr>
-            </thead>
-            <tbody>
-              { purchaseList.length > 0 ?
-                purchaseList.map((item, index) => {
+        loginUser._id && purchaseList.list.length > 0 ? purchaseList.list.map((item, index) => {
+          console.log(item);
+          return (
+            <tbody key={index}>
+              <tr>{dateFormat(item.date)}</tr>
+              { item.list.length > 0 &&
+                item.list.map((item, i) => {
+                  console.log(item);
                   return (
-                    <tr key={index}>
-                      <td><img src={dog} className='img' /></td>
+                    <tr key={i}>
+                      <td></td>
                       <td>{item.title}</td>
                       <td>{item.count}</td>
                       <td>{formatter.format(item.price * item.count)}원</td>
                     </tr>
                   )})
-                :
-                <>
-                  <tr className='empty-list'>
-                    <td></td>
-                    <td></td>
-                    <td className=''>구매내역이 없습니다.</td>
-                    <td></td>
-                  </tr>
-                  <button className='shop-btn cursor-pointer' onClick={() => {navigate('/shop')}}>쇼핑으로 이동</button>
-                </>
               }
             </tbody>
-          </Table>
-        </>
-        
+            // <tbody key={index}>
+            //   <tr>
+            //     <td><img src={dog} className='img' /></td>
+            //     <td>{item.list[0].title}</td>
+            //     <td>{item.list[0].count}</td>
+            //     <td>{formatter.format(item.list.price * item.list.count)}원</td>
+            //   </tr>
+            // </tbody>
+          )
+        })
+        :
+          <div className='empty-list'>
+            <div>
+              <img src={cart}/>
+              <p>구매내역이 없습니다.</p>
+              <button className='shop-btn cursor-pointer' onClick={() => {navigate('/shop')}}>쇼핑으로 이동</button>
+            </div>
+          </div>
       }
-      
-        
+      </Table>
     </PurchaseWrap>
   );
 }
