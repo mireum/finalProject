@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AiFillEdit } from "react-icons/ai";
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
+import { changeLoginUserInfo, getLoginUser } from '../../features/userInfoSlice';
 
 const Container = styled.div`
   margin: 0 auto;
   max-width: 1200px;
   .box {
     max-width: 800px;
-    background-color: antiquewhite;
+    background-color: aqua;
     margin: 0 auto;
     padding: 30px;
     h1 {
@@ -32,6 +33,7 @@ const Container = styled.div`
         border-radius: 10px;
         text-align: center;
         margin-left: 70px;
+        background-color: aqua;
       }
       .name {
         margin-left: 124px;
@@ -47,7 +49,7 @@ const Container = styled.div`
         height: 3rem;
         border: none;
         border-radius: 15px;
-        background-color: #538ac9;
+        background-color: #68a6fe;
         color: #fff;
         font-weight: bold;
         margin-top: 20px;
@@ -67,20 +69,20 @@ const Container = styled.div`
 `;
 
 function Mypage(props) {
-  const dispatch = useDispatch();
-  // const user = useSelector();
+  const dispatch = useDispatch();    
+  const userInfo = useSelector(getLoginUser);
+  const { userId, signEmail, signDogName, signDogAge, signDogType, signUserNicname } = userInfo;
   const [ OnInput, setOnInput ] = useState({
-    nick: '',
-    dogType: '',
-    dogName: '',
-    dogAge: '',
+    nick: signUserNicname,
+    dogType: signDogType,
+    dogName: signDogName,
+    dogAge: signDogAge,
     editNickname: true,
     editDogType: true,
     editDogName: true,
     editDogAge: true,
   });
   const { nick, dogType, dogName, dogAge, editNickname, editDogType, editDogName, editDogAge } = OnInput;
-
   const [ showModal, setShowModal ] = useState(false);
 
   const spacies = [ '말티즈', '푸들', '치와와', '포메라니안',
@@ -88,71 +90,75 @@ function Mypage(props) {
     '진돗개', '웰시코기', '도베르만', '불독', '사모예드', '시바견',
     '퍼그', '셰퍼드', '달마시안'];
 
-  const handleEditNickname = () => {
-    setOnInput(prev => ({ ...prev, editNickname: false }));
-  };
-  const handleEditDogType = () => {
-    setOnInput(prev => ({ ...prev, editDogType: false }));
-  };
-  const handleEditDogName = () => {
-    setOnInput(prev => ({ ...prev, editDogName: false }));
-  };
-  const handleEditDogAge = () => {
-    setOnInput(prev => ({ ...prev, editDogAge: false }));
-  };
+  const handleEditNickname = () => {setOnInput(prev => ({ ...prev, editNickname: false }))};
+  const handleEditDogType = () => {setOnInput(prev => ({ ...prev, editDogType: false }))};
+  const handleEditDogName = () => {setOnInput(prev => ({ ...prev, editDogName: false }))};
+  const handleEditDogAge = () => {setOnInput(prev => ({ ...prev, editDogAge: false }))};
+
   const handleChange = (e) => {
     setOnInput({
       ...OnInput,
       [e.target.name] : e.target.value,
     })
   };
+
+  // 변경사항 저장
   const handleSave = async () => {
     if ((editNickname && editDogType && editDogName && editDogAge)) alert('변경사항이 없습니다.');
     
     const result = await axios.post('http://localhost:8888/user/editPersonalInfo', {nick, dogType, dogName, dogAge}, {withCredentials: true});
-    if (result.data.flag) alert('저장되었습니다!');
+    if (result.data.flag) {
+      alert('저장되었습니다!');
+      dispatch(changeLoginUserInfo(result.data.result));
+      const user = JSON.parse(localStorage.getItem('user'));
+      user.signDogType = dogType;
+      user.signDogAge = dogAge;
+      user.signDogName = dogName;
+      user.signUserNicname = nick;
+      localStorage.setItem('user', JSON.stringify(user));
+      window.location.reload();
+    }
+    else {
+      alert(result.data.message);
+    }
   };
 
-  const handleChangePw = async () => {
-
-  };
   const handleClickQuit = async () => {
     setShowModal(true);
   };
   const handleQuit = async () => {
-    // const result = await axios.get('http://localhost:8888/uesr/accountQuit', {withCredentials:true});
+    // const result = await axios.get('http://localhost:8888/user/accountQuit', {withCredentials:true});
     // if (result.data.flag) alert(`$(result.data.message)`);
-    // dispatch
   };
 
   return (
     <Container>
       <div className='box'>
         <h1>내 정보</h1>
-        <div className='inner'>이름<input type='text' className='name' value='qwer' disabled/></div>
-        <div className='inner'>이메일<input type='text' className='email' value='qwer' disabled/></div>
+        <div className='inner'>이름<input type='text' className='name' value={userId} disabled/></div>
+        <div className='inner'>이메일<input type='text' className='email' value={signEmail} disabled/></div>
         <div className='inner'>닉네임 
-          <input type='text' className='nick' name='nick' onChange={handleChange} disabled={editNickname}/>
+          <input type='text' className='nick' name='nick' onChange={handleChange} defaultValue={signUserNicname} disabled={editNickname}/>
           <div className='editBtn' id='editNickname' onClick={handleEditNickname}>
             <AiFillEdit />
           </div>
         </div>
         <div className='inner'>강아지 종류 
-          <select type='text' className='input' name='dogType' onChange={handleChange} disabled={editDogType}>
-            {spacies.map((item, index) => <option key={index}>{item}</option>)}
+          <select type='text' className='input' name='dogType' onChange={handleChange} defaultValue={signDogType} disabled={editDogType}>
+            {spacies.map((item, index) => <option key={index} value={item}>{item}</option>)}
           </select>
           <div className='editBtn' id='editDogType' onClick={handleEditDogType}>
             <AiFillEdit />
           </div>
         </div>
         <div className='inner'>강아지 이름 
-          <input type='text' className='input' name='dogName' onChange={handleChange} disabled={editDogName} />
+          <input type='text' className='input' name='dogName' onChange={handleChange} defaultValue={signDogName} disabled={editDogName} />
           <div className='editBtn' id='editDogName' onClick={handleEditDogName}>
             <AiFillEdit />
           </div>
         </div>
         <div className='inner'>강아지 나이 
-          <input type='text' className='input' name='dogAge' onChange={handleChange} disabled={editDogAge} />
+          <input type='text' className='input' name='dogAge' onChange={handleChange} defaultValue={signDogAge} disabled={editDogAge} />
           <div className='editBtn' id='editDogAge' onClick={handleEditDogAge}>
             <AiFillEdit />
           </div>

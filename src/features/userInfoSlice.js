@@ -17,10 +17,21 @@ const userInfoSlice = createSlice({
     clearLoginUserInfo: (state) => {
       state.loginUserInfo = null;
     },
+    changeLoginUserInfo: (state, action) => {
+      const { signDogName, signDogAge, signDogType, signUserNicname } = action.payload;
+      let user = {...state.loginUserInfo};
+      console.log(user);
+      user.signUserNicname = signUserNicname;
+      user.signDogName = signDogName;
+      user.signDogAge = signDogAge;
+      user.signDogType = signDogType;
+      console.log(user);
+      state.loginUserInfo = user;
+    }
   }
 });
 
-export const { pushUserInfo, getLoginUserInfo, clearLoginUserInfo } = userInfoSlice.actions;
+export const { pushUserInfo, getLoginUserInfo, clearLoginUserInfo, changeLoginUserInfo } = userInfoSlice.actions;
 
 export const getLoginUser = state => state.user.loginUserInfo;
 
