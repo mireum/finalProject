@@ -28,6 +28,7 @@ import Chatting from './components/main/Chatting';
 import RequireAuth from './auth/RequireAuth';
 import User from './components/main/User';
 import Purchase from './components/main/Purchase';
+import DailyDogEdit from './components/community/dailyDog/DailyDogEdit';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -79,6 +80,15 @@ function App() {
           <Route path='/community/dailydog' element={<DailyDog />} />
           <Route path='/community/dailydog/detail/:id' element={<DailyDogDetail />} />
           <Route 
+            path='/community/dailydog/edit/:postId' 
+            element={
+              <RequireAuth>
+                <DailyDogEdit />
+              </RequireAuth>
+            } 
+            />
+
+          <Route 
             path='/community/dailydog/write' 
             element={
               <RequireAuth>
@@ -89,7 +99,7 @@ function App() {
           <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
           <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}
           <Route path='/community/Insert/:insertPage' element={<CommunityInsert />} />    {/* 커뮤니티 글등록 페이지 */}
-          <Route path='/user/chatting' element={<Chatting />} />
+          <Route path='/user/chatting/:toChat' element={<Chatting />} />
         </Route>
       </Routes>
     </>

@@ -15,11 +15,27 @@ const DailyDogDetailContainer = styled.div`
   margin: 70px auto;
   text-align: center;
   
-  h1 {
-    font-size: 20px;
-    font-weight: bold;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+  .title-box {
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+      padding-bottom: 20px;
+    }
+
+    .edit-box {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        margin-left: 14px;
+        background: none;
+        border: none;
+        font-size: 15px;
+        color: #222;
+        opacity: 0.7;
+      }
+    }
   }
 
   img {
@@ -29,9 +45,10 @@ const DailyDogDetailContainer = styled.div`
   }
 
   .subtitle-box {
-    margin-top: 14px;
+    padding-top: 14px;
     display: flex;
     justify-content: flex-end;
+    border-top: 1px solid #ccc;
 
     p {
       margin-left: 14px;
@@ -150,15 +167,41 @@ const DailyDogDetailContainer = styled.div`
           padding: 10px;
           text-align: left;
 
-          & p:first-child {
-            padding: 10px 0;
-          }
-
           & p:last-child {
             line-height: 24px;
           }
 
-          
+          & > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            p {
+              padding: 8px 0;
+            }
+
+            & p:first-child {
+              font-weight: bold;
+              font-size: 17px;
+              margin-right: 10px;
+            }
+
+            & p:nth-child(2) {
+              font-size: 14px;
+              color: #222;
+              opacity: 0.7;
+            }
+
+            button {
+              cursor: pointer;
+              border: none;
+              background: none;
+              display : inline-flex;
+              align-items: center;
+              color: red;
+            }
+          }
+
           .comment-expanded {
             
             p {
@@ -174,9 +217,7 @@ const DailyDogDetailContainer = styled.div`
         }
 
         span {
-          font-weight: bold;
-          padding: 10px 0;
-          margin-right: 10px;
+
         }
       }
     }
@@ -188,8 +229,6 @@ function DailyDogDetail(props) {
   const navigate = useNavigate();
   const user = useSelector(getLoginUser);
   const [ item, setItem ] = useState('');
-  const [ comments, setComments ] = useState([]);
-  const [ newComment, setNewComment ] = useState('');
   const [ likeBtn, setLikeBtn ] = useState({
     upBtn: false,
     downBtn: false,
@@ -208,16 +247,15 @@ function DailyDogDetail(props) {
         const responseItem = await axios.get(`http://localhost:8888/community/daily/detail/${id}`);
         setItem(responseItem.data.postData);
 
-        const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: responseItem.data.postData._id }});
-        setComments(responseComment.data);
-
         setLikeCount(prev => ({ ...prev, upCount: responseItem.data.postData.like.length, downCount: responseItem.data.postData.dislike.length }));
 
-        if (responseItem.data.postData.like.filter(id => id == user._id) == user._id) {
-          setLikeBtn(prev => ({ ...prev, upBtn: true }));
-        } 
-        if (responseItem.data.postData.dislike.filter(id => id == user._id) == user._id) {
-          setLikeBtn(prev => ({ ...prev, downBtn: true }));
+        if (user) {
+          if (responseItem.data.postData.like.filter(id => id == user._id) == user._id) {
+            setLikeBtn(prev => ({ ...prev, upBtn: true }));
+          } 
+          if (responseItem.data.postData.dislike.filter(id => id == user._id) == user._id) {
+            setLikeBtn(prev => ({ ...prev, downBtn: true }));
+          }
         }
       } catch (err) {
         console.error(err);
@@ -230,31 +268,10 @@ function DailyDogDetail(props) {
     return null;
   }
 
-  const handleCommentChange = (e) => {
-    setNewComment(e.target.value)
-  };
-
-  const handleSubmitComment = async () => {
-
-    if (!user) {
-      return needLogin();
-    }
-
-    try {
-      const date = new Date();
-      await axios.post('http://localhost:8888/community/daily/comment/insert', { postId: item._id , comment: newComment, date, author: user.signUserNicname, authorId: user._id }); 
-      const responseComment = await axios.get('http://localhost:8888/community/daily/comment', { params: { postId: item._id }}); 
-      setComments(responseComment.data);
-    } catch (err) {
-      console.error(err);
-    }
-    setNewComment('');
-  }
-
   const toggleLikeUpBtn = async () => {
 
     if (!user) {
-      return alert('로그인 후 좋아요 할 수 있습니다.')
+      return alert('로그인 후 이용할 수 있습니다.')
     } else if (user.signUserNicname === item.author) {
       return alert('내가 남긴 글을 좋아요 할 수 없습니다.');
     } else {
@@ -274,7 +291,7 @@ function DailyDogDetail(props) {
   const toggleLikeDownBtn = async () => {
 
     if (!user) {
-      return alert('로그인 후 싫어요 할 수 있습니다.')
+      return alert('로그인 후 이용할 수 있습니다.')
     } else if (user.signUserNicname === item.author) {
       return alert('내가 남긴 글을 싫어요 할 수 없습니다.');
     } else {
@@ -291,10 +308,30 @@ function DailyDogDetail(props) {
     }
   };
 
+  const handleDeleteItem = async () => {
+
+    try {
+      await axios.delete(`http://localhost:8888/community/daily/delete/${item.id}`);
+      alert('게시글을 삭제하였습니다.');
+      navigate(-1);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <DailyDogDetailContainer>
       <div className='title-box'>
         <h1>{item.title}</h1>
+          {user && user._id === item.authorId
+            ?
+            <div className='edit-box'>
+              <button onClick={() => navigate(`/community/dailydog/edit/${item._id}`)}>수정</button>
+              <button onClick={handleDeleteItem}>삭제</button>
+            </div>
+            : null
+          } 
+          
         <div className='subtitle-box'>
           <p>{item.author}</p>
           <p>{dateFormat(item.date)}</p>
@@ -323,25 +360,7 @@ function DailyDogDetail(props) {
       <div className='listbtn-box'>
         <button onClick={() => navigate(-1)}>목록</button>
       </div>
-      <div className='comment-box'>
-        <div className='comment-detail-box'>
-          <h2>댓글 {comments.length}</h2>
-          <div className='comment-insert-box'>
-            <input 
-              type='text' 
-              value={newComment} 
-              onChange={handleCommentChange}
-              onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitComment()} }}
-            />
-            <button onClick={handleSubmitComment}>등록</button>
-          </div>
-          <div className='comment-list-box'>
-            {comments &&
-              comments.map((comment, index) => <DailyDogComment key={index} comment={comment} user={user} />)
-            }
-          </div>
-        </div>
-        </div>
+      <DailyDogComment item={item} user={user} />
     </DailyDogDetailContainer>
   );
 }

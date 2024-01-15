@@ -136,6 +136,9 @@ function FleamarketDetail(props) {
     prevArrow: <GrPrevious />,
   };
 
+
+  // 채팅하기 더미 테스트
+  const toChat = 'hosik'
   return (
     <FleamarketDetailContainer>
       <div className='abcd'>
@@ -161,7 +164,7 @@ function FleamarketDetail(props) {
         <div className='userinfo-box'>
           <div className='user-box'>
             <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp'></img>
-            <p>호식이</p>
+            <p>{item[0].user}</p>
           </div>
           <div className='side-box'>
             <p><span>등록일</span> 2023.12.29</p>
@@ -177,7 +180,7 @@ function FleamarketDetail(props) {
           <p>{item[0].content}</p>
         </div>
         <div className='btn-box'>
-          <button onClick={() => navigate('/user/chatting')}>채팅하기</button>
+          <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>채팅하기</button>
         </div>
       </div>
     </FleamarketDetailContainer>

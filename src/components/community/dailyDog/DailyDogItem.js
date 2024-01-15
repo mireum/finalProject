@@ -14,6 +14,7 @@ const StyledCol = styled(Col)`
   }
 
   .item-box {
+    min-height: 116px;
     text-align: center;
     line-height: 24px;
 

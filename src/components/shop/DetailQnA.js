@@ -2,9 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { dateFormat } from '../../util';
+import { needLogin } from '../../util';
 import { useSelector } from 'react-redux';
 import { getLoginUser } from '../../features/userInfoSlice';
+import QnAItem from './QnAItem';
 
 const QnABox = styled.div`
   margin: 0 auto;
@@ -20,7 +21,6 @@ const QnABox = styled.div`
       color: #68a6fe;
     }
     button {
-      /* width: 100px; */
       height: 50px;
       border: none;
       background-color: #68a6fe;
@@ -78,7 +78,6 @@ function DetailQnA(props) {
   const { postId } = props;
   const navigate = useNavigate();
   const [ qna, setQna ] = useState([]);
-  const [ text, setText ] = useState(false);
   const loginUser = useSelector(getLoginUser);
 
 
@@ -95,16 +94,17 @@ function DetailQnA(props) {
     getQnA();
   }, []);
 
-  const handleChange = () => {
-    setText(true);
-  };
-
   return (
     <QnABox>
       <div className='btnBox'>
         <h1>상품 문의📞</h1>
-        {/* <button onClick={() => {navigate(`/shop/detail/${productId}/quest`)}}>문의하기</button> */}
-        <button className='cursor-pointer' onClick={() => {navigate(`/shop/detail/quest/${postId}`)}}>문의하기</button>
+        <button className='cursor-pointer' onClick={() => {
+          if (!loginUser) {
+            const result = needLogin();
+            if (result) navigate('/login');
+            return;
+          }
+          navigate(`/shop/detail/quest/${postId}`)}}>문의하기</button>
       </div>
       <p>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</p>
       <p>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</p>
@@ -120,34 +120,17 @@ function DetailQnA(props) {
             <col className='author' />
             <col className='date' />
           </colgroup>
-          <tr className='firstLine'>
-            <th scope='col' className='status'>답변상태</th>
-            <th scope='col' className='title'>제목</th>
-            <th scope='col' className='author'>작성자</th>
-            <th scope='col' className='date'>작성일</th>
-          </tr>
+          <thead>
+            <tr className='firstLine'>
+              <th scope='col' className='status'>답변상태</th>
+              <th scope='col' className='title'>제목</th>
+              <th scope='col' className='author'>작성자</th>
+              <th scope='col' className='date'>작성일</th>
+            </tr>
+          </thead>
           <tbody>
-            { qna.length > 0 ? 
-            qna.map((item, index) => {
-              const { status, title, content, author, date, _id } = item;
-              return (
-                <>
-                  <tr key={index} className={text ? 'borderBottom active' : 'borderBottom'} >
-                    <input type='hidden' value={_id}/>
-                    <td className='status'>{status}</td>
-                    <td className='title cursor-pointer' onClick={handleChange}>{title}</td>
-                    <td className='author'>{loginUser.signUserNicname}</td>
-                    <td className='date'>{dateFormat(date)}</td>
-                  </tr>
-                  { text &&
-                      <tr className='contentTr'>
-                        <td><input type='hidden' value={_id}/></td>
-                        <td className='title'>{content}</td>
-                      </tr>
-                  }
-                </>
-              )
-            }) 
+            {qna.length > 0 ? 
+            qna.map(item => <QnAItem key={item._id} item={item}/>)            
             :
             <tr>
               <td colSpan={4}>문의가 없습니다.</td>
