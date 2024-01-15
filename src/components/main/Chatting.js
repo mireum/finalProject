@@ -161,7 +161,6 @@ function Chatting(props) {
   const [ value, setValue ] = useState('');
   const [ sendId, setSendId ] = useState('');
   const [ room, setRoom ] = useState('');
-  const [ userId, setUserId ] = useState(isLogin?.userId);
   
   // const socket = io.connect("http://localhost:8888");
   
@@ -181,21 +180,23 @@ function Chatting(props) {
   // 스테이트로 접근해보기
 
   useEffect(() => {
-    socket.emit('login', userId);
+    socket.emit('login', isLogin.userId);
   }, []);
 
   useEffect(() => {
     socket.on('update', (data) => {
-      console.log('업데이트챗 실행');
-      setUpdate(prev => [...prev, data.message]);
+      setUpdate(prev => [...prev, data]);
     })
-  }, []);
+  }, []); 
 
   useEffect(() => {
-    console.log('유즈이펙트 실행');
     const getChatListHandler = async () => {
       
       const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
+      if (!getChatList.data.flag) {
+        console.log(getChatList.data);
+        alert(getChatList.data.message);
+      }
       setChats(getChatList.data.chatData);
     };
     getChatListHandler();
@@ -208,9 +209,9 @@ function Chatting(props) {
   // 물론 3이 1의 채팅을 볼 순 없지만 2의 화면에 그냥 뿌려져서 혼잡
   useEffect(() => {
     socket.on('updateChatDetail', (lastChat) => {
-      console.log('디테일챗실행');
       setChatDetail(prev => [...prev, lastChat]);
     })
+    console.log(chatDetail);
     // console.log('필터');
     // let copyChatDetail = [...chatDetail];
     // let filterChatDetail = copyChatDetail.filter(chat => chat.user === sendId && chat.user === userId);
@@ -232,28 +233,26 @@ function Chatting(props) {
       socket.emit('joinRoom', chatting.data.resulte.room);
       setRoom(chatting.data.resulte.room)
       setChatDetail(chatting.data.resulte.chatList);
-      console.log('1리절트 실행');
     } else {
-      socket.emit('joinRoom', chatting.data.resulte2.room );  
+      socket.emit('joinRoom', chatting.data.resulte2.room);  
       setRoom(chatting.data.resulte2.room)
       setChatDetail(chatting.data.resulte2.chatList)
-      console.log('2리절트 실행');
     }
   };
 
 
-  const handleSubmitMessage = () => {
+  const handleSubmitMessage = async () => {
 
     const loginUser = isLogin.userId;
     const data = {
       msg: value,
       user2: sendId,
       id: loginUser,
-      // id: '디디',
       room: loginUser,
-      // room: '디디',
     }
-    socket.emit('answer', data);
+
+    await axios.post(`http://localhost:8888/inChating`, { data }, { withCredentials: true });
+    // socket.emit('answer', data);
     setValue('');
     
   };
@@ -264,9 +263,7 @@ function Chatting(props) {
       msg: value,
       user2: toChat,
       id: loginUser,
-      // id: '디디',
       room: loginUser,
-      // room: '디디',
     }
     socket.emit('answer', data);
     setValue('');
@@ -287,17 +284,17 @@ function Chatting(props) {
       <div className='inner'>
         <div className='userinfo-box'>
           <div>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />   
+            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>   
             <p><span>만식이</span></p>
           </div>
           <div>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />   
+            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지' />   
             <p><span>만식이</span></p>
           </div>
         </div>
         <div className='chattinglist-box'>
           <div className='chattinglist-inner-box'>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
+            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>
             <div className='chattinglist-userinfo-box'>
               <div className='sort'>
                 <p><span>중식이</span></p>
@@ -307,7 +304,7 @@ function Chatting(props) {
             </div>
           </div>
           <div className='chattinglist-inner-box'>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
+            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>
             <div className='chattinglist-userinfo-box'>
               <div className='sort'>
                 <p><span>디디</span></p>
@@ -319,7 +316,7 @@ function Chatting(props) {
           { chats?.map((chat, index) => {
             return (
               <div className='chattinglist-inner-box' key={index} onClick={() => {handleToChatroom(chat.user)}}>
-                <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' />
+                <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>
                 <div className='chattinglist-userinfo-box'>
                   <div className='sort'>
                     <p><span>{chat.user}</span></p>
@@ -348,7 +345,7 @@ function Chatting(props) {
                   </>
                 }
                     {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
-                { chat.user == isLogin.userId &&
+                { chat.user === isLogin.userId &&
                   <>
                     <p key={index} className='message-box'>{chat.user}:</p>
                     <p className='message-box'>{chat.msg}</p>
