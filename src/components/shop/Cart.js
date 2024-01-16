@@ -81,14 +81,15 @@ function Cart(props) {
   useEffect(() => {
     const list = async () => {
       const result = await axios.post('http://localhost:8888/shop/getCart', {}, { withCredentials: true });
-      setCartList(result.data.result.list);
+      if (result.data.result) setCartList(result.data.result.list);
+      else setCartList();
     }
     list();
   }, []);
 
   const handleMinus = async (postId, count) => {
     if (count === 1) {
-      alert('1 미만으로 내려갈 수 없습니다!\n삭제 버튼을 눌러주세요.');
+      alert('수량 1개 입니다!\n삭제 버튼을 눌러주세요.');
       return ;
     }
     const result = await axios.post('http://localhost:8888/shop/minusCount', {postId}, {withCredentials: true});
@@ -105,23 +106,26 @@ function Cart(props) {
     setCartList(result.data.result.list);
   };
   
+  // 결제
   const handlePay = async () => {
-    // const totalPrice = cartList.reduce((prev, cart) => {
-    //   return prev + (cart.price * cart.count);
-    // }, 0);
-    // const result = pay(cartList[0], cartList[0].count, totalPrice, cartList.length - 1);
-    // console.log(result);
-    // if (result.event == 'done' || result.event == 'issued') {
-      const result = await axios.get('http://localhost:8888/shop/purchaseAdds', {withCredentials: true});
-      if (result.data.flag) {
-        alert('결제가 완료되었습니다!');
-        // 구매목록으로
-        navigate('/shop');
-        }
-    // }
-    else if (result.event == 'cancel') {
-      alert('결제 취소');
+    if (cartList) {
+      const totalPrice = cartList.reduce((prev, cart) => {
+        return prev + (cart.price * cart.count);
+      }, 0);
+      const result = pay(cartList[0], cartList[0].count, totalPrice, cartList.length - 1);
+      console.log(result);
+      if (result.event == 'done' || result.event == 'issued') {
+        const result = await axios.get('http://localhost:8888/shop/purchaseAdds', {withCredentials: true});
+        if (result.data.flag) {
+          alert('결제가 완료되었습니다!');
+          navigate('/purchase');
+          }
+      }
+      else if (result.event == 'cancel') {
+        alert('결제 취소');
+      }
     }
+    else alert('장바구니에 물품이 없습니다!');
   };
 
   return (
