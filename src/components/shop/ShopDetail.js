@@ -214,13 +214,13 @@ function ShopDetail(props) {
         setShowBuyModal(false);
         alert('결제가 완료되었습니다!');
         // 구매목록으로
-        // navigate('/shop');
-        // }
+        navigate('/shop');
+        }
     }
-    // else if (result.event == 'cancel') {
-    //   setShowBuyModal(false);
-    //   alert('결제 취소');
-    // }
+    else if (result.event == 'cancel') {
+      setShowBuyModal(false);
+      alert('결제 취소');
+    }
   };
     
   const openModal = () => {setShowModal(true)};

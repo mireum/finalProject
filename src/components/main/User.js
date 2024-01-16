@@ -68,7 +68,7 @@ function User(props) {
           <div><LuUserCheck2 className=' mypage' /></div>
           <p>내 정보</p>
         </div>
-        <div className='purchase-btn cursor-pointer'  onClick={() => {navigate('/purchase/:id')}}>
+        <div className='purchase-btn cursor-pointer'  onClick={() => {navigate('/purchase')}}>
           <div><BiPurchaseTag className='cursor-pointer purchase'/></div>
           <p>주문 내역</p>
         </div>

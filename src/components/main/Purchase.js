@@ -79,7 +79,7 @@ function Purchase(props) {
     const purchaseList = async () => {
       // { params: { userId: loginUser._id }}
       // console.log(loginUser._id);
-      const result = await axios.get(`http://localhost:8888/shop/purchase/${loginUser._id}` );
+      const result = await axios.get(`http://localhost:8888/shop/purchase` );
       // console.log(result.data);
       if (result.data) {
         setPurchaseList(result.data);
@@ -102,7 +102,7 @@ function Purchase(props) {
           </tr>
         </thead>
       {
-        loginUser._id && purchaseList.list.length > 0 ? purchaseList.list.map((item, index) => {
+        purchaseList.list.length > 0 ? purchaseList.list.map((item, index) => {
           console.log(item);
           return (
             <tbody key={index}>

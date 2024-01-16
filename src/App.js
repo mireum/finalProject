@@ -59,7 +59,7 @@ function App() {
           <Route path='/' element={<Community />} />
           <Route path='/user' element={<User />}/>
           <Route path='/mypage' element={<Mypage />}/>
-          <Route path='/purchase/:id' element={<Purchase />}/>
+          <Route path='/purchase' element={<Purchase />}/>
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop/:nextId?' element={<Shop />} />
           <Route path='/cart' element={<Cart />} />
