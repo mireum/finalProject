@@ -86,8 +86,13 @@ function Fleamarket(props) {
   useEffect(() => {
     const fleamarketData = async () => {
       try {
-        const response = await axios.get('http://localhost:8888/vintage', { params: { select } });
-        setData(response.data.posts);
+
+//         const response = await axios.get('http://localhost:8888/vintage', { params: { select } });
+//         setData(response.data.posts);
+
+        const response = await axios.get('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage');
+        setData(response.data);
+
       } catch (err) {
         console.error(err);
       }

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 
 const DetailBox = styled.div`
-  margin: 0 auto;
+  margin: 50px auto;
   width: 83%;
 
   h1 {
@@ -42,6 +42,7 @@ const DetailBox = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 60px;
   }
   .top-wrap img {
     width: 150px;
@@ -98,7 +99,6 @@ const DetailBox = styled.div`
     border: 2px solid #eee;
     border-radius: 10px;
     box-shadow: 0 0 10px #eee;
-    /* position: relative; */
     background-color:rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
@@ -138,15 +138,6 @@ function DetailDetail(props) {
   const { title, price, rate, content, age, size, brand } = props.product;
   const navigate = useNavigate();
   const loginUser = useSelector(getLoginUser);
-  console.log(loginUser);
-
-  // const mypage =  {
-  //   useId: '주인',
-  //   name: '가을',
-  //   age: 2,
-  //   weight: 3.8,
-  //   dogType: '말티푸'
-  // };
 
   return (
     <DetailBox>
@@ -193,15 +184,22 @@ function DetailDetail(props) {
             </tr>
             <tr>
               <th>평점</th>
-              <td>{rate}점</td>
+              {rate ? 
+                <td>{rate}점</td>
+                :<td>평점없음</td>
+              }
               <th>가격</th>
               <td>{price}원</td>
             </tr>
             <tr>
               <th>권장 나이</th>
-              <td>{age}</td>
+              <td>{age === 'junior' ? '0~5살'
+                  :age === 'adult' ? '6~10살'
+                  : '11살 이상'}</td>
               <th>권장 크기</th>
-              <td>{size}</td>
+              <td>{size === 'small' ? '소형견'
+                  :size === 'medium' ? '중형견'
+                  : '대형견'}</td>
             </tr>
           </tbody>
         </table>

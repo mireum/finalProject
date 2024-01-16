@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router';
 import nophoto from '../../../images/nophoto.jpg'
 
+
 const NewToktokContainer = styled.div`
   margin-top: 20px;
 
@@ -97,8 +98,6 @@ function NewToktok(props) {
               </tr>
             )          
           }
-    
-            
           )}
         </tbody>
       </StyledTable>

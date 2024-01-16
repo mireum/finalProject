@@ -152,7 +152,7 @@ function Signup(props) {
 
   const handleSignUp = async () => {
     try {
-      if (signId.length < 5 || signId.length > 15) {
+      if (signId.length < 4 || signId.length > 15) {
         alert('아이디는 4자 이상 14자 이하로 기입');
       } /* if (signId == '') {
         alert('아이디를 입력해 주세요.');
@@ -179,7 +179,10 @@ function Signup(props) {
   }
 
 
-  const test = ['허스키', '푸들', '리트리버', '포메라니안', '스피츠']
+  const spacies = [ '말티즈', '푸들', '치와와', '포메라니안',
+  '시츄', '스파니엘', '닥스훈트', '보더콜리', '리트리버', '비글', 
+  '진돗개', '웰시코기', '도베르만', '불독', '사모예드', '시바견',
+  '퍼그', '셰퍼드', '달마시안'];
   return (
     <SignupWrapper>
       <div class="container" onclick="onclick">
@@ -236,8 +239,8 @@ function Signup(props) {
               onChange={changeDogType}
             >
               {
-                test.map((a) => {
-                  return (<option>{a}</option>)
+                spacies.map((a, index) => {
+                  return (<option key={index}>{a}</option>)
                 })
               }
             </select>
