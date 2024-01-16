@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getLoginUser, getLoginUserInfo, pushUserInfo, selectUserList } from '../../features/userInfoSlice';
 import axios from 'axios';
-
+import logo from '../../images/logo_01.png'
 
 const Test = styled.div`
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
@@ -89,6 +89,10 @@ body{
     margin-top: 10px;
   }
 }
+  #logo {
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
 `
 
 function Login(props) {
@@ -149,12 +153,11 @@ function Login(props) {
 
   return (
     <Test>
-      <div className="container">
-        <div className="top"></div>
-        <div className="bottom"></div>
-        <div className="center">
-          <h2>로그인 하십셔~~</h2>
-          <h2 onClick={() => navigate('/')}>홈홈홈홈홈홈홈</h2>
+      <div class="container">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="center">
+          <a onClick={() => navigate('/')}><img src={logo} alt='logo' id='logo' /></a>
           <label htmlFor='id' />
           <input
             id='id'
