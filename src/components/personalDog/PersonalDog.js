@@ -5,7 +5,9 @@ import { getLoginUser } from '../../features/userInfoSlice';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import PersonalDogListItem from './PersonalDogListItem';
+import Slider from 'react-slick';
+import { useNavigate } from 'react-router-dom';
+import KakaoMap from '../KakaoMap';
 
 const PersonalDogWrapper = styled.div`
   max-width: 1200px;
@@ -21,16 +23,64 @@ const PersonalDogWrapper = styled.div`
     padding: 10px 0;
     font-size: 24px;
   }
+  .hrDiv {
+    margin: 80px 0;
+  }
   .ListBox {
+    text-align: center;
+    margin: 30px 0;
     display: flex;
     justify-content: center;
-    text-align: center;
     h4{
       font-size: 24px;
-      margin-bottom: 20px;
+      margin-bottom: 35px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 20px;
+    }
+    .toktok {
+      max-width: 300px;
+      margin: 0 30px;
+      flex: 1;
+      font-size: 12px;
     }
     .daily {
-      margin: 0 70px;
+      max-width: 300px;
+      margin: 0 30px;
+      flex: 1;
+      font-size: 12px;
+    }
+    .shop {
+      max-width: 300px;
+      margin: 0 30px;
+      flex: 1;
+      font-size: 10px;
+    }
+    .slider {
+      margin-bottom: 30px;
+      border-left: 2px solid greenyellow;
+      line-height: 100px;
+      width: 300px;
+      height: 100px;
+      background-color: #F8F9EF;
+      .sliderItem {
+        display: flex;
+        flex-flow: row;
+        text-align: center;
+      }
+      p {
+        flex: 1;
+      }
+      img {
+        flex: 1;
+        max-height: 80px;
+        max-width: 120px;
+        margin: auto 0;
+      }
+    }
+
+
+    .KaKaoMap{
+      width: 900px;
     }
   }
 `;
@@ -39,7 +89,8 @@ function PersonalDog(props) {
   const 로그인중 = useSelector(getLoginUser); // 현재 로그인중 유저 정보
 
   const [getPersonalDog, setGetPersonalDog] = useState();
-  const [allPost, setAllPost] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const commentListGet = async () => {
@@ -50,66 +101,109 @@ function PersonalDog(props) {
   }, []);
   console.log(getPersonalDog);
 
-  const toktokFilter = getPersonalDog?.toktokPost.filter((toktokFilter) => { // 육아톡톡 로그인정보로 필터링
-    return (toktokFilter?.user.signDogType === 로그인중?.signDogType);
-  });
-  // const dailyFilter = getPersonalDog?.dailyPost.filter((dailyFilter) => { // 데일리독 로그인정보로 필터링
-  //   return (dailyFilter.user.signDogType === 로그인중.signDogType);
-  // })
-  // const shopFilter = getPersonalDog?.shopPost.filter((shopFilter) => { // 샵 로그인정보로 필터링
-  //   return (shopFilter.user.signDogType === 로그인중.signDogType);
-  // })
 
-  // setAllPost(toktokFilter, 데일리배열, 샵배열)
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    rows: 3,
+    // slidesPerRow: 2
+  }
+
 
   return (
     <PersonalDogWrapper>
-      <h1>{로그인중?.signDogName}</h1>                       {/* 슬라이드 라이브러리 사용해서 게시글 박스 마다마다 적용 */}
+      <h1>{로그인중?.signDogName}</h1>
       <br /><br />
-      <h2>{로그인중?.signDogName}과의 생활 중 고민거리, 궁금증이 있으신가요? 저희가 알려드릴게요!</h2>
+      <h2>{로그인중?.signDogName}과(와)의 생활 중 고민거리, 궁금증이 있으신가요? 저희가 알려드릴게요!</h2>
       <br /><hr />
       <div className='ListBox'>
 
-        <h4>육아톡톡</h4>
-        {/* <Slider {...settings}> */}
         <div className='toktok'>
-          {toktokFilter?.map((testMap) => {
-            return <PersonalDogListItem
-              tokTitle={testMap.title}
-            />
-          })}
+          <h4>육아톡톡</h4>
+          <Slider {...settings}>
+            {getPersonalDog?.toktokPostFilter.map((a) => {
+              return (
+                <div className='slider' onClick={() => { navigate(`/community/Toktok/${a._id}`) }} >
+                  <div className='sliderItem'><p>{a.title}</p><img src={`${a.imgUrl}`} /></div>
+                </div>
+              )
+            })}
+          </Slider>
         </div>
 
-        {/* </Slider> */}
         <div className='daily'>
-          <h4>데일리독</h4>
-          {getPersonalDog?.dailyPost.map((tt) => { // 게시글 쓸때 유저정보 혹은 유저의 강아지 나이 종 무게 담겨야함 민수한테 얘기 ㄱ
-            return <PersonalDogListItem
-              dailyTitle={tt.title}
-            />
-          })}
+          <h4>중고장터</h4>
+          <Slider {...settings}>
+            {getPersonalDog?.vinPostFilter.map((a) => {
+              return (
+                <div className='slider' onClick={() => { navigate(`/community/dailydog/detail/${a.id}`) }} >
+                  <div className='sliderItem'><p>{a.title}</p><img src={`${a.imgUrl}`} /></div>
+                </div>
+              )
+            })}
+          </Slider>
+
         </div>
+
         <div className='shop'>
           <h4>샵</h4>
-          {getPersonalDog?.dailyPost.map((tt) => { // 샵은 무게, 나이 정도 필요할듯 지우하은 얘기 ㄱ
-            return <PersonalDogListItem
-              shopTitle={tt.title}
-            />
-          })}
+          <Slider {...settings}>
+            {getPersonalDog?.shopPostFilter.map((a) => {
+              return (
+                <div className='slider' onClick={() => { navigate(`/shop/detail/${a._id}`) }} >
+                  <div className='sliderItem'><p>{a.title}</p><img src={`${a.imgUrl}`} /></div>
+                </div>
+              )
+            })}
+          </Slider>
         </div>
 
       </div>
 
-      <hr />
-      <hr />
-      <div className='typeAgeInfo'>
-        강아지 나이별 종별 정보
+      <div className='hrDiv'>
+        <hr />
+        <hr />
+      </div>
+
+      <div className='ListBox'>
+        <div className='typeAgeInfo'>
+          <h4>강아지 나이별 종별 정보</h4>
+          <p>허스키는 살랴살랴살랴숑</p>
+          <p>이 나이의 허스키는 어쩌구구</p>
+          <p>이 무게의 허스키는 이렇구구</p>
+        </div>
       </div>
 
 
+      <div className='hrDiv'>
+        <hr />
+        <hr />
+      </div>
 
+      <div className='ListBox'>
+        <div>
+          <h4>여긴 뭘쓸까</h4> {/* 이건 진짜 뭐하노 */}
+          <p>ㅇㅁㅇㅁㅇㅁㅇㄴㅁㅇㅁ</p>
+          <p>ㅇㅁㅇㅁㅇㅁㅇㄴㅁㅇㅁ</p>
+          <p>ㅇㅁㅇㅁㅇㅁㅇㄴㅁㅇㅁ</p>
+        </div>
+      </div>
 
-      <hr /><hr />
+      <div className='hrDiv'>
+        <hr />
+        <hr />
+      </div>
+
+      <div className='ListBox'>
+        <div className='KaKaoMap'>
+          <h4>{로그인중?.signDogName}의 산책로 검색</h4>  {/* 지도로 산책로 찾기? */}
+          <KakaoMap />
+        </div>
+      </div>
+
       {/* 견종, 나이별 맞춤제품/
         각종 게시글 취합..?/
         산책로 추천/
@@ -126,6 +220,7 @@ function PersonalDog(props) {
       === 물어봤더니 견주입장에선 귀찮더라도 한번 쓰고 자세한 정보를 얻을 수 있으면 좋을 것 같다...
 
       게시글 작성시 로그인중인 유저의 강아지의 나이, 견종 태그 들어가기 위해서 작성시 같이 데이터 정보를 보낼 */}
+
     </PersonalDogWrapper>
   );
 }

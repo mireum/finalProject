@@ -9,7 +9,7 @@ import { getLoginUser } from '../../../features/userInfoSlice';
 const ToktokDetailWrapper = styled.div`
   margin:  30px 100px;
   padding: 20px 40px;
-  border: 1px solid #000;
+  border: 1px solid #8c8c8c;
   .titleContent {
     h4{
       text-align: center;
@@ -18,6 +18,8 @@ const ToktokDetailWrapper = styled.div`
     }
     h5 {
       text-align: end;
+      color: #8c8c8c;
+      padding-bottom: 5px;
     }
     p {
       padding: 30px 0;

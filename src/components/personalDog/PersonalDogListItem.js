@@ -19,7 +19,7 @@ const ShopWrapper = styled.div`
 `
 
 function PersonalDogListItem(props) {
-  const { tokTitle, dailyTitle } = props;
+  const { postItems } = props;
 
   const settings = {
     dots: true,
@@ -33,15 +33,9 @@ function PersonalDogListItem(props) {
     <>
       <ToktokWrapper>
         <Slider {...settings}>
-          <div>{tokTitle}</div>
+          {/* <div>{postItems.map((a) => { return (<div>{a?.toktokPostFilter?.title}</div>) })}</div> */}
         </Slider>
       </ToktokWrapper>
-      <DailyDogWrapper>
-        {props.dailyTitle}
-      </DailyDogWrapper>
-      <ShopWrapper>
-        {props.shopTitle}
-      </ShopWrapper>
     </>
   );
 }

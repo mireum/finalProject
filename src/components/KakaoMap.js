@@ -83,7 +83,7 @@ function KakaoMap(props) {
       var keyword = document.getElementById('keyword').value;
 
       if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        alert('키워드를 입력해주세요!');
+        // alert('키워드를 입력해주세요!');
         return false;
       }
 
