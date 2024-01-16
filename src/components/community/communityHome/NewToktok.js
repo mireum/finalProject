@@ -5,6 +5,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router';
+import { Fragment } from 'react';
 
 const NewToktokContainer = styled.div`
   margin-top: 20px;
@@ -100,15 +101,15 @@ function NewToktok(props) {
         <tbody>
           {testList.slice(Math.max(testList.length - 5, 0)).reverse().map((item, index) => 
             (
-              <>
-                <tr key={index} onClick={() => navigate(`/community/Toktok/${item.author}`)}>
+              <Fragment key={index}>
+                <tr onClick={() => navigate(`/community/Toktok/${item.author}`)}>
                   <td><img src='https://image.msbg.io/?p=mocoblob.blob.core.windows.net%2Fassets%2Fmagazine%2Fimg%2F14_1645407745856_0.png&w=285&h=285' /></td>
                   <td>{item.title}</td>
                   <td>{item.content}</td>
                   <td>{item.author}</td>
                   <td>{item.view}</td>
                 </tr>
-              </>
+              </Fragment>
             )
           )}
         </tbody>
