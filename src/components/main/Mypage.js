@@ -11,9 +11,10 @@ const Container = styled.div`
   max-width: 1200px;
   .box {
     max-width: 800px;
-    background-color: aqua;
-    margin: 0 auto;
+    /* background-color: #ececec; */
+    margin: 20px auto;
     padding: 30px;
+    border-radius: 10px;
     h1 {
       font-size: 34px;
       font-weight: bold;
@@ -30,10 +31,14 @@ const Container = styled.div`
       input, select {
         width: 50%;
         height: 2rem;
-        border-radius: 10px;
+        border-radius: 5px;
         text-align: center;
         margin-left: 70px;
-        background-color: aqua;
+        background-color: #fff;
+        border: 2px solid #eee;
+        padding: 20px 0px;
+        box-sizing: border-box;
+        /* line-height: 0; */
       }
       .name {
         margin-left: 124px;
@@ -54,6 +59,7 @@ const Container = styled.div`
         font-weight: bold;
         margin-top: 20px;
         margin-left: 20px;
+        line-height: 0;
       }
       button:hover, .inputBtn:hover {
         background-color: #2c619e;
@@ -63,6 +69,7 @@ const Container = styled.div`
         position: absolute;
         right: 60%;
         cursor: pointer;
+        vertical-align: bottom;
       }
     }
   }

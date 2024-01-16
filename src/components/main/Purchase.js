@@ -48,7 +48,6 @@ const PurchaseWrap = styled.div`
     width: 200px;
     height: 200px;
     color: #68a6fe;
-    /* border-radius: 10px; */
   }
   .shop-btn {
     background-color: #68a6fe;
@@ -76,13 +75,9 @@ function Purchase(props) {
   const [purchaseList, setPurchaseList] = useState([]);
   const loginUser = useSelector(getLoginUser);
   const formatter = new Intl.NumberFormat('ko-KR');
-  // const date = new Date();
-
 
   useEffect(() => {
     const purchaseList = async () => {
-      // { params: { userId: loginUser._id }}
-      // console.log(loginUser._id);
       const result = await axios.get(`http://localhost:8888/shop/purchase`, { withCredentials: true } );
       console.log(result.data);
       if (result.data) {

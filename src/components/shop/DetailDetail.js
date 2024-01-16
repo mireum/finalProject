@@ -149,7 +149,7 @@ function DetailDetail(props) {
               <div className='top-text'>
                 <p className='name'>{loginUser.signDogName}</p>
                 <span>{loginUser.signDogAge}살</span>
-                <span className='weight'>{loginUser.weight}kg</span>
+                <span className='weight'>{loginUser.signDogWeight}kg</span>
                 <p className='type'>{loginUser.signDogType}</p>
               </div>
               <div className='top-myPage cursor-pointer' onClick={() => {navigate('/mypage')}}>
