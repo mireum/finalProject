@@ -201,15 +201,15 @@ function ShopDetail(props) {
 
   // 구매하기
   const handlePay = async() => {
-    // if (!user) {
-    //   const result = needLogin();
-    //   if (result) navigate('/login');
-    //   else return;
-    // }
-    // const result = await pay(product, productCount, productCount * product.price);
-    // console.log('구매결과::', result);
-    // if (result.event === 'done' || result.event === 'issued') {
-      const result = await axios.post('http://localhost:8888/shop/purchaseAdd', { postId, title, productCount }, {withCredentials: true});
+    if (!user) {
+      const result = needLogin();
+      if (result) navigate('/login');
+      else return;
+    }
+    const result = await pay(product, productCount, productCount * product.price);
+    console.log('구매결과::', result);
+    if (result.event === 'done' || result.event === 'issued') {
+      const result = await axios.post('http://localhost:8888/shop/purchaseAdd', { postId, price, title, productCount }, {withCredentials: true});
       if (result.data.flag) {
         setShowBuyModal(false);
         alert('결제가 완료되었습니다!');

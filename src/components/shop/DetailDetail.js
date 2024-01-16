@@ -138,15 +138,6 @@ function DetailDetail(props) {
   const { title, price, rate, content, age, size, brand } = props.product;
   const navigate = useNavigate();
   const loginUser = useSelector(getLoginUser);
-  console.log(loginUser);
-
-  // const mypage =  {
-  //   useId: '주인',
-  //   name: '가을',
-  //   age: 2,
-  //   weight: 3.8,
-  //   dogType: '말티푸'
-  // };
 
   return (
     <DetailBox>
@@ -193,7 +184,10 @@ function DetailDetail(props) {
             </tr>
             <tr>
               <th>평점</th>
-              <td>{rate}점</td>
+              {rate ? 
+                <td>{rate}점</td>
+                :<td>평점없음</td>
+              }
               <th>가격</th>
               <td>{price}원</td>
             </tr>
