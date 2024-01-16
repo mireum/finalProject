@@ -255,11 +255,11 @@ function KakaoMap(props) {
     <MapWrapper>
       {/* <div id='map' style={{ width: '500px', height: '500px' }}>
       </div> */}
-      {<div class="map_wrap">
+      {<div className="map_wrap">
         <div id="map" style={{ width: '100%', height: '500px', position: 'relative;overflow:hidden' }}></div>
 
-        <div id="menu_wrap" class="bg_white">
-          <div class="option">
+        <div id="menu_wrap" className="bg_white">
+          <div className="option">
             <div>
               <form onsubmit="searchPlaces(); return false;">
                 키워드 : <input type="text" value={test} onChange={handleTest} id="keyword" size="15" />
