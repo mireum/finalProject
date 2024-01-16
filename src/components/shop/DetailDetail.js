@@ -138,7 +138,6 @@ function DetailDetail(props) {
   const { title, price, rate, content, age, size, brand } = props.product;
   const navigate = useNavigate();
   const loginUser = useSelector(getLoginUser);
-  console.log(loginUser);
 
   return (
     <DetailBox>

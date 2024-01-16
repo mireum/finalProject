@@ -209,7 +209,7 @@ function ShopDetail(props) {
     const result = await pay(product, productCount, productCount * product.price);
     console.log('구매결과::', result);
     if (result.event === 'done' || result.event === 'issued') {
-      const result = await axios.post('http://localhost:8888/shop/purchaseAdd', { postId, title, productCount }, {withCredentials: true});
+      const result = await axios.post('http://localhost:8888/shop/purchaseAdd', { postId, price, title, productCount }, {withCredentials: true});
       if (result.data.flag) {
         setShowBuyModal(false);
         alert('결제가 완료되었습니다!');
