@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import cart from "../../image/cart.png";
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +30,10 @@ const PurchaseWrap = styled.div`
   tbody td {
     vertical-align: middle;
     /* background-color: #ececec; */
+  }
+
+  tbody .date {
+    font-weight: bold;
   }
 
   .total-price {
@@ -79,10 +83,10 @@ function Purchase(props) {
     const purchaseList = async () => {
       // { params: { userId: loginUser._id }}
       // console.log(loginUser._id);
-      const result = await axios.get(`http://localhost:8888/shop/purchase` );
-      // console.log(result.data);
+      const result = await axios.get(`http://localhost:8888/shop/purchase`, { withCredentials: true } );
+      console.log(result.data);
       if (result.data) {
-        setPurchaseList(result.data);
+        setPurchaseList(result.data.list);
       }
     }
     purchaseList();
@@ -101,13 +105,16 @@ function Purchase(props) {
             <th>총 금액</th>
           </tr>
         </thead>
-      {
-        purchaseList.list.length > 0 ? purchaseList.list.map((item, index) => {
+        <tbody>
+        {
+        purchaseList.length ? purchaseList.map((item, index) => {
           console.log(item);
           return (
-            <tbody key={index}>
-              <tr>{dateFormat(item.date)}</tr>
-              { item.list.length > 0 &&
+            <Fragment key={index}>
+              <tr>
+                <td className='date'>{dateFormat(item.date)}</td>
+              </tr>
+              { item.list &&
                 item.list.map((item, i) => {
                   console.log(item);
                   return (
@@ -117,28 +124,23 @@ function Purchase(props) {
                       <td>{item.count}</td>
                       <td>{formatter.format(item.price * item.count)}원</td>
                     </tr>
-                  )})
+                )})
               }
-            </tbody>
-            // <tbody key={index}>
-            //   <tr>
-            //     <td><img src={dog} className='img' /></td>
-            //     <td>{item.list[0].title}</td>
-            //     <td>{item.list[0].count}</td>
-            //     <td>{formatter.format(item.list.price * item.list.count)}원</td>
-            //   </tr>
-            // </tbody>
-          )
-        })
-        :
-          <div className='empty-list'>
-            <div>
-              <img src={cart}/>
-              <p>구매내역이 없습니다.</p>
-              <button className='shop-btn cursor-pointer' onClick={() => {navigate('/shop')}}>쇼핑으로 이동</button>
-            </div>
-          </div>
-      }
+            </Fragment>
+            )
+          })
+          :
+          <tr className='empty-list'>
+          
+            {/* <td><img src={cart}/></td> */}
+            <td>구매내역이 없습니다.</td>
+            <td></td>
+            <td><button className='shop-btn cursor-pointer' onClick={() => {navigate('/shop')}}>쇼핑으로 이동</button></td>
+            <td></td>
+
+          </tr>
+        }
+        </tbody>
       </Table>
     </PurchaseWrap>
   );
