@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getFleamarketById } from '../../../api/communityAPI';
 import { useParams } from 'react-router';
 import testImage from '../../../images/app.jpg'
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -86,6 +84,12 @@ const FleamarketDetailContainer = styled.div`
         span {
           font-weight: bold;
         }
+      }
+
+      .iteminfo-content {
+        color: #222;
+        opacity: 0.8;
+        font-size: 15px;
       }
     }
 
@@ -181,7 +185,7 @@ function FleamarketDetail(props) {
         <div className='userinfo-box'>
           <div className='user-box'>
             <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp'></img>
-            <p>{item.author}</p>
+            <p><span>{item.author}</span></p>
           </div>
           <div className='side-box'>
             <p><span>등록일</span> {dateFormat(item.date)}</p>
@@ -190,10 +194,9 @@ function FleamarketDetail(props) {
           </div>
         </div>
         <div className='iteminfo-box'>
+          <p className='iteminfo-content'>{mappings[item.category]} / {mappings[item.area]}</p>
           <p><span>{item.title}</span></p>
-          <p>{item.category}</p>
           <p><span>{Number(item.price).toLocaleString('kr-KR')}원</span></p>
-          <p>{mappings[item.area]}</p>
           <p>{item.content}</p>
         </div>
         <div className='btn-box'>

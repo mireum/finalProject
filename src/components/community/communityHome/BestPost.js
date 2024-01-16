@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import nophoto from '../../../images/nophoto.jpg'
 import { useNavigate } from 'react-router-dom';
 
-const NewDailyDogContainer = styled.div`
+const BestPostContainer = styled.div`
   margin-top: 20px;
 
   img {
@@ -27,6 +27,14 @@ const NewDailyDogContainer = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  h4 {
+    padding-top: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: #222;
+    opacity: 0.8;
+  }
 `;
 
 const StyledCol = styled(Col)`
@@ -40,27 +48,33 @@ const StyledCol = styled(Col)`
   }
 `;
 
-function NewDailyDog(props) {
+const mappings = {
+  toktok: '육아톡톡',
+  daily: '데일리독'
+}
+
+function BestPost(props) {
   const navigate = useNavigate();
 
   const { items } = props;
 
   return (
-    <NewDailyDogContainer>
+    <BestPostContainer>
       <Container>
         <Row>
           {items.map(item => {
             return (
-              <StyledCol sm key={item._id} onClick={() => navigate(`/community/dailydog/detail/${item.id}`)} >
+              <StyledCol sm key={item._id}>
                 <img src={item.imgUrl[0] ? item.imgUrl[0] : nophoto}/>
+                <h4>{mappings[item.type]}</h4>
                 <h3>{item.title}</h3>
               </StyledCol>
               )
             })}
         </Row>
       </Container>
-    </NewDailyDogContainer>
+    </BestPostContainer>
   );
 }
 
-export default NewDailyDog;
+export default BestPost;

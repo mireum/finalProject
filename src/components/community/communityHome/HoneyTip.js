@@ -4,10 +4,10 @@ import { IoIosStar } from "react-icons/io";
 
 const HoneyTipContainer = styled.div`
   margin-top: 20px;
-  max-width: 1200px;
   display: flex;
 
   a {
+    width: 285px;
     cursor: pointer;
 
     &:first-child {
@@ -24,12 +24,14 @@ const HoneyTipContainer = styled.div`
   }
 
   img {
+    width: 100%;
     border-radius: 10px 10px 0 0;
   }
 
   p {
     margin-top: 10px;
     padding: 4px;
+    font-size: 15px;
     font-weight: bold;
     color: #aaa;
     display : inline-flex;
@@ -45,7 +47,6 @@ const HoneyTipContainer = styled.div`
   
   h3 {
     font-weight: bold;
-    font-size: 17px;
     padding: 4px;
   }
 `;
