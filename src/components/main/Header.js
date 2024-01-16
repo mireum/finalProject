@@ -165,6 +165,10 @@ function Header(props) {
     navigate('/cart');
     handleDrop();
   }
+  const handleChat = () => {
+    navigate('/user/chatting');
+    handleDrop();
+  }
 
   // if (communityTap || shopTap) {
   //   const navElement = document.querySelector('nav');
@@ -213,6 +217,7 @@ function Header(props) {
                 <ul className='dropmenu'>
                   <li onClick={handleMypage}>마이페이지</li>
                   <li onClick={handleCart}>장바구니</li>
+                  <li onClick={handleChat}>채팅</li>
                   <li onClick={() => handleLogOut()}>로그아웃</li>
                 </ul>
               }
