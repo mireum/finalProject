@@ -134,12 +134,12 @@ function FleamarketDetail(props) {
   useEffect(() => {
     const fleamarketData = async () => {
       try {
-//         const response = await axios.get(`http://localhost:8888/vintage/detail/${id}`);        
-//         console.log(response.data);
-//         setItem(response.data.postData);
+        const response = await axios.get(`http://localhost:8888/vintage/detail/${id}`);        
+        console.log(response.data);
+        setItem(response.data.postData);
 
-        const response = await axios.get('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage');        
-        setItem(response.data.filter(item => item.id == id));
+        // const response = await axios.get('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage');        
+        // setItem(response.data.filter(item => item.id == id));
 
       } catch (err) {
         console.error(err);
@@ -192,8 +192,8 @@ function FleamarketDetail(props) {
         <div className='userinfo-box'>
           <div className='user-box'>
             <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp'></img>
-
-            <p>{item[0].user}</p>
+            <p>{item.author}</p>
+            {/* <p>{item[0].user}</p> */}
           </div>
           <div className='side-box'>
             <p><span>등록일</span> {dateFormat(item.date)}</p>

@@ -8,6 +8,9 @@ import HoneyTip from '../components/community/communityHome/HoneyTip';
 import axios from 'axios';
 import NewDailyDog from '../components/community/communityHome/NewDailyDog';
 import BestPost from '../components/community/communityHome/BestPost';
+import { SiFireship, SiDatadog } from "react-icons/si";
+import { IoPawSharp } from "react-icons/io5";
+import { HiOutlineLightBulb } from "react-icons/hi";
 
 const CommunityHomeContainer = styled.div`
   max-width: 1200px;
@@ -39,6 +42,26 @@ const CommunityHomeContainer = styled.div`
         align-items: center;
         color: #68a6fe;
       }
+    }
+
+    .hotfire {
+      margin-right: 8px;
+      color: red;
+    }
+
+    .toktok {
+      margin-right: 8px;
+      color: #FFD700;
+    }
+
+    .dailydog {
+      margin-right: 8px;
+      color: blue;
+    }
+
+    .honeytip {
+      margin-right: 8px;
+      color: #00FFFF;
     }
   }
 `;
@@ -77,13 +100,12 @@ function Community(props) {
       <CommunitySlide />
       <CommunityHomeContainer>
         <div className='communityHomeContent'>
-          <h2>
-            HOT 게시글
-          </h2>
+          <h2><SiFireship className='hotfire' />HOT 게시글</h2>
           <BestPost items={bestLists} />
         </div>
         <div className='communityHomeContent'>
           <h2>
+            <IoPawSharp className='toktok'/>
             육아톡톡 NEW
             <button title='더보기' onClick={() => navigate('/community/Toktok')}><FaChevronRight /></button>
           </h2>
@@ -91,6 +113,7 @@ function Community(props) {
         </div>
         <div className='communityHomeContent'>
           <h2>
+            <SiDatadog className='dailydog'/>
             데일리독 NEW
             <button title='더보기' onClick={() => navigate('/community/dailydog?page=1')}><FaChevronRight /></button>
           </h2>
@@ -98,6 +121,7 @@ function Community(props) {
         </div>
         <div className='communityHomeContent'>
           <h2>
+            <HiOutlineLightBulb className='honeytip' />
             꿀팁 대방출
             <button title='더보기'><FaChevronRight /></button>
           </h2>
