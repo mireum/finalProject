@@ -149,10 +149,10 @@ function Login(props) {
 
   return (
     <Test>
-      <div class="container">
-        <div class="top"></div>
-        <div class="bottom"></div>
-        <div class="center">
+      <div className="container">
+        <div className="top"></div>
+        <div className="bottom"></div>
+        <div className="center">
           <h2>로그인 하십셔~~</h2>
           <h2 onClick={() => navigate('/')}>홈홈홈홈홈홈홈</h2>
           <label htmlFor='id' />

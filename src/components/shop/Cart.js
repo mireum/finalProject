@@ -106,19 +106,19 @@ function Cart(props) {
   };
   
   const handlePay = async () => {
-    const totalPrice = cartList.reduce((prev, cart) => {
-      return prev + (cart.price * cart.count);
-    }, 0);
-    const result = pay(cartList[0], cartList[0].count, totalPrice, cartList.length - 1);
-    console.log(result);
-    if (result.event == 'done' || result.event == 'issued') {
+    // const totalPrice = cartList.reduce((prev, cart) => {
+    //   return prev + (cart.price * cart.count);
+    // }, 0);
+    // const result = pay(cartList[0], cartList[0].count, totalPrice, cartList.length - 1);
+    // console.log(result);
+    // if (result.event == 'done' || result.event == 'issued') {
       const result = await axios.get('http://localhost:8888/shop/purchaseAdds', {withCredentials: true});
       if (result.data.flag) {
         alert('결제가 완료되었습니다!');
         // 구매목록으로
         navigate('/shop');
         }
-    }
+    // }
     else if (result.event == 'cancel') {
       alert('결제 취소');
     }
