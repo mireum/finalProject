@@ -44,7 +44,7 @@ function ToktokDetail(props) {
 
   useEffect(() => {
     const commentListGet = async () => {
-      const response = await axios.get(`/community/toktok/detail/${_id}`)
+      const response = await axios.get(`http://localhost:8888/community/toktok/detail/${_id}`, { withCredentials: true })
       setGetDetailCommentList(response.data.commentData)
       setGetDetailList(response.data.postData)
     };
@@ -55,12 +55,20 @@ function ToktokDetail(props) {
     setCommentValue(e.target.value)
   }
   const handleComment = async () => {
-    await axios.post(`/community/toktok/comment/${_id}`, { comment: commentValue, postId: _id, user: 로그인중 })
-    window.location.reload()
+    try {
+      await axios.post(`http://localhost:8888/community/toktok/comment/${_id}`, { comment: commentValue, postId: _id, user: 로그인중 }, { withCredentials: true })
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
   }
   const handleDel = async () => {
-    await axios.delete(`/community/toktok/delete/${_id}`)
-    navigate('/community/Toktok');
+    try {
+      await axios.delete(`http://localhost:8888/community/toktok/delete/${_id}`, { withCredentials: true })
+      navigate('/community/Toktok');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const date = new Date(getDetailList?.date);
