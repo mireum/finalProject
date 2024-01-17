@@ -82,7 +82,7 @@ function ToktokItem(props) {
   const 경과일 = elapsedTime(props.date);
 
   const addView = async () => {
-    await axios.post('/community/toktok/view', 로그인중);
+    await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/view`, 로그인중);
   }
   console.log(로그인중);
 

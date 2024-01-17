@@ -68,7 +68,7 @@ function ToktokDetail(props) {
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
   useEffect(() => {
     const commentListGet = async () => {
-      const response = await axios.get(`/community/toktok/detail/${_id}`)
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/detail/${_id}`)
       setGetDetailCommentList(response.data.commentData)
       setGetDetailList(response.data.postData)
     };
@@ -80,7 +80,7 @@ function ToktokDetail(props) {
     setCommentValue(e.target.value)
   }
   const handleComment = async () => {
-    await axios.post(`/community/toktok/comment/${_id}`, { comment: commentValue, postId: _id, user: 로그인중 })
+    await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/comment/${_id}`, { comment: commentValue, postId: _id, user: 로그인중 })
     window.location.reload()
   }
 
