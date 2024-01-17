@@ -73,7 +73,6 @@ function NewToktok(props) {
 
   const navigate = useNavigate();
   const testList = useSelector(selectToktokList);
-  
   return (
     <NewToktokContainer>
       <StyledTable responsive="sm">
@@ -87,6 +86,7 @@ function NewToktok(props) {
           </tr>
         </thead>
         <tbody>
+
           {items.map(item => {
             return (
               <tr key={item._id} onClick={() => navigate(`/community/Toktok/${item.author}`)}>
