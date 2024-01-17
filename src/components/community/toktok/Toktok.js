@@ -14,10 +14,9 @@ const ToktokWrapper = styled.div`
   background-color: #fff;
   padding: 0 20px;
   h1 {
-    font-size: 44px;
+    font-size: 28px;
     font-weight: bold;
-    color: #000;
-    padding: 10px 0;
+    margin-top: 23px;
   }
   .between {
     display: flex;

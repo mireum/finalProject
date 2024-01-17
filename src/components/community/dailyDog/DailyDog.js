@@ -10,6 +10,7 @@ const DailyDogContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
   margin: 70px auto;
+  padding: 0 20px;
 
   h1 {
     font-size: 28px;
