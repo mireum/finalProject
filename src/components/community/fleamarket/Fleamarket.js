@@ -35,6 +35,18 @@ const FleamarketContainer = styled.div`
     justify-content: space-between;
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
+      .post-btn {
+        border: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: #68A6FE;
+        color: #fff;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .post-btn:hover {
+        background-color: #3286fc;
+      }
   }
 
   .category-box {
@@ -112,7 +124,7 @@ function Fleamarket(props) {
       <h1>중고거래</h1>
       <div className='info'>
         <p>반려견의 물품을 거래해요!</p>
-        <button onClick={() => navigate('/community/fleamarket/write')}>판매하기</button>
+        <button className='post-btn' onClick={() => navigate('/community/fleamarket/write')}>판매하기</button>
       </div>
       <div className='category-box'>
         <select value={dogType} name='dogType' onChange={onSelectChange}>
