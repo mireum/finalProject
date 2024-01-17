@@ -219,9 +219,9 @@ function Chatting(props) {
   
   useEffect(() => {
     socket.on('updateChatDetail', (chatData) => {
-      if (chatData.id === isLogin.userId) {
-        setChatDetail(prev => [...prev, chatData.lastChat]);
-      }
+      setChatRoomFilter('');
+      setChatDetail(prev => [...prev, chatData.lastChat]);
+      setChatRoomFilter(chatData.user2)
     })
   }, []);
 
@@ -230,6 +230,7 @@ function Chatting(props) {
     setRoom('')
     setChatDetail([]);
     socket.emit('leaveRoom', room);
+    socket.disconnect();
     setSendId(id);
     const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
     if (chatting.data.resulte?.chatList) {
@@ -277,6 +278,7 @@ function Chatting(props) {
   let today = new Date();
   today = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
+
   return (
     <ChattingContainer>
       <div className='inner'>
@@ -304,7 +306,7 @@ function Chatting(props) {
               return (
                 <>
                   {index === 0 && <p className='day'>{today}</p>}
-                  { chat.user !== isLogin.userId &&
+                  { chat.user !== isLogin.userId && 
                     <>
                       <p key={index} className='message-notme-box'>{chat.user}:</p>
                       <p className='message-notme-box'>{chat.msg}</p>
