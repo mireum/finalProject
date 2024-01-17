@@ -138,7 +138,7 @@ function FleamarketDetail(props) {
 //         console.log(response.data);
 //         setItem(response.data.postData);
 
-        const response = await axios.get('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage');        
+        const response = await axios.get(`${process.env.SERVER_DOMAIN}/vintage`);        
         setItem(response.data.filter(item => item.id == id));
 
       } catch (err) {

@@ -162,14 +162,14 @@ function Chatting(props) {
   const [ sendId, setSendId ] = useState('');
   const [ room, setRoom ] = useState('');
   
-  // const socket = io.connect("http://localhost:8888");
+  // const socket = io.connect(`${process.env.SERVER_DOMAIN}`);
   
   const valueOnChange = (e) => {
     setValue(e.target.value);
   };
   
   
-  const socket = io.connect("http://localhost:8888");
+  const socket = io.connect(`${process.env.SERVER_DOMAIN}`);
 
 
   useEffect(() => {
@@ -192,7 +192,7 @@ function Chatting(props) {
   useEffect(() => {
     const getChatListHandler = async () => {
       
-      const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
+      const getChatList = await axios.get(`${process.env.SERVER_DOMAIN}/getChatHeaderList`, {withCredentials: true});
       if (!getChatList.data.flag) {
         console.log(getChatList.data);
         alert(getChatList.data.message);
@@ -226,7 +226,7 @@ function Chatting(props) {
     setChatDetail([]);
     setSendId(id);
     console.log(id);
-    const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
+    const chatting = await axios.get(`${process.env.SERVER_DOMAIN}/getChatting?id=${id}`, {withCredentials: true});
     console.log(chatting);
     if (chatting.data.resulte?.chatList) {
       console.log(chatting.data.resulte.room);
@@ -251,7 +251,7 @@ function Chatting(props) {
       room: loginUser,
     }
 
-    await axios.post(`http://localhost:8888/inChating`, { data }, { withCredentials: true });
+    await axios.post(`${process.env.SERVER_DOMAIN}/inChating`, { data }, { withCredentials: true });
     // socket.emit('answer', data);
     setValue('');
     

@@ -73,7 +73,7 @@ function Purchase(props) {
 
   useEffect(() => {
     const purchaseList = async () => {
-      const result = await axios.get(`http://localhost:8888/shop/purchase`, { withCredentials: true });
+      const result = await axios.get(`${process.env.SERVER_DOMAIN}/shop/purchase`, { withCredentials: true });
       if (result.data) setPurchaseList(result.data.list);
     }
     purchaseList();

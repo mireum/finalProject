@@ -90,7 +90,7 @@ function Fleamarket(props) {
 //         const response = await axios.get('http://localhost:8888/vintage', { params: { select } });
 //         setData(response.data.posts);
 
-        const response = await axios.get('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage');
+        const response = await axios.get(`${process.env.SERVER_DOMAIN}/vintage`);
         setData(response.data);
 
       } catch (err) {
