@@ -184,7 +184,7 @@ function FleamarketWrite(props) {
   useEffect(() => {
     const fleamarketData = async () => {
       try {
-        const response = await axios.get('http://localhost:8888/vintage/number');
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/vintage/number`);
         console.log(response.data.id);
         setValues(prevValue => ({ ...prevValue, id: response.data.id ? response.data.id + 1 : 1 }));
       } catch (err) {
@@ -266,8 +266,7 @@ function FleamarketWrite(props) {
 
     if (title && price && category && area && content && images[0] && dogType && dogAge && dogWeight) {
       try {
-        // axios.post('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage/insert', formData, {withCredentials: true})
-        axios.post('http://localhost:8888/vintage/insert', formData, {withCredentials: true})
+        axios.post(`${process.env.REACT_APP_SERVER}/vintage/insert`, formData, {withCredentials: true})
         alert('게시글이 등록되었습니다.');
         navigate('/community/Fleamarket');
       } catch (err) {
