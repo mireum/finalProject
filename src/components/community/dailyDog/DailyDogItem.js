@@ -72,8 +72,12 @@ function DailyDogItem(props) {
   const navigate = useNavigate();
 
   const handleItemClick = async () => {
-    await axios.patch(`http://localhost:8888/community/daily/view/${_id}`);
-    navigate(`/community/dailydog/detail/${id}`)
+    try {
+      await axios.patch(`http://localhost:8888/community/daily/view/${_id}`);
+      navigate(`/community/dailydog/detail/${id}`)
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (

@@ -101,7 +101,7 @@ function ToktokItem(props) {
           <span>{like ? like?.length : 0}</span>
           <span className='material-symbols-outlined'>mode_comment</span>
           <span>{comment ? comment.length : 0}</span>
-          <span class="material-symbols-outlined">visibility</span>
+          <span className="material-symbols-outlined">visibility</span>
           <span>{view ? view?.length : 0}</span>
           <span>{경과일}</span>
         </div>

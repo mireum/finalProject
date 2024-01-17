@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { pushUserInfo } from '../../features/userInfoSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import logo from '../../images/logo_01.png'
 
 const SignupWrapper = styled.div`
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
@@ -108,6 +109,12 @@ body{
     border: none;
   }
 }
+  #logo {
+    cursor: pointer;
+    max-width: 90px;
+    margin-bottom: 10px;
+  }
+
 `
 
 function Signup(props) {
@@ -178,12 +185,12 @@ function Signup(props) {
   '퍼그', '셰퍼드', '달마시안'];
   return (
     <SignupWrapper>
-      <div className="container" onclick="onclick">
-        <div className="top"></div>
-        <div className="bottom"></div>
-        <div className="center">
+      <div class="container" onclick="onclick">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="center">
+          <a onClick={() => navigate('/')}><img src={logo} alt='logo' id='logo' /></a>
           <h2>회원가입 페이지 입니다</h2>
-          <h2 onClick={() => { navigate('/') }}>홈홈홈홈홈홈홈</h2>
           <label htmlFor='id' /> {/* 아이디 */}
           <input
             id='id'
