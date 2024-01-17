@@ -51,12 +51,22 @@ const StyledCol = styled(Col)`
 const mappings = {
   toktok: '육아톡톡',
   daily: '데일리독'
-}
+};
 
 function BestPost(props) {
   const navigate = useNavigate();
 
   const { items } = props;
+
+  const handleMove = (item) => {
+
+    if (item.type === 'daily') {
+      return navigate(`/community/dailydog/detail/${item.id}`)
+    }
+    if (item.type === 'toktok') {
+      return navigate(`/community/Toktok/${item._id}`)
+    }
+  }
 
   return (
     <BestPostContainer>
@@ -64,7 +74,7 @@ function BestPost(props) {
         <Row>
           {items.map(item => {
             return (
-              <StyledCol sm key={item._id}>
+              <StyledCol sm key={item._id} onClick={() => handleMove(item)}>
                 <img src={item.imgUrl[0] ? item.imgUrl[0] : nophoto}/>
                 <h4>{mappings[item.type]}</h4>
                 <h3>{item.title}</h3>
