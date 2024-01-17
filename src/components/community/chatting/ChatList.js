@@ -38,8 +38,6 @@ const ChattingInnerBox = styled.div`
 
 function ChatList({ audience, msg, lastChatUser, chatTime, isLogin, handleToChatroom }) {
   const [alarm, setAlarm] = useState(false);
-  console.log(audience);
-  console.log(isLogin);
 
   useEffect(() => {
     if (lastChatUser === isLogin) {

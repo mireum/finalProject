@@ -178,6 +178,7 @@ function Chatting(props) {
   const [ update, setUpdate ] = useState('');
   const [ chats, setChats ] = useState([]);
   const [ chatDetail, setChatDetail ] = useState([]);
+  const [ chatRoomFilter, setChatRoomFilter ] = useState('');
   const [ value, setValue ] = useState('');
   const [ sendId, setSendId ] = useState('');
   const [ room, setRoom ] = useState('');
@@ -218,19 +219,47 @@ function Chatting(props) {
   }, [update]);
   
   useEffect(() => {
-    socket.on('updateChatDetail', (lastChat) => {
-      setChatDetail(prev => [...prev, lastChat]);
+    socket.on('updateChatDetail', (chatData) => {
+      console.log(chatData);
+      console.log(sendId);
+      console.log(isLogin.userId);
+      setChatDetail(prev => [...prev, chatData.lastChat]);
+
+
+      // setChatRoomFilter(chatData)
+      // if (chatData.lastChatRoom == sendId) {
+      //   setChatDetail(prev => [...prev, chatData.lastChat]);
+      // }
     })
+    // chatFilter();
+    // console.log('chatRoomFilter'+chatRoomFilter);
+    // console.log('sendId'+sendId);
+    // console.log('로그인값'+isLogin.userId);
   }, []);
+
+  // const chatFilter = () => {
+  //   console.log(sendId);
+  //   console.log(isLogin.userId);
+  //   console.log(chatRoomFilter);
+  //   if (chatRoomFilter.lastChatRoom == sendId && chatRoomFilter.lastChatRoom == isLogin.userId) {
+  //     console.log('이프실행여부');
+  //     setChatDetail(prev => [...prev, chatRoomFilter.lastChat]);  
+  //   }
+  //   setChatRoomFilter('')
+    
+  // };
+
+
 
 
   const handleToChatroom = async (id) => {
-    console.log(room);
-    socket.emit('leaveRoom', room);
+    setSendId('')
     setRoom('')
     setChatDetail([]);
+    socket.emit('leaveRoom', room);
+    console.log('아디'+id);
     setSendId(id);
-    console.log(id);
+    console.log('샌드아디'+sendId);
     const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
     if (chatting.data.resulte?.chatList) {
       console.log(chatting.data.resulte.room);
