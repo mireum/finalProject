@@ -79,9 +79,17 @@ const PersonalDogWrapper = styled.div`
     }
     .typeAgeInfo{
       border: 1px solid #000;
+      border-radius: 10px;
+      background-color: #f7f7f7;
+      h4 {
+        padding-top: 10px;
+        font-weight: bold;
+      }
       p {
         border: 1px solid #000;
-        margin: 20px ;
+        background-color: #fff;
+        border-radius: 10px;
+        margin: 20px;
         padding: 10px;
         line-height: 30px;
       }
