@@ -133,7 +133,7 @@ function Signup(props) {
 
   useEffect(() => {
     const signUserInfoGet = async () => {
-      const response = await axios.get(`${process.env.SERVER_DOMAIN}/user/register`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/user/register`);
       console.log(response);
     }
     signUserInfoGet();
@@ -171,7 +171,7 @@ function Signup(props) {
       } if (signDogName == '') {
         alert('반려견의 이름을 입력해 주세요.')
       } */
-      await axios.post(`${process.env.SERVER_DOMAIN}/user/register`, userInput);
+      await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/register`, userInput);
       navigate('/login');
     } catch (error) {
       console.error(error);

@@ -71,7 +71,7 @@ function DailyDog(props) {
     const dailyDogData = async () => {
       try {
         const perPage = 9;
-        const response = await axios.get(`${process.env.SERVER_DOMAIN}/community/daily?page=${rememberPage}`, { params: { perPage }});
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/community/daily?page=${rememberPage}`, { params: { perPage }});
         setData(response.data.data);
         setPage(prev => ({ ...prev, numOfPage: response.data.numOfPage }));
       } catch (err) {

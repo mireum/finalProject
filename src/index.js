@@ -20,7 +20,7 @@ const loginUserInfo = async () => {
   store.dispatch(getLoginUserInfo(JSON.parse(user)));
 
   // const result = await axios.get(`https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/user/login`, {withCredentials: true});
-  const result = await axios.get(`${process.env.SERVER_DOMAIN}/user/login`, {withCredentials: true});
+  const result = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/user/login`, {withCredentials: true});
   if (!result.data.flag) {
     store.dispatch(clearLoginUserInfo());
     localStorage.removeItem('user');
