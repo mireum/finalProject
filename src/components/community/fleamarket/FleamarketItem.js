@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Col from 'react-bootstrap/Col';
-import testImage from '../../../images/app.jpg'
+import testImage from '../../../image/app.jpg'
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 

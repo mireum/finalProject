@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import styled from 'styled-components';
-import nophoto from '../../../images/nophoto.jpg'
+import nophoto from '../../../image/nophoto.jpg'
 import { useNavigate } from 'react-router-dom';
 
 const NewDailyDogContainer = styled.div`

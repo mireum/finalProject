@@ -1,5 +1,5 @@
 import React from 'react';
-import nophoto from '../../../images/nophoto.jpg'
+import nophoto from '../../../image/nophoto.jpg'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';

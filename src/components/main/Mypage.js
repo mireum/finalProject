@@ -134,8 +134,8 @@ function Mypage(props) {
     setShowModal(true);
   };
   const handleQuit = async () => {
-    // const result = await axios.get('http://localhost:8888/user/accountQuit', {withCredentials:true});
-    // if (result.data.flag) alert(`$(result.data.message)`);
+    const result = await axios.get('http://localhost:8888/user/accountQuit', {withCredentials:true});
+    if (result.data.flag) alert(`${result.data.message}`);
   };
 
   return (
