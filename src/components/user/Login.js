@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getLoginUser, getLoginUserInfo, pushUserInfo, selectUserList } from '../../features/userInfoSlice';
 import axios from 'axios';
-import logo from '../../images/logo_01.png'
+import logo from '../../image/logo_01.png'
 
 const Test = styled.div`
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');

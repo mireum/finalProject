@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import styled from "styled-components";
 import { getLoginUser } from '../../features/userInfoSlice';
 import axios from 'axios';
-import logo from '../../images/logo_01.png'
+import logo from '../../image/logo_01.png'
 import { LuUser2 } from "react-icons/lu";
 
 const HeaderContainer = styled.header`

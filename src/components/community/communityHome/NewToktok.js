@@ -4,7 +4,7 @@ import { selectToktokList } from '../../../features/dailyDogSlice';
 import styled from 'styled-components';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router';
-import nophoto from '../../../images/nophoto.jpg'
+import nophoto from '../../../image/nophoto.jpg'
 
 
 const NewToktokContainer = styled.div`

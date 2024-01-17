@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { pushUserInfo } from '../../features/userInfoSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../../images/logo_01.png'
+import logo from '../../image/logo_01.png'
 
 const SignupWrapper = styled.div`
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');

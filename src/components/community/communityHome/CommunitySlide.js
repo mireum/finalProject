@@ -3,10 +3,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import styled from 'styled-components';
-import main1 from '../../../images/main1.jpg'
-import main2 from '../../../images/main2.jpg'
-import main3 from '../../../images/main3.jpg'
-import main4 from '../../../images/main4.jpg'
+import main1 from '../../../image/main1.jpg'
+import main2 from '../../../image/main2.jpg'
+import main3 from '../../../image/main3.jpg'
+import main4 from '../../../image/main4.jpg'
 
 const CommunitySlideContainer = styled.div`
   max-width: 1200px;
