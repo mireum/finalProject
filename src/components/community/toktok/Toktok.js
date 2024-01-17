@@ -90,7 +90,7 @@ function Toktok(props) {
   useEffect(() => {
     const toktokListGet = async () => {
       try {
-        const response = await axios.get('/community/toktok');
+        const response = await axios.get('http://localhost:8888/community/toktok');
         await setGetList(response.data.data);
       } catch (error) {
         console.error(error);
@@ -99,7 +99,7 @@ function Toktok(props) {
     toktokListGet();
 
     const commentGet = async () => {
-      const response = await axios.get('/community/toktok/comment');
+      const response = await axios.get('http://localhost:8888/community/toktok/comment');
       setComment(response.data.commentData);
     }
     commentGet();

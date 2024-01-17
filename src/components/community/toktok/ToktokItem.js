@@ -83,12 +83,12 @@ function ToktokItem(props) {
   });
 
   const handleLike = async () => {
-    const a = await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
+    const a = await axios.post('http://localhost:8888/community/toktok/like', { user: 로그인중, postId: _id });
     setLikeNum(a.data.data.like);
     setTest(a.data.data.like);
   }
   const addView = () => {
-    axios.post('/community/toktok/view', { postId: _id })
+    axios.post('http://localhost:8888/community/toktok/view', { postId: _id })
   }
 
   function elapsedTime(date) {
