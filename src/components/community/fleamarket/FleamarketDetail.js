@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import testImage from '../../../images/app.jpg'
+import testImage from '../../../image/app.jpg'
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -9,13 +9,32 @@ import { GrNext, GrPrevious } from "react-icons/gr";
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import { dateFormat } from '../../../util';
+import { useSelector } from 'react-redux';
+import { getLoginUser } from '../../../features/userInfoSlice';
 
 const FleamarketDetailContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
   margin: 70px auto;
 
-  .abcd {
+  .edit-box {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin-left: 14px;
+      background: none;
+      border: none;
+      font-size: 15px;
+      color: #222;
+      opacity: 0.7;
+    }
+  }
+
+  .slide-box {
     max-width: 600px;
     margin: 0 auto;
 
@@ -91,10 +110,15 @@ const FleamarketDetailContainer = styled.div`
         opacity: 0.8;
         font-size: 15px;
       }
+
+      .content-text {
+        margin-bottom: 20px;
+        word-break: break-all;
+      }
     }
 
     .btn-box {
-      margin-top: 10px;
+      margin-top: 50px;
       display: flex;
       justify-content: flex-end;
 
@@ -129,18 +153,23 @@ const mappings = {
 function FleamarketDetail(props) {
   const navigate = useNavigate();
   const [ item, setItem ] = useState('');
+  const [ edit, setEdit ] = useState({
+    content: '',
+    state: false  
+  });
+
+  const { content, state } = edit;
+
   const { id } = useParams();
+  const user = useSelector(getLoginUser);
 
   useEffect(() => {
     const fleamarketData = async () => {
       try {
-//         const response = await axios.get(`http://localhost:8888/vintage/detail/${id}`);        
-//         console.log(response.data);
-//         setItem(response.data.postData);
-
-        const response = await axios.get('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage');        
-        setItem(response.data.filter(item => item.id == id));
-
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/vintage/detail/${id}`);        
+        console.log(response.data);
+        setItem(response.data.postData);
+        setEdit(prev => ({ ...prev, content: response.data.postData.content }));
       } catch (err) {
         console.error(err);
       }
@@ -152,8 +181,17 @@ function FleamarketDetail(props) {
     return null;
   } 
 
-  console.log(item);
-  
+  const handleDeleteItem = async () => {
+
+    try {
+      await axios.delete(`http://localhost:8888/community/daily/delete/${item.id}`);
+      alert('게시글을 삭제하였습니다.');
+      navigate(-1);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const settings = {
     dots: true,
     infinite: true,
@@ -164,12 +202,17 @@ function FleamarketDetail(props) {
     prevArrow: <GrPrevious />,
   };
 
-
   // 채팅하기 더미 테스트
   const toChat = 'hosik'
   return (
     <FleamarketDetailContainer>
-      <div className='abcd'>
+      {user.signUserNicname === item.author && 
+        <div className='edit-box'>
+          <button onClick={() => setEdit(prev => ({ ...prev, state: !state }))}>수정</button>
+          <button onClick={handleDeleteItem}>삭제</button>
+        </div>
+      }
+      <div className='slide-box'>
         <Slider {...settings}>
           {item.imgUrl
             ? item.imgUrl.map((srcItem, index) => 
@@ -192,8 +235,8 @@ function FleamarketDetail(props) {
         <div className='userinfo-box'>
           <div className='user-box'>
             <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp'></img>
-
-            <p>{item[0].user}</p>
+            <p><span>{item.author}</span></p>
+            {/* <p>{item[0].user}</p> */}
           </div>
           <div className='side-box'>
             <p><span>등록일</span> {dateFormat(item.date)}</p>
@@ -205,10 +248,13 @@ function FleamarketDetail(props) {
           <p className='iteminfo-content'>{mappings[item.category]} / {mappings[item.area]}</p>
           <p><span>{item.title}</span></p>
           <p><span>{Number(item.price).toLocaleString('kr-KR')}원</span></p>
-          <p>{item.content}</p>
+          <p className='content-text'>{item.content}</p>
         </div>
         <div className='btn-box'>
-          <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>채팅하기</button>
+          {user.signUserNicname === item.author
+            ? <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>거래완료</button>
+            : <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>채팅하기</button>
+          }
         </div>
       </div>
     </FleamarketDetailContainer>

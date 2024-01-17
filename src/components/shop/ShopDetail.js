@@ -214,7 +214,7 @@ function ShopDetail(props) {
         setShowBuyModal(false);
         alert('결제가 완료되었습니다!');
         // 구매목록으로
-        navigate('/shop');
+        navigate('/purchase');
         }
     // }
     // else if (result.event == 'cancel') {

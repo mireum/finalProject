@@ -1,5 +1,5 @@
 import React from 'react';
-import nophoto from '../../../images/nophoto.jpg'
+import nophoto from '../../../image/nophoto.jpg'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -73,7 +73,7 @@ function DailyDogItem(props) {
 
   const handleItemClick = async () => {
     try {
-      await axios.patch(`http://localhost:8888/community/daily/view/${_id}`);
+      await axios.patch(`${process.env.REACT_APP_SERVER}/community/daily/view/${_id}`);
       navigate(`/community/dailydog/detail/${id}`)
     } catch (err) {
       console.error(err);

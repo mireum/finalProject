@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router';
 import styled from "styled-components";
 import { getLoginUser } from '../../features/userInfoSlice';
 import axios from 'axios';
-import logo from '../../images/logo_01.png'
+import logo from '../../image/logo_01.png'
+import { LuUser2 } from "react-icons/lu";
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -55,8 +56,9 @@ const HeaderContainer = styled.header`
       position: relative;
       .dropmenu {
         position: absolute;
-        top: 26px;
-        left: 20px;
+        width: 100px;
+        top: 45px;
+        left: -30px;
 
         li {
           border: 1px solid #111;
@@ -82,6 +84,9 @@ const HeaderContainer = styled.header`
       a:last-child {
       margin: 0px;
       margin-left: 8px;
+      }
+      .user {
+        font-size: 40px;
       }
     }
   }
@@ -207,7 +212,8 @@ function Header(props) {
             </div>
             <div className='sumMenu'>
               {user ?
-                <span className='cursor-pointer' onClick={handleDrop}>환영합니다 {user.signUserNicname}</span> :
+                <LuUser2 className='cursor-pointer user' onClick={handleDrop}>{user.signUserNicname}</LuUser2> :
+                // <span className='cursor-pointer' onClick={handleDrop}>환영합니다 {user.signUserNicname}</span> :
                 <span></span>
               }
               {/* {user ?

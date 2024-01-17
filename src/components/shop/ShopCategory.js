@@ -21,7 +21,7 @@ const StyledCategory = styled.ul`
     margin-left: 10px;
   };
    img.cate-st {
-    background-color: #f7f7f7;
+    /* background-color: #f7f7f7; */
     background-repeat: no-repeat;
     background-position: center;
     background-size: 60px 60px;

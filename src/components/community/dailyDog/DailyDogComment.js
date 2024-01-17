@@ -14,7 +14,7 @@ function DailyDogComment(props) {
   useEffect(() => {
     const dailyDogCommentData = async () => {
       try {
-        const responseComment = await axios.get(`http://localhost:8888/community/daily/comment/${item._id}`);
+        const responseComment = await axios.get(`${process.env.REACT_APP_SERVER}/community/daily/comment/${item._id}`);
         setComments(responseComment.data);
       } catch (err) {
         console.error(err);
@@ -39,7 +39,7 @@ function DailyDogComment(props) {
 
     try {
       const date = new Date();
-      await axios.post('http://localhost:8888/community/daily/comment/insert', { postId: item._id , comment: newComment, date, author: user.signUserNicname, authorId: user._id }); 
+      await axios.post(`${process.env.REACT_APP_SERVER}/community/daily/comment/insert`, { postId: item._id , comment: newComment, date, author: user.signUserNicname, authorId: user._id }); 
       const responseComment = await axios.get(`http://localhost:8888/community/daily/comment/${item._id}`); 
       setComments(responseComment.data);
     } catch (err) {
@@ -50,8 +50,8 @@ function DailyDogComment(props) {
 
   const handleDeleteComment = async (id) => {
     try {
-      await axios.delete(`http://localhost:8888/community//daily/comment/delete/${id}`);
-      const responseComment = await axios.get(`http://localhost:8888/community/daily/comment/${item._id}`); 
+      await axios.delete(`${process.env.REACT_APP_SERVER}/community//daily/comment/delete/${id}`);
+      const responseComment = await axios.get(`${process.env.REACT_APP_SERVER}/community/daily/comment/${item._id}`); 
       setComments(responseComment.data);
     } catch (err) {
       console.error(err);

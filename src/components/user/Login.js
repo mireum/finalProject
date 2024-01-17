@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getLoginUser, getLoginUserInfo, pushUserInfo, selectUserList } from '../../features/userInfoSlice';
 import axios from 'axios';
-import logo from '../../images/logo_01.png'
+import logo from '../../image/logo_01.png'
 
 const Test = styled.div`
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
@@ -128,14 +128,19 @@ function Login(props) {
         alert('비밀번호를 입력하세요.');
       }
       const result = await axios.post('http://localhost:8888/user/login', { userId: id, passwd: pw }, { withCredentials: true });
-      dispatch(getLoginUserInfo(result.data.user));
-      localStorage.setItem('user', JSON.stringify(result.data.user)); // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
-      alert(`환영합니다! ${result.data.user.signUserNicname} 님!`);
+      // localStorage.setItem('user', JSON.stringify(result.data.user)); // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
+      if (await result?.data === '가입되지 않은 회원입니다.') {
+        alert('아이디 또는 비밀번호가 틀림');
+      } else {
+        alert(`환영합니다! ${result.data.user.signUserNicname} 님!`);
+        dispatch(getLoginUserInfo(result.data.user));
+      }
+
 
       if (result.data.user.userId && state) {
         navigate(`${state.from.pathname}`);
       } else {
-        navigate(-1);
+        navigate('/personaldog');
       }
     } catch (error) {
       console.error(error);

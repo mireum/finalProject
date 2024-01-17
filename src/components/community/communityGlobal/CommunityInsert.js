@@ -26,9 +26,6 @@ function CommunityInsert(props) {
 
   const [insertTitle, setInsertTitle] = useState();
   const [insertContent, setInsertContent] = useState();
-  const [insertImg, setInsertImg] = useState(); // 상태관리..? 하기
-  const [like, setLike] = useState([]);
-  const [view, setView] = useState([]);
 
   const { insertPage } = useParams();
   const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
@@ -39,10 +36,7 @@ function CommunityInsert(props) {
   const changeContent = (e) => {
     setInsertContent(e.target.value)
   }
-  console.log(로그인중);
-  // const changeImg = async (e) => {
-  //   setInsertImg(e.target.files[0])
-  // }
+
   const formDataList = async () => {
     try {
       const formData = new FormData();
@@ -50,10 +44,8 @@ function CommunityInsert(props) {
       formData.append('content', insertContent);
       const img = (document.querySelector('#imgUrl').files[0]);
       formData.append('imgUrl', img);
-      formData.append('like', like);
-      formData.append('view', view);
-      // formData.append('user', 로그인중);
-      const result = await axios.post(`/community/${insertPage}/insert`, { formData, user: 로그인중 });
+
+      const result = await axios.post(`/community/${insertPage}/insert`, formData, 로그인중);
       console.log(result.data);
       if (!result.data.flag) {
         return alert(result.data.message);
@@ -62,9 +54,6 @@ function CommunityInsert(props) {
       console.error(err);
     }
   }
-
-
-
 
   return (
     <CommunityInsertWrapper>
@@ -93,8 +82,6 @@ function CommunityInsert(props) {
           accept='image/*'
           id='imgUrl'
           name='imgUrl'
-        // value={insertImg}
-        // onChange={changeImg}
         />
 
         <button

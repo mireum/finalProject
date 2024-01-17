@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Col from 'react-bootstrap/Col';
-import testImage from '../../../images/app.jpg'
+import testImage from '../../../image/app.jpg'
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
@@ -62,7 +62,7 @@ function FleamarketItem(props) {
 
   const handleItemClick = async () => {
     try {
-      await axios.patch(`http://localhost:8888/vintage/view/${_id}`);
+      await axios.patch(`${process.env.REACT_APP_SERVER}/vintage/view/${_id}`);
       navigate(`/community/fleamarket/${id}`)
     } catch (err) {
       console.error(err);

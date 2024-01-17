@@ -1,18 +1,15 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import cart from "../../image/cart.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { getLoginUser } from '../../features/userInfoSlice';
-import dog from "../../image/dog.png";
 import { Table } from 'react-bootstrap';
 import { dateFormat } from '../../util';
 
 const PurchaseWrap = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  
   
   h2 {
     padding: 10px 0;
@@ -48,7 +45,6 @@ const PurchaseWrap = styled.div`
     width: 200px;
     height: 200px;
     color: #68a6fe;
-    /* border-radius: 10px; */
   }
   .shop-btn {
     background-color: #68a6fe;
@@ -67,8 +63,6 @@ const PurchaseWrap = styled.div`
    .shop-btn:hover {
     background-color: #3e8bf7;
   }
-
-  
 `;
 
 function Purchase(props) {
@@ -76,23 +70,15 @@ function Purchase(props) {
   const [purchaseList, setPurchaseList] = useState([]);
   const loginUser = useSelector(getLoginUser);
   const formatter = new Intl.NumberFormat('ko-KR');
-  // const date = new Date();
-
 
   useEffect(() => {
     const purchaseList = async () => {
-      // { params: { userId: loginUser._id }}
-      // console.log(loginUser._id);
-      const result = await axios.get(`http://localhost:8888/shop/purchase`, { withCredentials: true } );
-      console.log(result.data);
-      if (result.data) {
-        setPurchaseList(result.data.list);
-      }
+      const result = await axios.get(`http://localhost:8888/shop/purchase`, { withCredentials: true });
+      if (result.data) setPurchaseList(result.data.list);
     }
     purchaseList();
   }, []);
 
-  console.log(purchaseList);
   return (
     <PurchaseWrap>
       <h2>주문 내역</h2>
@@ -106,38 +92,32 @@ function Purchase(props) {
           </tr>
         </thead>
         <tbody>
-        {
-        purchaseList.length ? purchaseList.map((item, index) => {
+        {purchaseList.length ? purchaseList.map((item, index) => {
           console.log(item);
           return (
             <Fragment key={index}>
               <tr>
                 <td className='date'>{dateFormat(item.date)}</td>
               </tr>
-              { item.list &&
+              {item.list &&
                 item.list.map((item, i) => {
-                  console.log(item);
-                  return (
-                    <tr key={i}>
-                      <td></td>
-                      <td>{item.title}</td>
-                      <td>{item.count}</td>
-                      <td>{formatter.format(item.price * item.count)}원</td>
-                    </tr>
-                )})
-              }
+                return (
+                  <tr key={i}>
+                    <td></td>
+                    <td>{item.title}</td>
+                    <td>{item.count}</td>
+                    <td>{formatter.format(item.price * item.count)}원</td>
+                  </tr>
+              )})}
             </Fragment>
             )
           })
           :
           <tr className='empty-list'>
-          
-            {/* <td><img src={cart}/></td> */}
             <td>구매내역이 없습니다.</td>
             <td></td>
             <td><button className='shop-btn cursor-pointer' onClick={() => {navigate('/shop')}}>쇼핑으로 이동</button></td>
             <td></td>
-
           </tr>
         }
         </tbody>
