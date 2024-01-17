@@ -22,10 +22,12 @@ import Login from './components/user/Login';
 import Signup from './components/user/Signup';
 import FleamarketWrite from './components/community/fleamarket/FleamarketWrite';
 import Mypage from './components/main/Mypage';
-
 import PersonalDog from './components/personalDog/PersonalDog';
 import Chatting from './components/main/Chatting';
 import RequireAuth from './auth/RequireAuth';
+import User from './components/main/User';
+import Purchase from './components/main/Purchase';
+import DailyDogEdit from './components/community/dailyDog/DailyDogEdit';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -54,13 +56,14 @@ function App() {
         <Route path='/' element={<Main />} >
           <Route path='/personaldog' element={<PersonalDog />} />
           <Route path='/' element={<Community />} />
-          <Route path='/mypage' element={<Mypage />} />
+          <Route path='/user' element={<User />}/>
+          <Route path='/mypage' element={<Mypage />}/>
+          <Route path='/purchase' element={<Purchase />}/>
           <Route path='/community/Toktok' element={<Toktok />} />
           <Route path='/shop/:nextId?' element={<Shop />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/shop/detail/:postId' element={<ShopDetail />} />
-          {/* <Route path='/shop/detail/:productId?/quest' element={<Question />} /> */}
-          <Route path='/shop/detail/quest' element={<Question />} />
+          <Route path='/shop/detail/quest/:postId' element={<Question />} />
           <Route path='/community/Toktok' element={<Toktok />} />   {/* toktok 메인화면 */}
           <Route path='/community/Toktok/:_id' element={<ToktokDetail />} />   {/* todtod 디테일 */}
           <Route path='/community/fleamarket' element={<Fleamarket />} />
@@ -76,6 +79,15 @@ function App() {
           <Route path='/community/dailydog' element={<DailyDog />} />
           <Route path='/community/dailydog/detail/:id' element={<DailyDogDetail />} />
           <Route 
+            path='/community/dailydog/edit/:postId' 
+            element={
+              <RequireAuth>
+                <DailyDogEdit />
+              </RequireAuth>
+            } 
+            />
+
+          <Route 
             path='/community/dailydog/write' 
             element={
               <RequireAuth>
@@ -86,7 +98,7 @@ function App() {
           <Route path='/map' element={<KakaoMap />} />   {/* 맵테스트 */}
           <Route path='/map/:search' element={<KakaoMap />} />   {/* 맵 쿼리테스트 */}
           <Route path='/community/Insert/:insertPage' element={<CommunityInsert />} />    {/* 커뮤니티 글등록 페이지 */}
-          <Route path='/user/chatting' element={<Chatting />} />
+          <Route path='/user/chatting/:toChat' element={<Chatting />} />
         </Route>
       </Routes>
     </>

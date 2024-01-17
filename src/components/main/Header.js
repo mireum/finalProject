@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import styled from "styled-components";
 import { getLoginUser } from '../../features/userInfoSlice';
 import axios from 'axios';
+import logo from '../../image/logo_01.png'
+import { LuUser2 } from "react-icons/lu";
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -17,6 +19,7 @@ const HeaderContainer = styled.header`
     padding: 10px 6px;
     font-size: 17px;
     font-weight: bold;
+    vertical-align: middle;
 
     /* &:nth-child(1n+2):hover {
       color: orange;
@@ -41,14 +44,21 @@ const HeaderContainer = styled.header`
       margin: 0px;
       margin-right: 8px;
       }
+
+      #logo {
+        max-width: 100px;
+        max-height: 30px;
+        vertical-align: middle;
+      }
     }
 
     .sumMenu {
       position: relative;
       .dropmenu {
         position: absolute;
-        top: 26px;
-        left: 20px;
+        width: 100px;
+        top: 45px;
+        left: -30px;
 
         li {
           border: 1px solid #111;
@@ -74,6 +84,9 @@ const HeaderContainer = styled.header`
       a:last-child {
       margin: 0px;
       margin-left: 8px;
+      }
+      .user {
+        font-size: 40px;
       }
     }
   }
@@ -117,10 +130,11 @@ const NavContainer = styled.nav`
 
 function Header(props) {
   const navigate = useNavigate();
-  const 로그인중 = useSelector(getLoginUser) // 현재 로그인중 유저 정보
+  const user = useSelector(getLoginUser) // 현재 로그인중인 유저 정보
   const handleLogOut = async () => {
     const result = await axios.get('http://localhost:8888/user/logout', {withCredentials:true});
     console.log(result.data);
+    navigate('/');
     window.location.reload();
   }
 
@@ -149,7 +163,7 @@ function Header(props) {
     setLogdrop(!logdrop);
   };
   const handleMypage = () => {
-    navigate('/mypage');
+    navigate('/user');
     handleDrop();
   }
   const handleCart = () => {
@@ -171,12 +185,14 @@ function Header(props) {
         <div className='headerWarpper'>
           <div className='headerInner'>
             <div className='mainMenu'>
-              <a><img src='' alt='logo' /></a>
-              <a
-                style={{ color: 'blue' }}
-                onClick={() => navigate('/personaldog')}
-              >{로그인중 ? 로그인중.signDogName : null}
-              </a>
+              <a onClick={() => navigate('/')}><img src={logo} alt='logo' id='logo' /></a>
+              {user &&
+                <a
+                  style={{ color: 'blue' }}
+                  onClick={() => navigate('/personaldog')}
+                >{user.signDogName}
+                </a>
+              }
               <a
                 onMouseOver={handleCommunityTapOver}
                 onClick={() => navigate('/')}
@@ -191,11 +207,12 @@ function Header(props) {
               </a>
             </div>
             <div className='sumMenu'>
-              {로그인중 ?
-                <span className='cursor-pointer' onClick={handleDrop}>환영합니다 {로그인중.signUserNicname}</span> :
+              {user ?
+                <LuUser2 className='cursor-pointer user' onClick={handleDrop}>{user.signUserNicname}</LuUser2> :
+                // <span className='cursor-pointer' onClick={handleDrop}>환영합니다 {user.signUserNicname}</span> :
                 <span></span>
               }
-              {/* {로그인중 ?
+              {/* {user ?
                 <a onClick={() => handleLogOut()}>로그아웃</a> :
                 <a onClick={() => navigate('/login')}>로그인</a> */}
               {logdrop &&
@@ -205,8 +222,8 @@ function Header(props) {
                   <li onClick={() => handleLogOut()}>로그아웃</li>
                 </ul>
               }
-              {!로그인중 && <a onClick={() => navigate('/login')}>로그인</a>}
-              {!로그인중 && <a onClick={() => navigate('/signup')}>회원가입</a>}
+              {!user && <a onClick={() => navigate('/login')}>로그인</a>}
+              {!user && <a onClick={() => navigate('/signup')}>회원가입</a>}
             </div>
           </div>
         </div>
@@ -216,7 +233,7 @@ function Header(props) {
             <div className='navInner'>
               <a onClick={() => navigate('/')}>커뮤니티홈</a>
               <a onClick={() => navigate('/community/Toktok')}>육아톡톡</a>
-              <a onClick={() => navigate('/community/dailydog')}>데일리독</a>
+              <a onClick={() => navigate('/community/dailydog?page=1')}>데일리독</a>
               <a onClick={() => navigate('/community/fleamarket')}>중고거래</a>
             </div>
           </NavContainer>

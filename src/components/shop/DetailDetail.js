@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import dog from "../../image/dog.png";
 import { useNavigate } from 'react-router';
+import { getLoginUser } from '../../features/userInfoSlice';
+import { useSelector } from 'react-redux';
 
 
 const DetailBox = styled.div`
-  margin: 0 auto;
+  margin: 50px auto;
   width: 83%;
 
   h1 {
@@ -40,6 +42,7 @@ const DetailBox = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 60px;
   }
   .top-wrap img {
     width: 150px;
@@ -96,7 +99,6 @@ const DetailBox = styled.div`
     border: 2px solid #eee;
     border-radius: 10px;
     box-shadow: 0 0 10px #eee;
-    /* position: relative; */
     background-color:rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
@@ -135,31 +137,20 @@ const DetailBox = styled.div`
 function DetailDetail(props) {
   const { title, price, rate, content, age, size, brand } = props.product;
   const navigate = useNavigate();
-
-  const mypage =  {
-    useId: '주인',
-    name: '가을',
-    age: 2,
-    weight: 3.8,
-    dogType: '말티푸'
-  };
+  const loginUser = useSelector(getLoginUser);
 
   return (
     <DetailBox>
       <h1>강아지 정보🔎</h1>
         {
-          mypage.useId ? (
+          loginUser ? (
             <div className='top-wrap'>
               <img src={dog} alt='강아지 프로필 사진'/>
               <div className='top-text'>
-                <p className='name'>{mypage.name}</p>
-                <span>{mypage.age}살</span>
-                <span className='weight'>{mypage.weight}kg</span>
-                <p className='type'>{mypage.dogType}</p>
-                {/* {
-                age === mypage.age ? <p>해당 제품은 {mypage.name}이와 맞는 상품이에요 :)</p>
-                : <p>해당 제품은 {mypage.name}이와 맞지 않는 상품이에요 :(</p>
-                } */}
+                <p className='name'>{loginUser.signDogName}</p>
+                <span>{loginUser.signDogAge}살</span>
+                <span className='weight'>{loginUser.signDogWeight}kg</span>
+                <p className='type'>{loginUser.signDogType}</p>
               </div>
               <div className='top-myPage cursor-pointer' onClick={() => {navigate('/mypage')}}>
                 <span className='more'>더보기</span>
@@ -193,15 +184,22 @@ function DetailDetail(props) {
             </tr>
             <tr>
               <th>평점</th>
-              <td>{rate}점</td>
+              {rate ? 
+                <td>{rate}점</td>
+                :<td>평점없음</td>
+              }
               <th>가격</th>
               <td>{price}원</td>
             </tr>
             <tr>
               <th>권장 나이</th>
-              <td>{age}</td>
+              <td>{age === 'junior' ? '0~5살'
+                  :age === 'adult' ? '6~10살'
+                  : '11살 이상'}</td>
               <th>권장 크기</th>
-              <td>{size}</td>
+              <td>{size === 'small' ? '소형견'
+                  :size === 'medium' ? '중형견'
+                  : '대형견'}</td>
             </tr>
           </tbody>
         </table>

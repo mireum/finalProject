@@ -1,5 +1,5 @@
 import React from 'react';
-import nophoto from '../../../images/nophoto.jpg'
+import nophoto from '../../../image/nophoto.jpg'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,6 +14,7 @@ const StyledCol = styled(Col)`
   }
 
   .item-box {
+    min-height: 116px;
     text-align: center;
     line-height: 24px;
 
@@ -71,8 +72,12 @@ function DailyDogItem(props) {
   const navigate = useNavigate();
 
   const handleItemClick = async () => {
-    await axios.patch(`http://localhost:8888/community/daily/view/${_id}`);
-    navigate(`/community/dailydog/detail/${id}`)
+    try {
+      await axios.patch(`http://localhost:8888/community/daily/view/${_id}`);
+      navigate(`/community/dailydog/detail/${id}`)
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
