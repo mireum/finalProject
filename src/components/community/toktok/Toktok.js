@@ -22,6 +22,18 @@ const ToktokWrapper = styled.div`
   .between {
     display: flex;
     justify-content: space-between;
+      .post-btn {
+        border: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: #68A6FE;
+        color: #fff;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .post-btn:hover {
+        background-color: #3286fc;
+      }
   }
   .test {
     font-size: 33px;
@@ -90,7 +102,7 @@ function Toktok(props) {
   useEffect(() => {
     const toktokListGet = async () => {
       try {
-        const response = await axios.get('/community/toktok');
+        const response = await axios.get('http://localhost:8888/community/toktok');
         await setGetList(response.data.data);
       } catch (error) {
         console.error(error);
@@ -98,11 +110,11 @@ function Toktok(props) {
     }
     toktokListGet();
 
-    const commentGet = async () => {
-      const response = await axios.get('/community/toktok/comment');
-      setComment(response.data.commentData);
-    }
-    commentGet();
+    // const commentGet = async () => {
+    //   const response = await axios.get('/community/toktok/comment');
+    //   setComment(response.data.commentData);
+    // }
+    // commentGet();
   }, []);
 
   const handlePageChange = (page) => {
@@ -114,6 +126,7 @@ function Toktok(props) {
       navigate(`/community/insert/toktok`);
     } else {
       alert('로그인 시 이용 가능합니다.')
+      navigate(`/login`);
     }
   }
 
@@ -133,7 +146,7 @@ function Toktok(props) {
       <br /><br />
       <div className='between'>
         <span>반려 생활 중 고민거리, 궁금증이 있으신가요? 지금 바로 질문해 보세요</span>
-        <button className='click' onClick={() => insertClick()}>질문하러 가기</button>
+        <button className='click post-btn' onClick={() => insertClick()}>질문하러 가기</button>
       </div>
       <br /><hr />
       <div>
