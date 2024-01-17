@@ -84,7 +84,7 @@ function ToktokItem(props) {
 
   const handleLike = async () => {
     try {
-      const a = await axios.post('/community/toktok/like', { user: 로그인중, postId: _id }, { withCredentials: true });
+      const a = await axios.post('http://localhost:8888/community/toktok/like', { user: 로그인중, postId: _id }, { withCredentials: true });
       setLikeNum(a.data.data.like);
       setTest(a.data.data.like);
     } catch (error) {

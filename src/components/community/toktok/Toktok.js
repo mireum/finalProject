@@ -90,7 +90,7 @@ function Toktok(props) {
   useEffect(() => {
     const toktokListGet = async () => {
       try {
-        const response = await axios.get('/community/toktok', { withCredentials: true });
+        const response = await axios.get('http://localhost:8888/community/toktok');
         await setGetList(response.data.data);
       } catch (error) {
         console.error(error);
@@ -105,6 +105,7 @@ function Toktok(props) {
       } catch (error) {
         console.error(error);
       }
+
     }
     commentGet();
   }, []);

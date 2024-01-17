@@ -59,9 +59,7 @@ const FleamarketContainer = styled.div`
       option {
         font-size: 14px;
       }
-  }
-
-
+    }
   }
 `;
 
@@ -86,19 +84,14 @@ function Fleamarket(props) {
   useEffect(() => {
     const fleamarketData = async () => {
       try {
-
-//         const response = await axios.get('http://localhost:8888/vintage', { params: { select } });
-//         setData(response.data.posts);
-
-        const response = await axios.get('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage');
-        setData(response.data);
-
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/vintage`, { params: { select } });
+        setData(response.data.posts);
       } catch (err) {
         console.error(err);
       }
     }
     fleamarketData();
-  }, [select])
+  }, [dogType, category, area, price, view ])
 
   const onSelectChange = (e) => {
     const { name, value } = e.target;
@@ -113,8 +106,6 @@ function Fleamarket(props) {
     const resetSelect = Object.fromEntries(Object.keys(select).map(key => [key, '']))
     setSelect(resetSelect);
   }
-
-  console.log(category, area, price, view);
 
   return (
     <FleamarketContainer>
@@ -166,7 +157,7 @@ function Fleamarket(props) {
       </div>
       <FleamarketItemContainer>
         <Row>
-          {data && data.map((item, index) => <FleamarketItem key={index} item={item} id={index} />).reverse()}
+          {data && data.map((item, index) => <FleamarketItem key={index} item={item} id={index} />)}
         </Row>
       </FleamarketItemContainer>
     </FleamarketContainer>
