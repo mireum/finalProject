@@ -99,8 +99,13 @@ function Toktok(props) {
     toktokListGet();
 
     const commentGet = async () => {
-      const response = await axios.get('http://localhost:8888/community/toktok/comment');
-      setComment(response.data.commentData);
+      try {
+        const response = await axios.get('/community/toktok/comment', { withCredentials: true });
+        setComment(response.data.commentData);
+      } catch (error) {
+        console.error(error);
+      }
+
     }
     commentGet();
   }, []);
