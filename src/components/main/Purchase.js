@@ -132,7 +132,6 @@ function Purchase(props) {
             <td></td>
             <td><button className='shop-btn cursor-pointer' onClick={() => {navigate('/shop')}}>쇼핑으로 이동</button></td>
             <td></td>
-
           </tr>
         }
         </tbody>
