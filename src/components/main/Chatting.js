@@ -209,7 +209,6 @@ function Chatting(props) {
       
       const getChatList = await axios.get('http://localhost:8888/getChatHeaderList', {withCredentials: true});
       if (!getChatList.data.flag) {
-        console.log(getChatList.data);
         alert(getChatList.data.message);
       }
       setChats(getChatList.data.chatData);
@@ -220,49 +219,20 @@ function Chatting(props) {
   
   useEffect(() => {
     socket.on('updateChatDetail', (chatData) => {
-      console.log(chatData);
-      console.log(sendId);
-      console.log(isLogin.userId);
-      setChatDetail(prev => [...prev, chatData.lastChat]);
-
-
-      // setChatRoomFilter(chatData)
-      // if (chatData.lastChatRoom == sendId) {
-      //   setChatDetail(prev => [...prev, chatData.lastChat]);
-      // }
+      if (chatData.id === isLogin.userId) {
+        setChatDetail(prev => [...prev, chatData.lastChat]);
+      }
     })
-    // chatFilter();
-    // console.log('chatRoomFilter'+chatRoomFilter);
-    // console.log('sendId'+sendId);
-    // console.log('로그인값'+isLogin.userId);
   }, []);
-
-  // const chatFilter = () => {
-  //   console.log(sendId);
-  //   console.log(isLogin.userId);
-  //   console.log(chatRoomFilter);
-  //   if (chatRoomFilter.lastChatRoom == sendId && chatRoomFilter.lastChatRoom == isLogin.userId) {
-  //     console.log('이프실행여부');
-  //     setChatDetail(prev => [...prev, chatRoomFilter.lastChat]);  
-  //   }
-  //   setChatRoomFilter('')
-    
-  // };
-
-
-
 
   const handleToChatroom = async (id) => {
     setSendId('')
     setRoom('')
     setChatDetail([]);
     socket.emit('leaveRoom', room);
-    console.log('아디'+id);
     setSendId(id);
-    console.log('샌드아디'+sendId);
     const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
     if (chatting.data.resulte?.chatList) {
-      console.log(chatting.data.resulte.room);
       socket.emit('joinRoom', chatting.data.resulte.room);
       setRoom(chatting.data.resulte.room)
       setChatDetail(chatting.data.resulte.chatList);
@@ -272,7 +242,6 @@ function Chatting(props) {
       setChatDetail(chatting.data.resulte2.chatList)
     }
   };
-
 
   const handleSubmitMessage = async () => {
     const loginUser = isLogin.userId;
@@ -288,8 +257,6 @@ function Chatting(props) {
     
   };
   const handleSubmitMessageDirect = async (toChat) => {
-    
-
     const loginUser = isLogin.userId;
     const data = {
       msg: value,
