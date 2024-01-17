@@ -19,7 +19,11 @@ function ToktokDetailCommentItem(props) {
   const date = new Date(props.date)
 
   const hendleDel = async () => {
-    await axios.post(`/community/toktok/ment/Del`, { commentId: commentId });
+    try {
+      await axios.post(`/community/toktok/ment/Del`, { commentId: commentId }, { withCredentials: true });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

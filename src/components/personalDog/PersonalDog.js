@@ -41,19 +41,19 @@ const PersonalDogWrapper = styled.div`
       max-width: 300px;
       margin: 0 30px;
       flex: 1;
-      font-size: 12px;
+      font-size: 14px;
     }
     .daily {
       max-width: 300px;
       margin: 0 30px;
       flex: 1;
-      font-size: 12px;
+      font-size: 14px;
     }
     .shop {
       max-width: 300px;
       margin: 0 30px;
       flex: 1;
-      font-size: 10px;
+      font-size: 14px;
     }
     .slider {
       margin-bottom: 30px;
@@ -77,6 +77,15 @@ const PersonalDogWrapper = styled.div`
         margin: auto 0;
       }
     }
+    .typeAgeInfo{
+      border: 1px solid #000;
+      p {
+        border: 1px solid #000;
+        margin: 20px ;
+        padding: 10px;
+        line-height: 30px;
+      }
+    }
 
 
     .KaKaoMap{
@@ -94,8 +103,12 @@ function PersonalDog(props) {
 
   useEffect(() => {
     const commentListGet = async () => {
-      const response = await axios.get('/community/toktok/PersonalDog');
-      setGetPersonalDog(response.data);
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/PersonalDog`, { withCredentials: true });
+        setGetPersonalDog(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     };
     commentListGet();
   }, []);
@@ -113,6 +126,39 @@ function PersonalDog(props) {
   }
 
 
+  const testDogInfo = [
+    {
+      dogType/* 리트리버 */: '리트리버',
+      info: '과거에 주로 날짐승, 특히 오리나 거위 같이 물에 사는 새 등을 사냥할 때 이용하던 중~대형견을 통칭하며, Retrieve라는 영어 단어 뜻이 되찾아오다인 것에서 알 수 있듯이, 총 같은 것으로 맞혀 떨어뜨린 사냥감을 물어오는 역할을 담당했던 견종들이다.',
+      character: '학대, 방임, 공격성을 방치한 훈육 등의 악조건을 겪지 않은 골든 리트리버는 대체로 온화한 성격을 지닌다. 강형욱 훈련사는 골든 리트리버의 온화한 성격에 대해 "100개의 옐로카드를 가졌고, 한숨 자고 나면 옐로카드가 전부 회복된다"라고 설명하기도 했다. 누군가 자신을 괴롭히더라도 99번까지는 봐줄 만큼 인내심이 좋다는 뜻.'
+    }
+    ,
+    {
+      dogType/* 허스키 */: '허스키',
+      info: '러시아 시베리아의 동북쪽 끝 추코트카가 발현지인 개의 일종.[2] 그곳에서 대대로 거주하던 축치인이 키우던 썰매견에서 유래된 견종이다. 그러나 시베리안 허스키라는 이름을 얻고 하나의 독립된 견종으로 고착된 것은 미국에서 이뤄진 것이며 이 때문에 견종 전문가들은 미국 개로 분류하고 있다. 참고로 시베리아에서 이주한 아메리카 원주민들과 함께 따라간 시베리아 토착견들은 아메리칸 인디언 독이 되었다.',
+      character: '흰색에 가까운 홍채 때문에 눈동자가 삼백안 같은 매서운 눈빛을 가지고 있으나 겉보기와 달리 허스키는 대체로 성격이 순한 품종이다.[7] 순하기 때문에 경호견으로는 적합하지 않다.'
+    }
+    ,
+    {
+      dogType/* 말티즈 */: '말티즈',
+      info: '개의 한 품종이며 남유럽 지방의 섬나라인 몰타가 원산인 소형견이다. Maltese [mɔːltíːz] 몰타 섬에서 유래된 종이라서 실제 발음은 ‘몰티즈’인데, 한국에서는 철자를 한국식으로 읽은 ‘말티즈’로 굳어졌지만 말티즈/몰티즈가 혼재되는 편이다.',
+      character: '활발하고 놀기를 좋아하며 주인에게 치대는 성향이 강하기 때문에 주인이 집에 들어오면 방방 뛰는 모습을 쉽게 볼 수 있다. 눈치가 빨라서 주인의 마음을 민감하게 감지할 줄 알지만 한편으로는 자기 주장을 강하게 하고 고집이 있어 밥, 간식, 산책 등 자기가 원하는 바에 대해 적극적으로 의사를 표출하는 견종이다. 더불어 자신이 원하는 바가 달성되어야 직성이 풀리는 성격이기 때문에 훈련이 잘못될 경우 욕구를 충족시키지 못한다고 판단되면 뒤끝을 보이며 휴지통을 뒤엎는 등의 문제를 일으키기 때문에 어릴 때 엄격하게 훈련을 시켜 놓지 않으면 나중에 주인이 매우 힘들어질 수 있다.'
+    }
+    ,
+    {
+      dogType/* 푸들 */: '푸들',
+      info: '독일이 원산인 개의 품종. 프랑스인들이 특히나 좋아하는 강아지이며 프랑스를 대표하는 이미지 중 하나이기도 하다.',
+      character: '푸들은 인간과 가장 오랫동안 지내오며 가축화와 애견화가 가장 많이 진행된 품종에 속한다. 때문에 일반적인 다른 개들보다 사람과의 상호작용이 훨씬 뛰어나며, 다른 개들과는 같은 종이지만 공격성과 같은 본능에서 다른 점이 많은 특성을 가지고 있다.'
+    }
+  ]
+  const DogInfoFilter = testDogInfo.filter((DogInfoFilter) => {
+    return (
+      DogInfoFilter.dogType === 로그인중?.signDogType
+    )
+  })
+
+
+
   return (
     <PersonalDogWrapper>
       <h1>{로그인중?.signDogName}</h1>
@@ -127,20 +173,19 @@ function PersonalDog(props) {
             {getPersonalDog?.toktokPostFilter.map((a) => {
               return (
                 <div className='slider' onClick={() => { navigate(`/community/Toktok/${a._id}`) }} >
-                  <div className='sliderItem'><p>{a.title}</p><img src={`${a.imgUrl}`} /></div>
+                  <div className='sliderItem'><p>{a.title.length > 13 ? a.title.slice(0, 13) + '...' : a.title}</p><img src={`${a.imgUrl}`} /></div>
                 </div>
               )
             })}
           </Slider>
         </div>
-
         <div className='daily'>
           <h4>중고장터</h4>
           <Slider {...settings}>
             {getPersonalDog?.vinPostFilter.map((a) => {
               return (
                 <div className='slider' onClick={() => { navigate(`/community/dailydog/detail/${a.id}`) }} >
-                  <div className='sliderItem'><p>{a.title}</p><img src={`${a.imgUrl}`} /></div>
+                  <div className='sliderItem'><p>{a.title.length > 13 ? a.title.slice(0, 13) + '...' : a.title}</p><img src={`${a.imgUrl}`} /></div>
                 </div>
               )
             })}
@@ -154,7 +199,7 @@ function PersonalDog(props) {
             {getPersonalDog?.shopPostFilter.map((a) => {
               return (
                 <div className='slider' onClick={() => { navigate(`/shop/detail/${a._id}`) }} >
-                  <div className='sliderItem'><p>{a.title}</p><img src={`${a.imgUrl}`} /></div>
+                  <div className='sliderItem'><p>{a.title.length > 13 ? a.title.slice(0, 13) + '...' : a.title}</p><img src={`${a.imgUrl}`} /></div>
                 </div>
               )
             })}
@@ -169,27 +214,14 @@ function PersonalDog(props) {
       </div>
 
       <div className='ListBox'>
-        <div className='typeAgeInfo'>
-          <h4>강아지 나이별 종별 정보</h4>
-          <p>허스키는 살랴살랴살랴숑</p>
-          <p>이 나이의 허스키는 어쩌구구</p>
-          <p>이 무게의 허스키는 이렇구구</p>
-        </div>
-      </div>
-
-
-      <div className='hrDiv'>
-        <hr />
-        <hr />
-      </div>
-
-      <div className='ListBox'>
-        <div>
-          <h4>여긴 뭘쓸까</h4> {/* 이건 진짜 뭐하노 */}
-          <p>ㅇㅁㅇㅁㅇㅁㅇㄴㅁㅇㅁ</p>
-          <p>ㅇㅁㅇㅁㅇㅁㅇㄴㅁㅇㅁ</p>
-          <p>ㅇㅁㅇㅁㅇㅁㅇㄴㅁㅇㅁ</p>
-        </div>
+        {DogInfoFilter.length > 0 ?
+          <div className='typeAgeInfo'>
+            <h4>{로그인중?.signDogType}의 특징</h4>
+            <p>{로그인중?.signDogType}의 정보: {DogInfoFilter[0]?.info}</p>
+            <p>{로그인중?.signDogType}의 성격: {DogInfoFilter[0]?.character}</p>
+          </div>
+          : <div />
+        }
       </div>
 
       <div className='hrDiv'>

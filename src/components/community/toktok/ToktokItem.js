@@ -83,12 +83,20 @@ function ToktokItem(props) {
   });
 
   const handleLike = async () => {
-    const a = await axios.post('/community/toktok/like', { user: 로그인중, postId: _id });
-    setLikeNum(a.data.data.like);
-    setTest(a.data.data.like);
+    try {
+      const a = await axios.post('/community/toktok/like', { user: 로그인중, postId: _id }, { withCredentials: true });
+      setLikeNum(a.data.data.like);
+      setTest(a.data.data.like);
+    } catch (error) {
+      console.error(error);
+    }
   }
   const addView = () => {
-    axios.post('/community/toktok/view', { postId: _id })
+    try {
+      axios.post('/community/toktok/view', { postId: _id }, { withCredentials: true })
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function elapsedTime(date) {
@@ -125,8 +133,8 @@ function ToktokItem(props) {
     <ToktokItemWrapper>
       <div className='toktokColumn'>
         <div onClick={() => { addView(); detailClick(); }}>
-          <h5 className='title'>{props.title}</h5>
-          <span className='content'>{props.content}</span>
+          <h5 className='title'>{props.title.length > 20 ? props.title.slice(0, 20) + '...' : props.title}</h5>
+          <span className='content'>{props.content.length > 35 ? props.content.slice(0, 35) + '...' : props.content}</span>
         </div>
         <div className='likeCommentView'>
           <button
