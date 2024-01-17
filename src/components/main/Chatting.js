@@ -5,10 +5,11 @@ import { useSelector } from 'react-redux';
 import { getLoginUser } from '../../features/userInfoSlice';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import ChatList from '../community/chatting/ChatList';
 
 
 const ChattingContainer = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   height: 800px;
   margin: 70px auto;
   border: 1px solid #ccc;
@@ -41,7 +42,7 @@ const ChattingContainer = styled.div`
     }
 
     .chattinglist-box {
-      padding: 10px 0;
+      /* padding: 10px 0; */
       flex-basis: 350px;
       border-right: 1px solid #ccc;
       overflow: auto;
@@ -53,6 +54,8 @@ const ChattingContainer = styled.div`
       .chattinglist-inner-box {
         display: flex;
         padding: 6px 10px;
+      }
+      .chattinglist-inner-box + .chattinglist-inner-box {
         border-top: 1px solid #ccc;
       }
 
@@ -114,7 +117,7 @@ const ChattingContainer = styled.div`
           margin-top: 10px;
           min-height: 36px;
           padding: 10px;
-          background-color: #68a6fe;
+          background-color: orange;
           border-radius: 10px;
           clear: both;
           float: right;
@@ -124,28 +127,45 @@ const ChattingContainer = styled.div`
           text-align: center;
           padding-top: 20px
         }
+
+        .nonChat{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 3rem;
+          font-weight: bold;
+        }
+
       }
 
       .chatting-input-box {
         margin: 10px 0;
-        border: 1px solid #ccc;
+        border: 1px solid orange;
         border-radius: 10px;
         padding: 10px;
         height: 140px;
+        display: flex;
 
         textarea {
           border: none;
-          width: 100%;
+          width: 90%;
           height: 90%;
           resize: none;
+          font-size: 18px;
 
           &:focus {
             outline: none;
           }
         }
+        
+        button {
+          border: none;
+          background: orange;
+          border-radius: 15px;
+          font-weight: bold;
+          color: white;
+        }
       }
-
-
     }
   }
 `;
@@ -158,12 +178,10 @@ function Chatting(props) {
   const [ update, setUpdate ] = useState('');
   const [ chats, setChats ] = useState([]);
   const [ chatDetail, setChatDetail ] = useState([]);
+  const [ chatRoomFilter, setChatRoomFilter ] = useState('');
   const [ value, setValue ] = useState('');
   const [ sendId, setSendId ] = useState('');
   const [ room, setRoom ] = useState('');
-  
-  // const socket = io.connect("http://localhost:8888");
-  
   const valueOnChange = (e) => {
     setValue(e.target.value);
   };
@@ -175,9 +193,6 @@ function Chatting(props) {
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
-
-
-  // 스테이트로 접근해보기
 
   useEffect(() => {
     socket.emit('login', isLogin.userId);
@@ -203,31 +218,49 @@ function Chatting(props) {
 
   }, [update]);
   
-  // 각자 다른방에서 따로 채팅은 가능함
-  // 하지만 유저1 - 유저2 대화중이다가 유저2가 유저3이랑 대화방가고 유저1이 유저2한테 채팅보내면
-  // 2와 3 방에 1의 말이 뿌려짐 그냥 화면상 랜더링되는거 같은데 막아야함
-  // 물론 3이 1의 채팅을 볼 순 없지만 2의 화면에 그냥 뿌려져서 혼잡
   useEffect(() => {
-    socket.on('updateChatDetail', (lastChat) => {
-      setChatDetail(prev => [...prev, lastChat]);
+    socket.on('updateChatDetail', (chatData) => {
+      console.log(chatData);
+      console.log(sendId);
+      console.log(isLogin.userId);
+      setChatDetail(prev => [...prev, chatData.lastChat]);
+
+
+      // setChatRoomFilter(chatData)
+      // if (chatData.lastChatRoom == sendId) {
+      //   setChatDetail(prev => [...prev, chatData.lastChat]);
+      // }
     })
-    console.log(chatDetail);
-    // console.log('필터');
-    // let copyChatDetail = [...chatDetail];
-    // let filterChatDetail = copyChatDetail.filter(chat => chat.user === sendId && chat.user === userId);
-    // setChatDetail(filterChatDetail)
+    // chatFilter();
+    // console.log('chatRoomFilter'+chatRoomFilter);
+    // console.log('sendId'+sendId);
+    // console.log('로그인값'+isLogin.userId);
   }, []);
+
+  // const chatFilter = () => {
+  //   console.log(sendId);
+  //   console.log(isLogin.userId);
+  //   console.log(chatRoomFilter);
+  //   if (chatRoomFilter.lastChatRoom == sendId && chatRoomFilter.lastChatRoom == isLogin.userId) {
+  //     console.log('이프실행여부');
+  //     setChatDetail(prev => [...prev, chatRoomFilter.lastChat]);  
+  //   }
+  //   setChatRoomFilter('')
+    
+  // };
+
+
 
 
   const handleToChatroom = async (id) => {
-    console.log(room);
-    socket.emit('leaveRoom', room);
+    setSendId('')
     setRoom('')
     setChatDetail([]);
+    socket.emit('leaveRoom', room);
+    console.log('아디'+id);
     setSendId(id);
-    console.log(id);
+    console.log('샌드아디'+sendId);
     const chatting = await axios.get(`http://localhost:8888/getChatting?id=${id}`, {withCredentials: true});
-    console.log(chatting);
     if (chatting.data.resulte?.chatList) {
       console.log(chatting.data.resulte.room);
       socket.emit('joinRoom', chatting.data.resulte.room);
@@ -242,7 +275,6 @@ function Chatting(props) {
 
 
   const handleSubmitMessage = async () => {
-
     const loginUser = isLogin.userId;
     const data = {
       msg: value,
@@ -252,11 +284,11 @@ function Chatting(props) {
     }
 
     await axios.post(`http://localhost:8888/inChating`, { data }, { withCredentials: true });
-    // socket.emit('answer', data);
     setValue('');
     
   };
-  const handleSubmitMessageDirect = (toChat) => {
+  const handleSubmitMessageDirect = async (toChat) => {
+    
 
     const loginUser = isLogin.userId;
     const data = {
@@ -265,7 +297,7 @@ function Chatting(props) {
       id: loginUser,
       room: loginUser,
     }
-    socket.emit('answer', data);
+    await axios.post(`http://localhost:8888/inChating`, { data }, { withCredentials: true });
     setValue('');
   };
 
@@ -278,82 +310,49 @@ function Chatting(props) {
   let today = new Date();
   today = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
-  
   return (
     <ChattingContainer>
       <div className='inner'>
-        <div className='userinfo-box'>
-          <div>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>   
-            <p><span>만식이</span></p>
-          </div>
-          <div>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지' />   
-            <p><span>만식이</span></p>
-          </div>
-        </div>
         <div className='chattinglist-box'>
-          <div className='chattinglist-inner-box'>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>
-            <div className='chattinglist-userinfo-box'>
-              <div className='sort'>
-                <p><span>중식이</span></p>
-                <p>어제</p>   
-              </div>
-              <p>대화내용</p>
-            </div>
-          </div>
-          <div className='chattinglist-inner-box'>
-            <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>
-            <div className='chattinglist-userinfo-box'>
-              <div className='sort'>
-                <p><span>디디</span></p>
-                <p>어제</p>   
-              </div>
-              <p>대화내용</p>
-            </div>
-          </div>
           { chats?.map((chat, index) => {
             return (
-              <div className='chattinglist-inner-box' key={index} onClick={() => {handleToChatroom(chat.user)}}>
-                <img src='https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp' alt='게스트 이미지'/>
-                <div className='chattinglist-userinfo-box'>
-                  <div className='sort'>
-                    <p><span>{chat.user}</span></p>
-                    <p>어제</p>   
-                  </div>
-                  <p>{chat.msg}</p>
-                </div>
-              </div>
-            )
-          })
+              <ChatList 
+                key={index}
+                audience={chat.user}
+                msg={chat.msg}
+                chatTime={chat?.chatTime}
+                lastChatUser={chat.lastChatUser}
+                isLogin={isLogin.userId}
+                handleToChatroom={() => handleToChatroom(chat.user)}
+              /> 
+            )}) 
           }
         </div>
         <div className='chatting-box' >
           <div className='sellerinfo-box'>
-            <p><span>{chatDetail[0]?.user}</span></p>
+            <p><span>{sendId}</span></p>
           </div>
           <div ref={scrollRef} className='chatting-detail-box'>
-          { chatDetail.map((chat, index) => {
-            return (
-              <>
-                {index === 0 && <p className='day'>{today}</p>}
-                { chat.user !== isLogin.userId &&
-                  <>
-                    <p key={index} className='message-notme-box'>{chat.user}:</p>
-                    <p className='message-notme-box'>{chat.msg}</p>
-                  </>
-                }
-                    {/* 유저가 나(로그인한사람)일 때 보여줘야함 */}
-                { chat.user === isLogin.userId &&
-                  <>
-                    <p key={index} className='message-box'>{chat.user}:</p>
-                    <p className='message-box'>{chat.msg}</p>
-                  </>
-                }
-              </>
-            )
-          })}
+            { chatDetail.map((chat, index) => {
+              return (
+                <>
+                  {index === 0 && <p className='day'>{today}</p>}
+                  { chat.user !== isLogin.userId &&
+                    <>
+                      <p key={index} className='message-notme-box'>{chat.user}:</p>
+                      <p className='message-notme-box'>{chat.msg}</p>
+                    </>
+                  }
+                  { chat.user === isLogin.userId &&
+                    <>
+                      <p key={index} className='message-box'>{chat.user}:</p>
+                      <p className='message-box'>{chat.msg}</p>
+                      
+                    </>
+                  }
+                </>
+              )
+            })}
           </div>
 
           { sendId 
@@ -363,19 +362,31 @@ function Chatting(props) {
                   value={value} 
                   onChange={valueOnChange} 
                   onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessage()} }}
-                  placeholder='메시지를 입력해주세요'
-                />
-                <button onClick={handleSubmitMessage}>전송</button>
+                  placeholder={sendId ? '메시지를 입력해주세요' : '채팅방을 눌러주세요!'}
+                  disabled={sendId ? false : true }
+                  />
+                <button 
+                  onClick={handleSubmitMessage}
+                  disabled={sendId ? false : true }
+                >
+                  보내기
+                </button>
               </div>
             :
-              <div className='chatting-input-box' >
+            <div className='chatting-input-box' >
                 <textarea
                   value={value} 
                   onChange={valueOnChange} 
                   onKeyUp={(e) => { if (e.key === 'Enter') {handleSubmitMessageDirect(toChat)} }}
-                  placeholder='메시지를 입력해주세요'
+                  placeholder={toChat ? '메시지를 입력해주세요' : chats ? '채팅방을 눌러주세요!' : '커뮤니티에서 새로운 채팅을 시작해보세요!'}
+                  disabled={toChat ? false : true }
                 />
-                <button onClick={handleSubmitMessage}>전송</button>
+                <button 
+                  onClick={handleSubmitMessage}
+                  disabled={toChat ? false : true }
+                >
+                  보내기
+                </button>
               </div>
           }
         </div>
