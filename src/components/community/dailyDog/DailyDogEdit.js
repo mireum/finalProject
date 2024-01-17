@@ -84,7 +84,7 @@ function DailyDogEdit(props) {
   useEffect(() => {
     const dailyDogEditData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8888/community/daily/edit/${postId}`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/community/daily/edit/${postId}`);
         setValues(prev => ({ ...prev, title: response.data.data.title, author: response.data.data.author }));
         editorRef.current?.getInstance().setHTML(response.data.data.content)
 
