@@ -10,7 +10,6 @@ const DailyDogContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
   margin: 70px auto;
-  padding: 0 20px;
 
   h1 {
     font-size: 28px;
@@ -18,11 +17,17 @@ const DailyDogContainer = styled.div`
     margin-bottom: 20px;
   }
 
-  button {
-    padding: 6px 8px;
+  .post-btn {
     border: none;
-    background: #68a6fe;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: #68A6FE;
     color: #fff;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .post-btn:hover {
+    background-color: #3286fc;
   }
 
   .info {
@@ -30,18 +35,6 @@ const DailyDogContainer = styled.div`
     justify-content: space-between;
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
-      .post-btn {
-        border: none;
-        padding: 10px 15px;
-        border-radius: 10px;
-        background-color: #68A6FE;
-        color: #fff;
-        font-weight: bold;
-        transition: 0.3s;
-      }
-      .post-btn:hover {
-        background-color: #3286fc;
-      }
   }
 
   .pagination > li > a:focus {

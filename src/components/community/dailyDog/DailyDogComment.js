@@ -50,7 +50,7 @@ function DailyDogComment(props) {
 
   const handleDeleteComment = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_SERVER_DOMAIN}/community/daily/comment/delete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_SERVER_DOMAIN}/community//daily/comment/delete/${id}`);
       const responseComment = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/community/daily/comment/${item._id}`); 
       setComments(responseComment.data);
     } catch (err) {
