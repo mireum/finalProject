@@ -251,8 +251,8 @@ function FleamarketDetail(props) {
         </div>
         <div className='btn-box'>
           {user?.signUserNicname === item.author
-            ? <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>거래완료</button>
-            : <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>채팅하기</button>
+            ? <button >거래완료</button>
+            : <button onClick={() => navigate(`/user/chatting/${item.author}`)}>채팅하기</button>
           }
         </div>
       </div>
