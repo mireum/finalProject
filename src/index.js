@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // * thunk 이용해서 비동기 처리 수정 필요
 const loginUserInfo = async () => {
   const user = localStorage.getItem('user');
-  if (user) return;
+  if (!user) return;
 
   store.dispatch(getLoginUserInfo(JSON.parse(user)));
 
