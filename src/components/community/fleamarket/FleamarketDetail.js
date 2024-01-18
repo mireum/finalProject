@@ -205,7 +205,7 @@ function FleamarketDetail(props) {
   const toChat = 'hosik'
   return (
     <FleamarketDetailContainer>
-      {user.signUserNicname === item.author && 
+      {user?.signUserNicname === item.author && 
         <div className='edit-box'>
           <button onClick={() => setEdit(prev => ({ ...prev, state: !state }))}>수정</button>
           <button onClick={handleDeleteItem}>삭제</button>
