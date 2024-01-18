@@ -91,9 +91,9 @@ function ToktokItem(props) {
       console.error(error);
     }
   }
-  const addView = () => {
+  const addView = async () => {
     try {
-      axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/view`, { postId: _id }, { withCredentials: true })
+      await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/view`, { postId: _id }, { withCredentials: true })
     } catch (error) {
       console.error(error);
     }
