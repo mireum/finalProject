@@ -87,6 +87,9 @@ body{
     width: 100px;
     height: 33px;
     margin-top: 10px;
+    border: none;
+    background: #68a6fe;
+    color: #fff;
   }
 }
 .dogType {
@@ -126,7 +129,8 @@ function Signup(props) {
   const [signDogAge, setSignDogAge] = useState(); // 개나이
   const [signDogWeight, setSignDogWeight] = useState(); // 개몸무게
   const [signDogName, setSignDogName] = useState(); // 개이름
-  /* 몸무게??? 기입할까 */
+
+  const [errorMessage, setErrorMessage] = useState();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -149,35 +153,50 @@ function Signup(props) {
   const changeDogName = (e) => { setSignDogName(e.target.value) }
   const userInput = { userId: signId, passwd: signPw, signEmail, signUserNicname, signDogType, signDogAge, signDogWeight, signDogName }
 
-
   const handleSignUp = async () => {
+    const userIdRegex = /^[a-zA-Z0-9]{4,10}$/;
+    const userpasswd = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     try {
-      if (signId.length < 4 || signId.length > 15) {
-        alert('아이디는 4자 이상 14자 이하로 기입');
-      } /* if (signId == '') {
+      if (!userIdRegex.test(signId)) {
+        alert('ID는 4자 이상 10자 이하 알파벳 대소문자, 숫자로만 구성되어야 합니다.');
+      } else if (!userpasswd.test(signPw)) {
+        alert('특수문자 / 문자 / 숫자 포함 형태의 8~15자리 이내의 암호를 입력해 주세요.');
+      } else if (!regExp.test(signEmail)) {
+        alert('이메일을 잘못 입력하셨습니다.')
+      } else if (!signId) {
         alert('아이디를 입력해 주세요.');
-      } if (signPw == '') {
+      } else if (!signPw) {
         alert('비밀번호를 입력해 주세요.')
-      } if (signEmail === '') {
+      } else if (!signEmail) {
         alert('email을 입력해 주세요');
-      } if (signUserNicname == '') {
+      } else if (!signUserNicname) {
         alert('닉네임을 입력해 주세요.');
-      } if (!signDogType) {
+      } else if (!signDogType) {
         alert('견종 입력');
-      } if (signDogAge == '') {
+      } else if (!signDogAge) {
         alert('반려견의의 나이를 입력해 주세요.');
-      } if (signDogWeight == '') {
+      } else if (!signDogWeight) {
         alert('반려견의 몸무게를 입력해 주세요.');
-      } if (signDogName == '') {
-        alert('반려견의 이름을 입력해 주세요.')
-      } */
-      await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/register`, userInput);
-      navigate('/login');
+      } else if (!signDogName) {
+        alert('반려견의 이름을 입력해 주세요.');
+      } else {
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/register`, userInput);
+        console.log(response);
+
+        if (await response?.data.message === "존재하는 ID 입니다") {
+          alert('존재하는 ID 입니다.');
+        } else if (await response?.data.message === "존재하는 이메일 입니다") {
+          alert('존재하는 이메일 입니다.');
+        } else {
+          navigate('/login');
+        }
+      }
     } catch (error) {
       console.error(error);
     }
   }
-
+  console.log(errorMessage);
 
   const spacies = [ '말티즈', '푸들', '치와와', '포메라니안',
   '시츄', '스파니엘', '닥스훈트', '보더콜리', '리트리버', '비글', 

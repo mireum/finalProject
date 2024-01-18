@@ -11,6 +11,8 @@ const FleamarketContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
   margin: 70px auto;
+  padding: 0 20px;
+
 
   h1 {
     font-size: 28px;
@@ -35,6 +37,18 @@ const FleamarketContainer = styled.div`
     justify-content: space-between;
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
+      .post-btn {
+        border: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: #68A6FE;
+        color: #fff;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .post-btn:hover {
+        background-color: #3286fc;
+      }
   }
 
   .category-box {
@@ -59,9 +73,7 @@ const FleamarketContainer = styled.div`
       option {
         font-size: 14px;
       }
-  }
-
-
+    }
   }
 `;
 
@@ -93,7 +105,7 @@ function Fleamarket(props) {
       }
     }
     fleamarketData();
-  }, [select])
+  }, [dogType, category, area, price, view ])
 
   const onSelectChange = (e) => {
     const { name, value } = e.target;
@@ -109,14 +121,12 @@ function Fleamarket(props) {
     setSelect(resetSelect);
   }
 
-  console.log(category, area, price, view);
-
   return (
     <FleamarketContainer>
       <h1>중고거래</h1>
       <div className='info'>
         <p>반려견의 물품을 거래해요!</p>
-        <button onClick={() => navigate('/community/fleamarket/write')}>판매하기</button>
+        <button className='post-btn' onClick={() => navigate('/community/fleamarket/write')}>판매하기</button>
       </div>
       <div className='category-box'>
         <select value={dogType} name='dogType' onChange={onSelectChange}>
@@ -161,7 +171,7 @@ function Fleamarket(props) {
       </div>
       <FleamarketItemContainer>
         <Row>
-          {data && data.map((item, index) => <FleamarketItem key={index} item={item} id={index} />).reverse()}
+          {data && data.map((item, index) => <FleamarketItem key={index} item={item} id={index} />)}
         </Row>
       </FleamarketItemContainer>
     </FleamarketContainer>

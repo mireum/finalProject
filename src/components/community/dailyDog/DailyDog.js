@@ -10,6 +10,7 @@ const DailyDogContainer = styled.div`
   max-width: 1200px;
   min-height: 800px;
   margin: 70px auto;
+  padding: 0 20px;
 
   h1 {
     font-size: 28px;
@@ -29,6 +30,18 @@ const DailyDogContainer = styled.div`
     justify-content: space-between;
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
+      .post-btn {
+        border: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: #68A6FE;
+        color: #fff;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .post-btn:hover {
+        background-color: #3286fc;
+      }
   }
 
   .pagination > li > a:focus {
@@ -143,7 +156,7 @@ function DailyDog(props) {
       <h1>데일리독</h1>
       <div className='info'>
         <p>사랑스러운 내 반려견의 일상을 공유해요!</p>
-        <button onClick={() => navigate('/community/dailydog/write')}>공유하기</button>
+        <button className='post-btn' onClick={() => navigate('/community/dailydog/write')}>공유하기</button>
       </div>
       <DailyDogItemContainer>
         <Row>

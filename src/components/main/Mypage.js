@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AiFillEdit } from "react-icons/ai";
@@ -11,7 +11,6 @@ const Container = styled.div`
   max-width: 1200px;
   .box {
     max-width: 800px;
-    /* background-color: #ececec; */
     margin: 20px auto;
     padding: 30px;
     border-radius: 10px;
@@ -36,9 +35,7 @@ const Container = styled.div`
         margin-left: 70px;
         background-color: #fff;
         border: 2px solid #eee;
-        padding: 20px 0px;
         box-sizing: border-box;
-        /* line-height: 0; */
       }
       .name {
         margin-left: 124px;
@@ -110,7 +107,7 @@ function Mypage(props) {
   };
 
   // 변경사항 저장
-  const handleSave = async () => {
+  const handleSave = async (e) => {
     if ((editNickname && editDogType && editDogName && editDogAge)) alert('변경사항이 없습니다.');
     
     const result = await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/editPersonalInfo`, {nick, dogType, dogName, dogAge}, {withCredentials: true});
@@ -118,6 +115,7 @@ function Mypage(props) {
       alert('저장되었습니다!');
       dispatch(changeLoginUserInfo(result.data.result));
       const user = JSON.parse(localStorage.getItem('user'));
+      // console.log('user::', user);
       user.signDogType = dogType;
       user.signDogAge = dogAge;
       user.signDogName = dogName;
@@ -134,7 +132,7 @@ function Mypage(props) {
     setShowModal(true);
   };
   const handleQuit = async () => {
-    const result = await axios.get(`${process.env.REACT_APP_MAIN}/user/accountQuit`, {withCredentials:true});
+    const result = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/user/accountQuit`, {withCredentials:true});
     if (result.data.flag) alert(`${result.data.message}`);
   };
 
@@ -173,7 +171,6 @@ function Mypage(props) {
         
         <div className='inner'>
           <input type='button' className='inputBtn' onClick={handleSave} value='변경사항 저장' />
-          {/* <button type='button' className='botton' onClick={handleChangePw}>비밀번호 변경</button> */}
           <button type='button' className='button' onClick={handleClickQuit}>회원 탈퇴</button>
       </div>
       {<Modal show={showModal}>

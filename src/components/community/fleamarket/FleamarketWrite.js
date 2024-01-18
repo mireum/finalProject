@@ -266,7 +266,7 @@ function FleamarketWrite(props) {
 
     if (title && price && category && area && content && images[0] && dogType && dogAge && dogWeight) {
       try {
-        axios.post('https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/vintage/insert', formData, {withCredentials: true})
+        await axios.post(`${process.env.REACT_APP_SERVER}/vintage/insert`, formData, {withCredentials: true})
         alert('게시글이 등록되었습니다.');
         navigate('/community/Fleamarket');
       } catch (err) {

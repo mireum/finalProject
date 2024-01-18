@@ -215,10 +215,6 @@ const DailyDogDetailContainer = styled.div`
             }
           }
         }
-
-        span {
-
-        }
       }
     }
   }
