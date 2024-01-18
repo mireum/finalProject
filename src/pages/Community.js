@@ -81,7 +81,7 @@ function Community(props) {
   useEffect(() => {
     const newDailyDogData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER}/community`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/community`);
         
         const bestLists = [...response.data.bestViewPost];
         const recentDailyDog = [...response.data.recentDailyPost];

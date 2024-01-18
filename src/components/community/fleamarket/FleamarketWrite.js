@@ -184,7 +184,7 @@ function FleamarketWrite(props) {
   useEffect(() => {
     const fleamarketData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER}/vintage/number`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/vintage/number`);
         console.log(response.data.id);
         setValues(prevValue => ({ ...prevValue, id: response.data.id ? response.data.id + 1 : 1 }));
       } catch (err) {
