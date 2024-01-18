@@ -73,7 +73,7 @@ function DailyDogItem(props) {
 
   const handleItemClick = async () => {
     try {
-      await axios.patch(`${process.env.REACT_APP_SERVER}/community/daily/view/${_id}`);
+      await axios.patch(`${process.env.REACT_APP_SERVER_DOMAIN}/community/daily/view/${_id}`);
       navigate(`/community/dailydog/detail/${id}`)
     } catch (err) {
       console.error(err);

@@ -20,7 +20,7 @@ function ToktokDetailCommentItem(props) {
 
   const hendleDel = async () => {
     try {
-      await axios.post(`http://localhost:8888/community/toktok/ment/Del`, { commentId: commentId }, { withCredentials: true });
+      await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/ment/Del`, { commentId: commentId }, { withCredentials: true });
     } catch (error) {
       console.error(error);
     }

@@ -87,6 +87,9 @@ body{
     width: 100px;
     height: 33px;
     margin-top: 10px;
+    border: none;
+    background: #68a6fe;
+    color: #fff;
   }
 }
 .dogType {
@@ -178,7 +181,7 @@ function Signup(props) {
       } else if (!signDogName) {
         alert('반려견의 이름을 입력해 주세요.');
       } else {
-        const response = await axios.post('http://localhost:8888/user/register', userInput);
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/register`, userInput);
         console.log(response);
 
         if (await response?.data.message === "존재하는 ID 입니다") {
