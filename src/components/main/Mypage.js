@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AiFillEdit } from "react-icons/ai";
@@ -107,7 +107,7 @@ function Mypage(props) {
   };
 
   // 변경사항 저장
-  const handleSave = async () => {
+  const handleSave = async (e) => {
     if ((editNickname && editDogType && editDogName && editDogAge)) alert('변경사항이 없습니다.');
     
     const result = await axios.post('http://localhost:8888/user/editPersonalInfo', {nick, dogType, dogName, dogAge}, {withCredentials: true});
@@ -115,6 +115,7 @@ function Mypage(props) {
       alert('저장되었습니다!');
       dispatch(changeLoginUserInfo(result.data.result));
       const user = JSON.parse(localStorage.getItem('user'));
+      // console.log('user::', user);
       user.signDogType = dogType;
       user.signDogAge = dogAge;
       user.signDogName = dogName;
@@ -170,7 +171,6 @@ function Mypage(props) {
         
         <div className='inner'>
           <input type='button' className='inputBtn' onClick={handleSave} value='변경사항 저장' />
-          {/* <button type='button' className='botton' onClick={handleChangePw}>비밀번호 변경</button> */}
           <button type='button' className='button' onClick={handleClickQuit}>회원 탈퇴</button>
       </div>
       {<Modal show={showModal}>
