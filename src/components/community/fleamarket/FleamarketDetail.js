@@ -167,7 +167,6 @@ function FleamarketDetail(props) {
     const fleamarketData = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER}/vintage/detail/${id}`);        
-        console.log(response.data);
         setItem(response.data.postData);
         setEdit(prev => ({ ...prev, content: response.data.postData.content }));
       } catch (err) {
@@ -251,7 +250,7 @@ function FleamarketDetail(props) {
           <p className='content-text'>{item.content}</p>
         </div>
         <div className='btn-box'>
-          {user.signUserNicname === item.author
+          {user?.signUserNicname === item.author
             ? <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>거래완료</button>
             : <button onClick={() => navigate(`/user/chatting/${item[0].user}`)}>채팅하기</button>
           }

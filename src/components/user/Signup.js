@@ -87,6 +87,9 @@ body{
     width: 100px;
     height: 33px;
     margin-top: 10px;
+    border: none;
+    background: #68a6fe;
+    color: #fff;
   }
 }
 .dogType {
