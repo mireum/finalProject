@@ -5,7 +5,6 @@ import axios from 'axios';
 
 function DailyDogComment(props) {
   const { item, user } = props;
-  console.log(props);
 
   const [ isExpanded, setIsExpanded ] = useState(false);
   const [ comments, setComments ] = useState([]);
@@ -57,8 +56,6 @@ function DailyDogComment(props) {
       console.error(err);
     }
   } 
-
-  console.log(comments);
 
   return (
     <>      
