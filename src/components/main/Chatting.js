@@ -182,6 +182,7 @@ function Chatting(props) {
   const [ value, setValue ] = useState('');
   const [ sendId, setSendId ] = useState('');
   const [ room, setRoom ] = useState('');
+
   const valueOnChange = (e) => {
     setValue(e.target.value);
   };
@@ -204,6 +205,7 @@ function Chatting(props) {
     })
   }, []); 
 
+  
   useEffect(() => {
     const getChatListHandler = async () => {
       
@@ -254,6 +256,7 @@ function Chatting(props) {
     }
 
     await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/inChating`, { data }, { withCredentials: true });
+    // socket.emit('answer', data);
     setValue('');
     
   };

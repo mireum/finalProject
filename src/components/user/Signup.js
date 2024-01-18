@@ -135,13 +135,13 @@ function Signup(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const signUserInfoGet = async () => {
-  //     const response = await axios.get('http://localhost:8888/user/register');
-  //     console.log(response);
-  //   }
-  //   signUserInfoGet();
-  // }, []);
+  useEffect(() => {
+    const signUserInfoGet = async () => {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_DOMAIN}/user/register`);
+      console.log(response);
+    }
+    signUserInfoGet();
+  }, []);
 
   const changeId = (e) => { setSignId(e.target.value) }
   const changePw = (e) => { setSignPw(e.target.value) }

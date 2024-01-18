@@ -2,7 +2,7 @@
   "name": "final",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app",
+  "proxy": "https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/",
   "dependencies": {
     "@bootpay/client-js": "^4.3.4",
     "@reduxjs/toolkit": "^2.0.1",
