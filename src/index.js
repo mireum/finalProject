@@ -21,6 +21,7 @@ const loginUserInfo = async () => {
 
   // const result = await axios.get(`https://port-0-finalprojectserver-1efqtf2dlrehr9d7.sel5.cloudtype.app/user/login`, {withCredentials: true});
   const result = await axios.get(`http://localhost:8888/user/login`, {withCredentials: true});
+  console.log(result.data.flag);
   if (!result.data.flag) {
     store.dispatch(clearLoginUserInfo());
     localStorage.removeItem('user');
