@@ -100,7 +100,7 @@ function CommunityInsert(props) {
       const img = (document.querySelector('#imgUrl').files[0]);
       formData.append('imgUrl', img);
 
-      const result = await axios.post(`${process.env.REACT_APP_SERVER}/community/${insertPage}/insert`, formData, 로그인중);
+      const result = await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/${insertPage}/insert`, formData, 로그인중);
       console.log(result.data);
       if (!result.data.flag) {
         return alert(result.data.message);

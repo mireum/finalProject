@@ -84,16 +84,16 @@ function ToktokItem(props) {
 
   const handleLike = async () => {
     try {
-      const a = await axios.post(`${process.env.REACT_APP_SERVER}/community/toktok/like`, { user: 로그인중, postId: _id }, { withCredentials: true });
+      const a = await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/like`, { user: 로그인중, postId: _id }, { withCredentials: true });
       setLikeNum(a.data.data.like);
       setTest(a.data.data.like);
     } catch (error) {
       console.error(error);
     }
   }
-  const addView = () => {
+  const addView = async () => {
     try {
-      axios.post(`${process.env.REACT_APP_SERVER}/community/toktok/view`, { postId: _id }, { withCredentials: true })
+      await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/community/toktok/view`, { postId: _id }, { withCredentials: true })
     } catch (error) {
       console.error(error);
     }
