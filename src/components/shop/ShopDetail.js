@@ -201,14 +201,14 @@ function ShopDetail(props) {
 
   // 구매하기
   const handlePay = async() => {
-    // if (!user) {
-    //   const result = needLogin();
-    //   if (result) navigate('/login');
-    //   else return;
-    // }
-    // const result = await pay(product, productCount, productCount * product.price);
-    // console.log('구매결과::', result);
-    // if (result.event === 'done' || result.event === 'issued') {
+    if (!user) {
+      const result = needLogin();
+      if (result) navigate('/login');
+      else return;
+    }
+    const result = await pay(product, productCount, productCount * product.price);
+    console.log('구매결과::', result);
+    if (result.event === 'done' || result.event === 'issued') {
       const result = await axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/shop/purchaseAdd`, { postId, price, title, productCount }, {withCredentials: true});
       if (result.data.flag) {
         setShowBuyModal(false);
@@ -216,11 +216,11 @@ function ShopDetail(props) {
         // 구매목록으로
         navigate('/purchase');
         }
-    // }
-    // else if (result.event == 'cancel') {
-    //   setShowBuyModal(false);
-    //   alert('결제 취소');
-    // }
+    }
+    else if (result.event == 'cancel') {
+      setShowBuyModal(false);
+      alert('결제 취소');
+    }
   };
     
   const openModal = () => {setShowModal(true)};
