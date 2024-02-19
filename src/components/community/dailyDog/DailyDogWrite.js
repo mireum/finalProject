@@ -136,7 +136,7 @@ function DailyDogWrite(props) {
 
     if (!title) {
       return alert('제목을 입력해주세요.');
-    } else if (!content || content == '<p><br></p>') {
+    } else if (!content || content === '<p><br></p>') {
       return alert('내용을 입력해주세요.');
     } else {
       try {
